@@ -74,7 +74,18 @@ async function callAv(params) {
 // fails (usually the daily limit) we keep serving the last good copy, marked stale. After a
 // failure we wait RETRY_MS before trying again, so 10s polling can't burn through the quota.
 const RETRY_MS = 60 * 1000;
+// The cache is saved to disk, so restarting the server doesn't spend more of the free daily quota
+// (about 25 calls a day) re-fetching charts that are still fresh. The file is gitignored.
+const CACHE_FILE = path.join(ROOT, ".av-cache.json");
 const cache = new Map();
+try {
+  for (const [k, v] of Object.entries(JSON.parse(fs.readFileSync(CACHE_FILE, "utf8")))) cache.set(k, v);
+} catch (e) {}
+let saveTimer;
+function persist() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => fs.writeFile(CACHE_FILE, JSON.stringify(Object.fromEntries(cache)), () => {}), 500);
+}
 const inflight = new Map();
 const failed = new Map();
 async function cached(key, ttl, load) {
@@ -90,6 +101,7 @@ async function cached(key, ttl, load) {
       .then((data) => {
         const entry = { at: Date.now(), data };
         cache.set(key, entry);
+        persist();
         failed.delete(key);
         return entry;
       })

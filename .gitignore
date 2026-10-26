@@ -21,3 +21,6 @@ build/
 
 # macOS resource forks
 ._*
+
+# Alpha Vantage response cache (server.js)
+.av-cache.json
