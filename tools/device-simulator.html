@@ -63,7 +63,8 @@ const FRAMES = {
 };
 const PAGES = ["index.html", "mintly.demo.html", "parents.html", "pricing.html", "signin.html",
   "lessons/explore.html", "lessons/financial-literacy.html", "lessons/cryptocurrencies.html",
-  "lessons/collectables.html", "lessons/lesson-1.html", "lessons/lesson-2.html"];
+  "lessons/collectables.html", "lessons/lesson-1.html", "lessons/lesson-2.html", "lessons/lesson-3.html",
+  "lessons/lesson-4.html", "lessons/lesson-5.html"];
 
 const $ = (id) => document.getElementById(id);
 let land = false;
@@ -73,7 +74,8 @@ const save = (k, v) => { try { localStorage.setItem(k, v) } catch {} };
 DEVICES.forEach((d, i) => $("dev").add(new Option(`${d[0]} (${d[1]}×${d[2]})`, i)));
 PAGES.forEach((p) => $("page").add(new Option(p, p)));
 $("dev").value = DEVICES[saved("sim:dev", 0)] ? saved("sim:dev", 0) : 0;
-$("page").value = saved("sim:page", "index.html");
+// a saved page that's no longer listed falls back to the homepage
+$("page").value = PAGES.includes(saved("sim:page", "")) ? saved("sim:page", "") : "index.html";
 
 function layout() {
   const [, w0, h0, kind] = DEVICES[$("dev").value], f = FRAMES[kind];

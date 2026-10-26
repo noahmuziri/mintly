@@ -88,8 +88,9 @@
 <script src="script.js"></script>
 <script>
   const params = new URLSearchParams(window.location.search);
-  const plan = params.get("plan");
   const planNames = { family: "Starter", premium: "Plus", pro: "Family Pro", school: "School" };
+  // only a plan from the pricing page counts; anything else in the URL is ignored
+  const plan = planNames.hasOwnProperty(params.get("plan")) ? params.get("plan") : null;
 
   const existingUser = Mintly.currentUser();
   if (existingUser && plan && planNames[plan]) {
@@ -149,6 +150,8 @@
     });
     const errorEl = document.getElementById("login-error");
     if (result.ok) {
+      // an existing account that picked a plan on the pricing page gets that plan now
+      if (plan) Mintly.setPlan(plan);
       window.location.href = "lessons/financial-literacy.html";
     } else {
       errorEl.textContent = result.error;

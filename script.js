@@ -29,6 +29,28 @@ const Mintly = (() => {
     } catch (e) {}
   }
 
+  // localStorage throws when storage is blocked (private mode, disabled site data, sandboxed frames).
+  // Every raw access goes through these so the nav and menu still work without it.
+  function getItem(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function setItem(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {}
+  }
+
+  function removeItem(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {}
+  }
+
   // --- Auth (demo only: accounts live in this browser's localStorage,
   // not a real server. Do not reuse this pattern for real passwords.) ---
 
@@ -37,7 +59,7 @@ const Mintly = (() => {
   }
 
   function currentUser() {
-    const email = localStorage.getItem(SESSION_KEY);
+    const email = getItem(SESSION_KEY);
     if (!email) return null;
     const users = getUsers();
     return users[email] || null;
@@ -59,12 +81,12 @@ const Mintly = (() => {
     }
 
     const guestCompleted = LESSON_IDS.filter((id) =>
-      localStorage.getItem(PROGRESS_PREFIX + "guest:" + id) === "true"
+      getItem(PROGRESS_PREFIX + "guest:" + id) === "true"
     );
 
     users[email] = { name, email, password, plan: plan || null };
     writeJSON(USERS_KEY, users);
-    localStorage.setItem(SESSION_KEY, email);
+    setItem(SESSION_KEY, email);
 
     guestCompleted.forEach((id) => markLessonComplete(id));
 
@@ -78,16 +100,16 @@ const Mintly = (() => {
     if (!user || user.password !== password) {
       return { ok: false, error: "That email and password don't match." };
     }
-    localStorage.setItem(SESSION_KEY, email);
+    setItem(SESSION_KEY, email);
     return { ok: true };
   }
 
   function logOut() {
-    localStorage.removeItem(SESSION_KEY);
+    removeItem(SESSION_KEY);
   }
 
   function setPlan(plan) {
-    const email = localStorage.getItem(SESSION_KEY);
+    const email = getItem(SESSION_KEY);
     if (!email) return;
     const users = getUsers();
     if (!users[email]) return;
@@ -134,13 +156,11 @@ const Mintly = (() => {
   // --- Lesson progress (scoped to the signed-in account, or "guest") ---
 
   function isLessonComplete(id) {
-    return localStorage.getItem(PROGRESS_PREFIX + progressScope() + ":" + id) === "true";
+    return getItem(PROGRESS_PREFIX + progressScope() + ":" + id) === "true";
   }
 
   function markLessonComplete(id) {
-    try {
-      localStorage.setItem(PROGRESS_PREFIX + progressScope() + ":" + id, "true");
-    } catch (e) {}
+    setItem(PROGRESS_PREFIX + progressScope() + ":" + id, "true");
   }
 
   function completedCount() {

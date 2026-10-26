@@ -5,7 +5,7 @@
   const $ = (id) => document.getElementById(id);
   const API = location.protocol === "file:" ? "http://localhost:8000" : "";
   const usd = (n) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  let range = "1M", live = false;
+  let range = "1M", live = false, seq = 0;
 
   function path(p) {
     const mn = Math.min(...p), mx = Math.max(...p), w = 600 / Math.max(1, p.length - 1);
@@ -31,8 +31,11 @@
   }
 
   async function loadChart() {
+    // only the latest request may draw, so a slow reply for an old range can't overwrite a newer one
+    const my = ++seq;
     try {
       const r = await fetch(API + "/api/chart?symbol=NVDA&range=" + range), d = await r.json();
+      if (my !== seq) return;
       if (!r.ok) throw Error(d.error);
       const p = d.points.map((x) => x.c), chg = (p[p.length - 1] / p[0] - 1) * 100, col = "var(" + (chg >= 0 ? "--gain" : "--bad") + ")";
       // label color: deep green / ink keep 4.5:1 contrast on white (the line keeps gain/loss colors)
@@ -46,7 +49,7 @@
         (d.stale ? " (rate limit reached, showing last saved data)." : ".");
       live = true;
     } catch (e) {
-      if (live) return;
+      if (my !== seq || live) return;
       draw(mockPoints("NVDA" + range), "var(--gain)");
       setRangeButtons();
       $("hm-src").textContent = "Simulation. No real money. Practice data shown: the live price needs the Mintly server with an Alpha Vantage key.";

@@ -10,8 +10,13 @@
   const BGS = [["Stone", ["#F5F5F4", "#fff"], ["#0E0E0E", "#181817"]], ["White", ["#fff", "#F5F5F4"], ["#000", "#141414"]], ["Silver", ["#E8E8EA", "#F7F7F8"], ["#17171A", "#202024"]]];
   const FONTS = [["Sora + Inter", "'Sora',system-ui,sans-serif", "'Inter',system-ui,sans-serif"], ["Fraunces + Inter", "'Fraunces',Georgia,serif", "'Inter',system-ui,sans-serif"], ["Space Grotesk", "'Space Grotesk',system-ui,sans-serif", "'Space Grotesk',system-ui,sans-serif"], ["System", "system-ui,-apple-system,'Segoe UI',sans-serif", "system-ui,-apple-system,'Segoe UI',sans-serif"]];
 
-  let C = Object.assign({ a: 0, b: 0, f: 0 }, read(KEY_CUSTOM, {}));
-  const saved = read(KEY_THEME, null);
+  // ignore saved indexes that don't exist (older palettes, hand-edited storage) instead of crashing apply()
+  const ok = (v, list) => Number.isInteger(v) && v >= 0 && v < list.length ? v : 0;
+  const sv = read(KEY_CUSTOM, {}) || {};
+  let C = { a: ok(sv.a, PAL), b: ok(sv.b, BGS), f: ok(sv.f, FONTS) };
+  // older pages saved the theme as a bare string ("dark") rather than JSON; accept both
+  let saved = null;
+  try { saved = (localStorage.getItem(KEY_THEME) || "").replace(/"/g, ""); } catch (e) {}
   if (saved === "light" || saved === "dark") root.dataset.theme = saved;
 
   const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
