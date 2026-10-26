@@ -259,26 +259,31 @@ function vInterest(){app.innerHTML=`<h2>What are you interested in?</h2><p class
 function pickCat(el,ok){if(!ok){el.classList.add("shake");setTimeout(()=>el.classList.remove("shake"),400);return}document.querySelectorAll(".cat").forEach(c=>c!==el&&c.classList.add("fade"));el.classList.add("on");award("cat",10,"Chose a topic");setTimeout(()=>set("step",1),550)}
 
 const PRICE={nvda:"$182.40",amd:"$164.15",pltr:"$148.90"};
-/* ---- live company data: Alpha Vantage price and 1-year weekly chart, shared by the cards and the research page.
-   Without a key (or when the quota runs out) LC stays empty and everything keeps the mock numbers above. ---- */
-const LC={};
+/* ---- live company data from Alpha Vantage, shared by the cards and the research page. The range (1M by default, like
+   the hero card) applies to both. Without a key, or once the rate limit is hit, LC stays empty and the mock numbers stay. ---- */
+const LC={};let CR="1M";
+const RN={"1D":"day","1W":"week","1M":"month","1Y":"year"};
+const LP=c=>LC[c.ticker]&&LC[c.ticker].r[CR];
+const lchg=c=>{const p=LP(c).map(x=>x.c);return(p[p.length-1]/p[0]-1)*100};
+const pct=v=>`${v>=0?"+":""}${v.toFixed(2)}%`;
 const px=c=>LC[c.ticker]?usd(LC[c.ticker].price):PRICE[c.id];
-const perf=c=>{const L=LC[c.ticker];return L?`${L.chg>=0?"+":""}${L.chg.toFixed(0)}% past year`:c.perf};
-const perfCol=c=>LC[c.ticker]&&LC[c.ticker].chg<0?"color:var(--bad)":"";
-async function loadCompany(c){
+const perf=c=>LP(c)?`${pct(lchg(c))} past ${RN[CR]}`:c.perf;
+const perfCol=c=>LP(c)&&lchg(c)<0?"color:var(--bad)":"";
+async function loadCompany(c,rg=CR){
  if(await liveOn()===false)return null;
- try{const r=await fetch(`${API}/api/chart?symbol=${c.ticker}&range=1Y`),d=await r.json();if(!r.ok)throw Error(d.error);
-  const p=d.points.map(x=>x.c);
-  return LC[c.ticker]={price:d.quote.price,day:d.quote.day,pts:d.points,chg:(p[p.length-1]/p[0]-1)*100,stale:d.stale}}
+ try{const r=await fetch(`${API}/api/chart?symbol=${c.ticker}&range=${rg}`),d=await r.json();if(!r.ok)throw Error(d.error);
+  const L=LC[c.ticker]||(LC[c.ticker]={r:{}});L.price=d.quote.price;L.day=d.quote.day;L.stale=d.stale;L.ranges=d.ranges;L.r[rg]=d.points;return L}
  catch(e){return LC[c.ticker]||null}}
 function liveSpark(p,chg,cls){return`<svg viewBox="0 0 600 100" preserveAspectRatio="none" class="spark ${cls||""}"><path d="${hvPath(p)}" pathLength="1" fill="none" stroke="var(${chg>=0?"--gain":"--bad"})" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>`}
 function paintCards(){let L0;
- COMPANIES.forEach(c=>{const L=LC[c.ticker];if(!L||!$("cp-"+c.id))return;L0=L;
-  $("cp-"+c.id).textContent=usd(L.price);const e=$("cc-"+c.id);e.textContent=`${L.chg>=0?"+":""}${L.chg.toFixed(0)}%`;e.style.color=`var(${L.chg>=0?"--gain":"--bad"})`;
-  $("cs-"+c.id).innerHTML=liveSpark(L.pts.map(x=>x.c),L.chg)});
- if(L0&&$("cnote"))$("cnote").textContent=`Prices and 1-year charts are live from Alpha Vantage (last trading day ${L0.day})${L0.stale?", showing the last saved data because the rate limit was reached":""}. News and company details are mock data for demonstration.`}
-function paintResearch(){const c=co(),L=LC[c.ticker];if(!L||!$("rch"))return;
- $("rp").textContent=px(c);$("rc").textContent=perf(c);$("rc").style.color=L.chg<0?"var(--bad)":"";$("rch").innerHTML=chart(c)}
+ COMPANIES.forEach(c=>{const P=LP(c);if(!P||!$("cp-"+c.id))return;L0=LC[c.ticker];
+  $("cp-"+c.id).textContent=usd(L0.price);const e=$("cc-"+c.id),g=lchg(c);e.textContent=pct(g);e.style.color=`var(${g>=0?"--gain":"--bad"})`;
+  $("cs-"+c.id).innerHTML=liveSpark(P.map(x=>x.c),g)});
+ if(L0&&$("cnote"))$("cnote").textContent=`Prices and charts are live from Alpha Vantage (past ${RN[CR]}, last trading day ${L0.day})${L0.stale?", showing the last saved data because the rate limit was reached":""}. News and company details are mock data for demonstration.`}
+const rbtns=c=>LC[c.ticker]?["1D","1W","1M","1Y"].map(r=>`<button class="${r==CR?"on":""}" ${LC[c.ticker].ranges.includes(r)?"":'disabled title="Needs a premium Alpha Vantage key"'} onclick="rr('${r}')">${r}</button>`).join(""):"";
+function rr(r){const c=co();loadCompany(c,r).then(L=>{if(L&&L.r[r]&&S.step==2&&S.co==c.id){CR=r;paintResearch()}})}
+function paintResearch(){const c=co();if(!LP(c)||!$("rch"))return;
+ $("rp").textContent=px(c);$("rc").textContent=perf(c);$("rc").style.color=lchg(c)<0?"var(--bad)":"";$("rch").innerHTML=chart(c);$("rrg").innerHTML=rbtns(c)}
 const RULES=[[/\b(really|very|basically|literally) /i,"","Filler word. It adds no information."],[/\ba lot of\b/i,"substantial","More precise."],[/\bgonna\b/i,"going to","Clearer for a written argument."],[/\bcuz\b/i,"because","Clearer for a written argument."],[/\bstuff\b/i,"factors","Name what you mean."]];
 function spark(tk,cls){let s=0;for(const ch of tk)s=s*31+ch.charCodeAt(0);const r=()=>(s=(s*1664525+1013904223)%4294967296)/4294967296;let y=50;const p=[];for(let i=0;i<40;i++){y+=(r()-.45)*12+.9;p.push(y)}const mn=Math.min(...p),mx=Math.max(...p);
  return `<svg viewBox="0 0 600 100" preserveAspectRatio="none" class="spark ${cls}"><path d="${p.map((v,i)=>`${i?"L":"M"}${i*15.4},${(94-(v-mn)/(mx-mn)*88).toFixed(1)}`).join("")}" pathLength="1" fill="none" stroke="var(--gain)" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>`}
@@ -291,8 +296,8 @@ function fullText(a,c){const u=c.leaf.up,d=c.leaf.down,l=x=>x.toLowerCase().repl
  return[a.x,m,`What this means for investors: a headline isn't a decision. Check how the price compares with earnings (${c.val.split("≈")[1].trim()} here), how fast sales are growing, and what would have to go wrong for the optimistic view to fail. (Mock article for demonstration.)`]}
 
 function vResearch(){const c=co(),a=S.open!==null?c.arts[S.open]:null;
- if(!LC[c.ticker])loadCompany(c).then(L=>L&&S.step==2&&S.co==c.id&&paintResearch());
- app.innerHTML=`<p class="mute" style="font-weight:600">${c.ticker} · ${c.industry}</p><h2>${c.name}</h2><div class="price"><span id="rp">${px(c)}</span> <span class="up" id="rc" style="${perfCol(c)}">${perf(c)}</span></div><div id="rch">${chart(c)}</div>
+ if(!LP(c))loadCompany(c).then(L=>L&&S.step==2&&S.co==c.id&&paintResearch());
+ app.innerHTML=`<p class="mute" style="font-weight:600">${c.ticker} · ${c.industry}</p><h2>${c.name}</h2><div class="price"><span id="rp">${px(c)}</span> <span class="up" id="rc" style="${perfCol(c)}">${perf(c)}</span></div><div id="rch">${chart(c)}</div><div class="rng" id="rrg">${rbtns(c)}</div>
 <div class="cols3"><div><h3 style="font-size:17px;margin-bottom:10px">What people are saying</h3>${c.arts.map((x,i)=>`<div class="item ${S.open===i?"active":""}" onclick="openArt(${i})"><span class="chk ${S.sel.has(i)?"on":""}" title="Add to Leaf" onclick="event.stopPropagation();selArt(${i})">✓</span><div><span class="tag ${x.t}">${x.t}</span> ${S.read.has(i)?'<span class="up" style="font-size:12px;font-weight:700">Read</span>':""}<p class="ttl">${x.h}</p><span class="mute" style="font-size:13px">${x.p} · ${x.d}</span></div></div>`).join("")}
 <p style="margin:18px 0 0;font-weight:800">Research complete: ${S.read.size}/3</p><div class="bar" style="margin:8px 0 14px"><i style="width:${S.read.size/3*100}%"></i></div><button class="btn ${S.read.size==3?"pulse":""}" ${S.read.size<3?"disabled":""} onclick="set('step',3)">So... would you buy it?</button><p style="margin-top:12px"><button class="btn ghost sm" onclick="game()">Bonus round: Fact or hype?</button></p></div>
 <article class="reader">${a?`<span class="tag ${a.t}">${a.t}</span><h3>${a.h}</h3><p class="mute">${a.p} · ${a.d}</p>${fullText(a,c).map(t=>`<p class="b">${t}</p>`).join("")}<button class="btn ghost sm" onclick="selArt(${S.open})">${S.sel.has(S.open)?"Added to Leaf ✓":"Add to Leaf"}</button>`:`<h3>What does the company do?</h3><p class="b">${c.about}</p><div class="stats"><div><b>${c.val.split("≈")[1]}</b>P/E ratio</div>${c.ind.map(i=>`<div><b>${i.split(":")[0].replace(/ \d.*/,"")}</b>${i.includes(":")?i.split(":")[1]:i.match(/\d.*/)||""}</div>`).join("")}</div><p class="mute">Open an article to read it here. Don't buy something just because everyone is talking about it.</p>`}</article>
@@ -473,9 +478,9 @@ var PW=[["pa",updA],["pb",updB],["pc",updC],["pd",updD]];
 function pinsUpdate(){if(!PW)return;PW.forEach(([id,fn])=>{const z=$(id),r=z.getBoundingClientRect();if(r.bottom<-150||r.top>innerHeight+150)return;fn(cl(-r.top/(z.offsetHeight-innerHeight+64)))})}
 addEventListener("resize",pinsUpdate);pinsUpdate();updA(0);updC(0);updD(0);updB(0);
 let CH={};
-function chart(c){const L=LC[c.ticker];let p=[];if(L)p=L.pts.map(x=>x.c);else{let sd=0;for(const ch of c.ticker)sd=sd*31+ch.charCodeAt(0);const r=()=>(sd=(sd*1664525+1013904223)%4294967296)/4294967296;let y=50;for(let i=0;i<40;i++){y+=(r()-.45)*12+.9;p.push(y)}}const n=p.length,mn=Math.min(...p),mx=Math.max(...p),Y=p.map(v=>94-(v-mn)/((mx-mn)||1)*88);CH={p:p.map(v=>(v-mn)/((mx-mn)||1)),end:L?L.price:parseFloat(PRICE[c.id].slice(1)),pts:L?L.pts:null};
+function chart(c){const P=LP(c);let p=[];if(P)p=P.map(x=>x.c);else{let sd=0;for(const ch of c.ticker)sd=sd*31+ch.charCodeAt(0);const r=()=>(sd=(sd*1664525+1013904223)%4294967296)/4294967296;let y=50;for(let i=0;i<40;i++){y+=(r()-.45)*12+.9;p.push(y)}}const n=p.length,mn=Math.min(...p),mx=Math.max(...p),Y=p.map(v=>94-(v-mn)/((mx-mn)||1)*88);CH={p:p.map(v=>(v-mn)/((mx-mn)||1)),end:P?LC[c.ticker].price:parseFloat(PRICE[c.id].slice(1)),pts:P||null};
  const ms=[[.28,0],[.55,1],[.82,2]].map(([f,i])=>`<button class="mk ${c.arts[i].t}" style="left:${f*100}%;top:${Y[Math.round(f*(n-1))]}%" title="${c.arts[i].h}" aria-label="Open article: ${c.arts[i].h}" onclick="openArt(${i})"></button>`).join("");
- return`<div class="ch" onmousemove="xhv(event)" onmouseleave="$('xh').style.opacity=0"><svg viewBox="0 0 600 100" preserveAspectRatio="none" class="spark tall"><path d="${Y.map((v,i)=>`${i?"L":"M"}${(i*600/(n-1)).toFixed(1)},${v.toFixed(1)}`).join("")}" fill="none" stroke="var(--gain)" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>${ms}<div class="xh" id="xh"><b id="xp"></b></div></div><p class="mute" style="font-size:12px;margin-bottom:6px">Hover the chart to see prices. Each dot marks a news story, so tap one to read it.${L?" Prices are weekly closes from Alpha Vantage.":""}</p>`}
+ return`<div class="ch" onmousemove="xhv(event)" onmouseleave="$('xh').style.opacity=0"><svg viewBox="0 0 600 100" preserveAspectRatio="none" class="spark tall"><path d="${Y.map((v,i)=>`${i?"L":"M"}${(i*600/(n-1)).toFixed(1)},${v.toFixed(1)}`).join("")}" fill="none" stroke="var(${P&&lchg(c)<0?"--bad":"--gain"})" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>${ms}<div class="xh" id="xh"><b id="xp"></b></div></div><p class="mute" style="font-size:12px;margin-bottom:6px">Hover the chart to see prices. Each dot marks a news story, so tap one to read it.${P?" Prices are closing prices from Alpha Vantage.":""}</p>`}
 function xhv(e){const r=e.currentTarget.getBoundingClientRect(),f=cl((e.clientX-r.left)/r.width),i=Math.round(f*(CH.p.length-1)),v=CH.pts?CH.pts[i].c:CH.end*(.7+.3*CH.p[i])/(.7+.3*CH.p[CH.p.length-1]),x=$("xh");x.style.opacity=1;x.style.left=f*100+"%";$("xp").textContent="$"+v.toFixed(2)+" · "+(CH.pts?CH.pts[i].t.slice(0,10):"day "+(i+1));$("xp").style.left=f>.7?"-132px":"6px"}
 const STR=["Because","The strongest evidence is","The main risk is","What would change my mind is"];
 function starter(t){const a=$("why");a.value=(a.value.trimEnd()+(a.value.trim()?" ":"")+t+" ").trimStart();S.text=a.value;a.focus();chk()}
