@@ -775,6 +775,12 @@
   --acc2: light-dark(#D77A33, #DE8A55);
   --sun: light-dark(#F2B84B, #E6AE45);
 }
+:root[data-role=admin] {
+  --acc: light-dark(#5B3AA8, #B7A1F5);
+  --accsoft: light-dark(#E9E3F8, #261C4A);
+  --onacc: light-dark(#FFFFFF, #130B30);
+  --acc2: light-dark(#7C5CCB, #8E75DB);
+}
 :root[data-role=teacher] {
   --acc: light-dark(#2B4AA3, #92AAF6);
   --accsoft: light-dark(#E0E6F8, #1B2549);
@@ -1479,3 +1485,13 @@ a.course-card:hover { transform: translateX(4px); border-color: var(--acc); }
 .lf .lf-list.many span { display: none; }
 .lf .lf-flags.many { gap: calc(var(--u) * .9); }
 .lf .lf-flags.many .lf-it { padding: calc(var(--u) * 1) calc(var(--u) * 1.8); font-size: calc(var(--u) * 1.9); }
+
+.demo-box { margin-top: 22px; padding: 16px; border: 1.5px dashed var(--border); border-radius: 14px; background: var(--bg); }
+.demo-box b { display: block; font-size: 13.5px; margin-bottom: 4px; }
+.demo-box p { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+.demo-box code { background: var(--panel2); padding: 2px 6px; border-radius: 6px; font-size: 12.5px; }
+.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.demo-grid button { padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: var(--ink); font: 600 13.5px var(--fb); cursor: pointer; text-align: left; transition: border-color .15s, transform .15s; }
+.demo-grid button:hover { border-color: var(--acc); transform: translateY(-1px); }
+.demo-grid button span { display: block; font-weight: 500; font-size: 12px; color: var(--muted); }
+.danger-btn { border-color: var(--bad) !important; color: var(--bad) !important; }

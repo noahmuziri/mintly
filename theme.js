@@ -3,7 +3,7 @@
    The Customize panel is also where the demo lives: "Watch the demo" opens the self-playing film. */
 (function () {
   const KEY_THEME = "mintly:theme", KEY_CUSTOM = "mintly:custom", KEY_ROLE = "mintly:role";
-  const ROLES = ["student", "parent", "teacher"];
+  const ROLES = ["student", "parent", "teacher", "admin"];
   const root = document.documentElement;
   const read = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
   const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };

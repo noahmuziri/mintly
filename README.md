@@ -68,3 +68,16 @@ API routes: `/api/status` (is a key set?), `/api/quote?symbol=NVDA`, `/api/chart
 - `tools/device-simulator.html` previews the site in phone frames
 
 To add a lesson, add it to `LESSONS` in `script.js` and to the list in `lessons/financial-literacy.html`.
+
+## Demo accounts
+
+Password for all: `mintly-demo`
+
+| Role | Email |
+| --- | --- |
+| Student (3 lessons done) | `student@mintly.demo` |
+| Parent | `parent@mintly.demo` |
+| Teacher | `teacher@mintly.demo` |
+| Admin | `admin@mintly.demo` |
+
+These live in `script.js` and are front-end only, so they are not secure. Replace them with real authentication before launch.

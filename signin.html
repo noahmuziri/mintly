@@ -72,6 +72,17 @@
         <button class="btn" type="submit">Create account</button>
       </form>
 
+      <div class="demo-box" id="demo-box">
+        <b>Demo accounts</b>
+        <p>Click one to fill the form. Password for all: <code>mintly-demo</code></p>
+        <div class="demo-grid">
+          <button type="button" data-demo="student@mintly.demo">Student<span>student@mintly.demo</span></button>
+          <button type="button" data-demo="parent@mintly.demo">Parent<span>parent@mintly.demo</span></button>
+          <button type="button" data-demo="teacher@mintly.demo">Teacher<span>teacher@mintly.demo</span></button>
+          <button type="button" data-demo="admin@mintly.demo">Admin<span>admin@mintly.demo</span></button>
+        </div>
+      </div>
+
       <p class="auth-foot">This is a demo login — accounts are stored only in this browser, not on a server.</p>
     </div>
   </div>
@@ -126,6 +137,14 @@
     title.textContent = "Welcome back";
     sub.textContent = "Log in to pick up where you left off.";
   }
+
+  document.getElementById("demo-box").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-demo]"); if (!b) return;
+    showLogin();
+    document.getElementById("login-email").value = b.dataset.demo;
+    document.getElementById("login-password").value = Mintly.DEMO_PASSWORD;
+    document.getElementById("login-form").requestSubmit();
+  });
 
   tabLogin.addEventListener("click", showLogin);
   tabSignup.addEventListener("click", showSignup);

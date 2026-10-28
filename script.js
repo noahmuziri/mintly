@@ -69,8 +69,33 @@ const Mintly = (() => {
   // --- Auth (demo only: accounts live in this browser's localStorage,
   // not a real server. Do not reuse this pattern for real passwords.) ---
 
+  // Ready-made demo accounts so nobody has to sign up to look around. These live in the page's code,
+  // so they are NOT secure and exist only for this front-end demo. Replace with real auth before launch.
+  const DEMO_PASSWORD = "mintly-demo";
+  const DEMO_USERS = {
+    "student@mintly.demo": { name: "Maya Lopez", email: "student@mintly.demo", password: DEMO_PASSWORD, plan: "premium", role: "student", demo: true },
+    "parent@mintly.demo": { name: "Dana Lopez", email: "parent@mintly.demo", password: DEMO_PASSWORD, plan: "family", role: "parent", demo: true },
+    "teacher@mintly.demo": { name: "Ms. Alvarez", email: "teacher@mintly.demo", password: DEMO_PASSWORD, plan: "school", role: "teacher", demo: true },
+    "admin@mintly.demo": { name: "Mintly Admin", email: "admin@mintly.demo", password: DEMO_PASSWORD, plan: "pro", role: "admin", demo: true },
+  };
+
   function getUsers() {
-    return readJSON(USERS_KEY, {});
+    return Object.assign({}, DEMO_USERS, readJSON(USERS_KEY, {}));
+  }
+
+  // First sign-in to the demo student gets a little progress so the dashboard isn't empty.
+  function seedDemoProgress(email) {
+    if (email !== "student@mintly.demo" || localStorage.getItem("mintly:seeded:" + email)) return;
+    try {
+      ["lesson-1", "lesson-2", "lesson-3"].forEach((id, i) => {
+        localStorage.setItem(PROGRESS_PREFIX + email + ":" + id, "true");
+        localStorage.setItem("mintly:quiz:" + email + ":" + id, JSON.stringify({ c: [5, 6, 7][i] - (i === 1 ? 1 : 0), t: [5, 7, 7][i] }));
+      });
+      const days = [], d = new Date();
+      for (let k = 0; k < 4; k++) { days.push(d.toISOString().slice(0, 10)); d.setDate(d.getDate() - 1); }
+      localStorage.setItem("mintly:days:" + email, JSON.stringify(days));
+      localStorage.setItem("mintly:seeded:" + email, "1");
+    } catch (e) {}
   }
 
   function currentUser() {
@@ -116,6 +141,7 @@ const Mintly = (() => {
       return { ok: false, error: "That email and password don't match." };
     }
     localStorage.setItem(SESSION_KEY, email);
+    seedDemoProgress(email);
     return { ok: true };
   }
 
@@ -127,6 +153,15 @@ const Mintly = (() => {
     return "dashboard.html?role=" + role;
   }
 
+  function allUsers() { return getUsers(); }
+  function removeUser(email) {
+    const users = readJSON(USERS_KEY, {}); delete users[email]; writeJSON(USERS_KEY, users);
+  }
+  function resetProgress(email) {
+    const drop = [];
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.includes(":" + email) && /^mintly:(completed|quiz|days|interest|seeded)/.test(k)) drop.push(k); }
+    drop.forEach((k) => localStorage.removeItem(k));
+  }
   function logOut() {
     localStorage.removeItem(SESSION_KEY);
   }
@@ -510,6 +545,10 @@ const Mintly = (() => {
   return {
     renderChrome,
     landingPage,
+    allUsers,
+    removeUser,
+    resetProgress,
+    DEMO_PASSWORD,
     stats,
     toast,
     touchDay,

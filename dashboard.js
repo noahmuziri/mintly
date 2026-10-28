@@ -128,6 +128,36 @@
       }
     },
 
+    admin: {
+      title: () => "Admin console",
+      sub: () => "Manage accounts and content for this demo. Data here is stored in this browser only.",
+      nav: [["overview", "Overview", "home"], ["accounts", "Accounts", "users"], ["content", "Content", "book"], ["tools", "Tools", "shield"]],
+      pages: {
+        overview() {
+          const users = Object.values(Mintly.allUsers()), by = (r) => users.filter((u) => u.role === r).length;
+          return `<div class="grid">
+            <section class="card c3"><div class="kpi"><span class="lbl">Accounts</span><div class="stat-big">${users.length}</div><span class="stat-sub">in this browser</span></div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Students</span><div class="stat-big">${by("student")}</div></div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Parents · Teachers</span><div class="stat-big">${by("parent")} · ${by("teacher")}</div></div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Lessons live</span><div class="stat-big">${st.total}</div><span class="stat-sub">each with a film</span></div></section>
+            <section class="card c8"><div class="card-h"><h3>Lesson completions, last 8 weeks</h3><span class="pill mute">Sample data</span></div>${line([12, 18, 26, 31, 44, 52, 61, 74], 640, 220, ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"])}</section>
+            <section class="card c4"><div class="card-h"><h3>Needs attention</h3></div><ul class="list"><li><div class="ic">${ICON.shield}</div><div class="tx"><b>Billing is not live</b><span>Plans create demo accounts only.</span></div></li><li><div class="ic">${ICON.users}</div><div class="tx"><b>Auth is browser-only</b><span>Add a backend before real students sign up.</span></div></li><li><div class="ic">${ICON.clip}</div><div class="tx"><b>Lessons need review</b><span>Have a finance educator check 6 to 10.</span></div></li></ul></section>
+          </div>`;
+        },
+        accounts() {
+          const users = Object.values(Mintly.allUsers());
+          return `<div class="card"><div class="card-h"><h3>Accounts</h3><span class="pill">${users.length} total</span></div><div class="table-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Plan</th><th></th></tr></thead><tbody>${users.map((u) => `<tr><td><div class="nm"><span class="avatar">${esc(u.name[0])}</span>${esc(u.name)}</div></td><td>${esc(u.email)}</td><td><span class="pill">${esc(u.role || "student")}</span></td><td>${esc(u.plan || "none")}</td><td style="white-space:nowrap"><button class="btn btn-secondary btn-small" data-reset="${esc(u.email)}">Reset progress</button> ${u.demo ? '<span class="pill mute">demo</span>' : `<button class="btn btn-secondary btn-small danger-btn" data-del="${esc(u.email)}">Delete</button>`}</td></tr>`).join("")}</tbody></table></div></div>`;
+        },
+        content() {
+          return `<div class="card"><div class="card-h"><h3>Lessons</h3><span class="pill">${st.total} published</span></div><ul class="list">${Mintly.LESSONS.map((l, i) => `<li><div class="ic">${i + 1}</div><div class="tx"><b>${esc(l.title)}</b><span>Unit ${l.unit || 1} · ${l.mins} min · film + quiz</span></div><a class="btn btn-secondary btn-small" href="lessons/${l.id}.html">Open</a></li>`).join("")}</ul></div>`;
+        },
+        tools() {
+          return `<div class="grid"><section class="card c6"><div class="card-h"><h3>Export</h3></div><p class="muted" style="margin:0 0 14px">Download every account stored in this browser as JSON (demo accounts excluded).</p><button class="btn" data-export>Download accounts</button></section>
+            <section class="card c6"><div class="card-h"><h3>Reset this browser</h3></div><p class="muted" style="margin:0 0 14px">Clears accounts, progress, plans and settings saved by Mintly here, then signs you out.</p><button class="btn btn-secondary danger-btn" data-wipe>Erase all Mintly data</button></section></div>`;
+        }
+      }
+    },
+
     teacher: {
       title: () => "Period 3 · Personal Finance",
       sub: () => "12 students shown. Sample class data.",
@@ -161,10 +191,13 @@
 
   // ---------- render ----------
   let role = MintlyTheme.getRole(), page = null;
+  const isAdmin = !!(user && user.role === "admin");
+  if (role === "admin" && !isAdmin) { role = "student"; MintlyTheme.setRole("student"); }
+  if (isAdmin && !new URLSearchParams(location.search).get("role")) { role = "admin"; MintlyTheme.setRole("admin"); }
 
   function renderSide() {
     const v = VIEWS[role];
-    const nm = signedIn ? user.name : { student: "Maya Lopez", parent: "The Lopez family", teacher: "Ms. Alvarez" }[role];
+    const nm = signedIn ? user.name : { student: "Maya Lopez", parent: "The Lopez family", teacher: "Ms. Alvarez", admin: "Admin" }[role];
     $("#dash-side").innerHTML = `<div class="dash-who"><div class="avatar">${esc(nm[0])}</div><div><b>${esc(nm)}</b><span>${role[0].toUpperCase() + role.slice(1)}${signedIn ? "" : " · guest"}</span></div></div>
       <div class="side-sec">Menu</div>${v.nav.map((n) => `<button class="side-link" data-page="${n[0]}" aria-current="${n[0] === page}">${ICON[n[2]]}${n[1]}</button>`).join("")}
       <div class="side-foot"><b>${signedIn ? "You're signed in" : "Save your progress"}</b>${signedIn ? "Progress is saved to this browser." : "<a href='signin.html' style='color:var(--acc);font-weight:600'>Create a free account →</a>"}</div>`;
@@ -175,7 +208,7 @@
     if (!page || !v.pages[page]) page = v.nav[0][0];
     renderSide();
     const main = $("#dash-main");
-    main.innerHTML = `<div class="dash-top"><div><h1>${v.title()}</h1><p>${v.sub()}</p></div><div class="dash-actions"><div class="seg" role="group" aria-label="View as">${["student", "parent", "teacher"].map((r) => `<button type="button" data-role="${r}" aria-pressed="${r === role}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</div></div></div><div id="view" class="tabs-p on">${v.pages[page]()}</div>`;
+    main.innerHTML = `<div class="dash-top"><div><h1>${v.title()}</h1><p>${v.sub()}</p></div><div class="dash-actions"><div class="seg" role="group" aria-label="View as">${(isAdmin ? ["admin", "student", "parent", "teacher"] : ["student", "parent", "teacher"]).map((r) => `<button type="button" data-role="${r}" aria-pressed="${r === role}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</div></div></div><div id="view" class="tabs-p on">${v.pages[page]()}</div>`;
     document.title = (v.nav.find((n) => n[0] === page) || [0, "Dashboard"])[1] + " · Mintly";
     MintlyArt.mount(); animate(main); wire(main);
     if (!first) main.focus({ preventScroll: true });
@@ -187,6 +220,10 @@
     $$("[data-copy]", main).forEach((b) => b.addEventListener("click", () => { (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.copy) : Promise.reject()).catch(() => {}); Mintly.toast("Copied. Try it at dinner."); }));
     $$("[data-goto]", main).forEach((b) => b.addEventListener("click", () => { page = b.dataset.goto; render(); }));
     $$("[data-s]", main).forEach((c) => c.addEventListener("change", () => { const s = read("safety", { digest: true, limit: "90", quiet: false }); s[c.dataset.s] = c.type === "checkbox" ? c.checked : c.value; write("safety", s); Mintly.toast("Setting saved"); }));
+    $$("[data-reset]", main).forEach((b) => b.addEventListener("click", () => { Mintly.resetProgress(b.dataset.reset); Mintly.toast("Progress reset for " + b.dataset.reset); }));
+    $$("[data-del]", main).forEach((b) => b.addEventListener("click", () => { if (confirm("Delete " + b.dataset.del + "?")) { Mintly.removeUser(b.dataset.del); render(); } }));
+    $$("[data-export]", main).forEach((b) => b.addEventListener("click", () => { const out = Object.values(Mintly.allUsers()).filter((u) => !u.demo).map((u) => ({ name: u.name, email: u.email, role: u.role, plan: u.plan })); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" })); a.download = "mintly-accounts.json"; a.click(); }));
+    $$("[data-wipe]", main).forEach((b) => b.addEventListener("click", () => { if (confirm("Erase all Mintly data in this browser?")) { Object.keys(localStorage).filter((k) => k.startsWith("mintly:")).forEach((k) => localStorage.removeItem(k)); location.href = "index.html"; } }));
     const form = $("#aform", main);
     if (form) form.addEventListener("submit", (e) => {
       e.preventDefault();
