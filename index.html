@@ -17,6 +17,7 @@
 
 <main>
   <section class="hero-new">
+    <div class="doodle d1" data-art="coins" aria-hidden="true"></div><div class="doodle d2" data-art="leaf" aria-hidden="true"></div>
     <div class="wrap hero-grid">
       <div class="hero-copy" id="hero-copy">
         <p class="role-lead">I'm a&hellip;</p>
@@ -92,6 +93,8 @@
     </div>
   </section>
 
+  <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
+
   <section class="section" id="how-it-works">
     <div class="wrap">
       <div class="section-eyebrow">How Mintly works</div>
@@ -104,6 +107,29 @@
         <div class="step"><span class="n">4</span><div class="art" data-art="scale"></div><h3>Decide</h3><p>Buy, sell or wait. Make your case and name the risk.</p></div>
         <div class="step"><span class="n">5</span><div class="art" data-art="chart"></div><h3>Score</h3><p>Get a Decision Score for how you thought, not just the result.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section class="stats-band">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="stat-c reveal"><b data-count="10">0</b><span>lessons, each with practice and a quiz</span></div>
+        <div class="stat-c reveal" style="--i:1"><b data-count="10">0</b><span>short films that explain them</span></div>
+        <div class="stat-c reveal" style="--i:2"><b data-count="3">0</b><span>dashboards: student, parent, teacher</span></div>
+        <div class="stat-c reveal" style="--i:3"><b data-count="0" data-pre="$">$0</b><span>of real money involved. Ever.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap showcase">
+      <div class="showcase-copy reveal">
+        <div class="section-eyebrow">See a lesson</div>
+        <h2 class="section-heading">Every lesson comes with a film.</h2>
+        <p class="section-lead" style="margin-bottom:22px">Thirty to sixty seconds of motion that explains the idea before you dive in. Press play, or go fullscreen.</p>
+        <a class="btn btn-secondary" href="lessons/financial-literacy.html">See all ten lessons</a>
+      </div>
+      <div class="reveal" style="--i:1"><div id="home-film"></div></div>
     </div>
   </section>
 
@@ -180,6 +206,8 @@
 
 <script src="script.js"></script>
 <script src="art.js"></script>
+<script src="lessonfilm.js"></script>
+<script src="films-data.js"></script>
 <script src="home.js"></script>
 </body>
 </html>

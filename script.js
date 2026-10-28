@@ -579,7 +579,28 @@ const Mintly = (() => {
 })();
 
 Mintly.renderChrome();
+// Scroll reveals: tag the common blocks once, fade each in as it enters the screen.
+function setupReveal() {
+  const sel = ".section-heading, .section-eyebrow, .home-lead, .section-lead, .step, .tile, .role-card, .plan-card, .faq-item, .path-stage, .page-header > *, .lesson-row, .course-card, .takeaways, .definition-card, .activity, .quiz-box, .callout, .checks li, .chat, .cta-banner, .parents-promise .wrap > *";
+  const els = Array.from(document.querySelectorAll(sel)).filter((e) => !e.closest(".reveal") && !e.classList.contains("reveal"));
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const groups = new Map();
+  els.forEach((el) => {
+    const p = el.parentNode, n = groups.get(p) || 0; groups.set(p, n + 1);
+    el.classList.add("reveal"); el.style.setProperty("--i", Math.min(n, 5));
+  });
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
+  document.querySelectorAll(".reveal").forEach((e) => io.observe(e));
+}
+function setupHeaderScroll() {
+  const h = document.getElementById("site-header"); if (!h) return;
+  const f = () => h.classList.toggle("scrolled", scrollY > 8);
+  addEventListener("scroll", f, { passive: true }); f();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  setupHeaderScroll();
+  setTimeout(setupReveal, 0);
   Mintly.renderNavAuth("nav-auth");
   Mintly.setupMobileNav();
   Mintly.markActiveNav();
