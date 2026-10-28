@@ -25,6 +25,7 @@ to mock data and the page says so.
 | `mintly.demo.html`, `demo.js`, `demo.css` | The self-playing demo film (press Start). Open it from **Customize → Watch the demo** |
 | `simulation.html` | The hands-on simulation (the interactive demo that used to live at `mintly.demo.html`) |
 | `lessons/` | The ten-lesson course (two units) plus electives. `script.js` adds the outline, takeaways, quiz score and finish panel |
+| `leaf-brain.js` | Leaf's knowledge: topics with keywords, a short answer and questions to ask back. Add an entry to teach Leaf something new (no AI service needed) |
 | `lessonfilm.js`, `films-data.js` | Lesson videos: a data-driven film player. Add a lesson film by adding a scene list to `films-data.js` |
 | `styles.css` | Design system. Colours are tokens; `<html data-role>` swaps the accent per role |
 | `theme.js` | Light/dark, role, and the Customize panel |

@@ -225,6 +225,10 @@
     const ack = got.includes("evidence") && got.includes("risk") ? "You gave a reason and named a risk. That's strong thinking. " : got.includes("other") ? "Good, you weighed a different view. " : got.includes("evidence") ? "That's a reason, which helps. " : got.includes("risk") ? "Naming the downside is the hard part. " : words < 5 ? "Say a bit more for me. " : "";
     let q;
     if (ADVICE.test(text + " ") && intent !== "chip") return "I don't tell anyone what to buy or sell, and I won't start now. That call has to be yours, or the thinking isn't yours either. Here's what I can do: " + (!has("evidence") ? "what's the strongest reason you could give for it?" : !has("risk") ? "what's the biggest way it could go wrong?" : "who would disagree with you, and why?");
+    if (intent === "explain") return "Type a money word or question, like APR, inflation, diversification or \u201chow do taxes work?\u201d, and I'll explain it. Then I'll ask you something back.";
+    // a topic Leaf knows about: explain it briefly, then ask a question back
+    const known = intent ? null : (window.LEAF_BRAIN && LEAF_BRAIN.match(text));
+    if (known) { s.topic = known.id; return (got.length ? ack : "") + known.a + " " + pick(known.q, s.turns + (text.length % 3)); }
     if (intent === "challenge") return quote ? "You said: “" + quote + "”. What's the strongest argument against that?" : "Tell me the idea first, in one sentence. Then I'll push on it.";
     if (intent === "other") return quote ? "Let's flip it. If someone smart disagreed with “" + quote + "”, what would they say?" : "Tell me what you're leaning toward first. Then we'll look at the other side.";
     if (intent === "missing" && !lastUser) return "Start with what you're trying to decide. I'll tell you what's missing as we go.";
@@ -248,7 +252,7 @@
         <button class="btn btn-secondary btn-small" id="lc-reset" type="button">Start a fresh path</button>
       </aside>
       <form class="lc-pad" id="lc-form">
-        <div class="lc-chips" id="lc-chips"><button type="button" data-i="challenge">Challenge my idea</button><button type="button" data-i="other">Show me the other side</button><button type="button" data-i="missing">What am I missing?</button></div>
+        <div class="lc-chips" id="lc-chips"><button type="button" data-i="challenge">Challenge my idea</button><button type="button" data-i="other">Show me the other side</button><button type="button" data-i="missing">What am I missing?</button><button type="button" data-i="explain">Explain a money word</button></div>
         <div class="lc-note"><textarea id="lc-in" rows="2" placeholder="Write a thought. Leaf will grow a question from it." aria-label="Your thought"></textarea><button class="btn" type="submit">Plant it</button></div>
         <p class="lc-fine">Leaf is a practice partner that runs in your browser. It asks questions to build your reasoning and never gives buy or sell advice.</p>
       </form>
@@ -275,7 +279,7 @@
     function scroll() { const b = path.parentNode; b.scrollTo({ top: b.scrollHeight, behavior: "smooth" }); }
     function render() {
       path.innerHTML = "";
-      if (!s.msgs.length) s.msgs.push({ who: "leaf", text: "Hi " + name + ". I'm Leaf. I won't hand you answers. I'll ask questions until your thinking holds up. What are you trying to decide?" });
+      if (!s.msgs.length) s.msgs.push({ who: "leaf", text: "Hi " + name + ". I'm Leaf. I know a lot of money topics, from budgeting and credit to stocks and scams, and I'll ask questions until your thinking holds up. Ask me about something, or tell me what you're trying to decide." });
       s.msgs.forEach((m) => row(m)); skills(); scroll();
     }
     function leafSay(text, done) {
@@ -289,8 +293,8 @@
       }, 700 + Math.min(900, text.length * 6));
     }
     function send(text, intent) {
-      if (busy) return; text = text.trim(); if (!text && intent !== "missing" && intent !== "challenge" && intent !== "other") return;
-      const shown = text || ({ challenge: "Challenge my idea.", other: "Show me the other side.", missing: "What am I missing?" }[intent]);
+      if (busy) return; text = text.trim(); if (!text && !["missing", "challenge", "other", "explain"].includes(intent)) return;
+      const shown = text || ({ challenge: "Challenge my idea.", other: "Show me the other side.", missing: "What am I missing?", explain: "Explain a money word." }[intent]);
       const m = { who: "me", text: shown }; row(m, true); scroll();
       const reply = leafReply(text || "", s, intent && !text ? intent : null);
       s.msgs.push(m); s.msgs.push({ who: "leaf", text: reply }); skills(); leafSave(s); Mintly.touchDay();
