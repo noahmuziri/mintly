@@ -23,6 +23,7 @@
   const user = Mintly.currentUser();
   const st = Mintly.stats();
   const signedIn = !!user;
+  const member = Mintly.hasActivePlan();
   const firstName = user ? user.name.split(" ")[0] : null;
 
   // ---------- helpers ----------
@@ -83,7 +84,7 @@
         lessons() {
           return `<div class="card"><div class="card-h"><h3>Financial Literacy</h3><span class="pill">${st.done}/${st.total} complete</span></div><ul class="list">${Mintly.LESSONS.map((l, i) => {
             const d = Mintly.isLessonComplete(l.id), q = Mintly.quizResult(l.id);
-            return `<li><div class="ic">${d ? ICON.check : i + 1}</div><div class="tx"><b>${esc(l.title)}</b><span>${l.mins} min${q ? ` &middot; quiz ${q.c}/${q.t}` : ""}</span></div><a class="btn ${d ? "btn-secondary" : ""} btn-small" href="lessons/${l.id}.html">${d ? "Review" : "Start"}</a></li>`;
+            return `<li><div class="ic">${d ? ICON.check : i + 1}</div><div class="tx"><b>${esc(l.title)}</b><span>${l.mins} min${q ? ` &middot; quiz ${q.c}/${q.t}` : ""}</span></div><a class="btn ${d || !Mintly.canAccess(l.id) ? "btn-secondary" : ""} btn-small" href="lessons/${l.id}.html">${d ? "Review" : Mintly.canAccess(l.id) ? "Start" : "🔒 Unlock"}</a></li>`;
           }).join("")}</ul></div>`;
         },
         badges() {
@@ -274,7 +275,9 @@
     function skills() {
       $$(".lc-skill", box).forEach((e) => { const h = s.hits[e.dataset.k]; $(".bar i", e).style.width = Math.min(100, h * 45) + "%"; e.classList.toggle("on", h > 0); });
       const missing = SKILLS_CHAT.filter((k) => !s.hits[k[0]]).map((k) => k[1].toLowerCase());
-      $("#lc-tip", box).textContent = !s.turns ? "Leaf grows a question from each thought. Reasons, risks and the other side make your plant bloom." : missing.length ? "Still to show: " + missing.join(", ") + "." : "Full bloom. You gave reasons, named a risk and weighed the other side.";
+      const left = Math.max(0, Mintly.FREE_LEAF_QUESTIONS - s.msgs.filter((m) => m.who === "me").length);
+      const freeNote = member ? "" : (left ? left + " free question" + (left === 1 ? "" : "s") + " left. " : "Free questions used. ");
+      $("#lc-tip", box).textContent = freeNote + (!s.turns ? "Leaf grows a question from each thought. Reasons, risks and the other side make your plant bloom." : missing.length ? "Still to show: " + missing.join(", ") + "." : "Full bloom. You gave reasons, named a risk and weighed the other side.");
     }
     function scroll() { const b = path.parentNode; b.scrollTo({ top: b.scrollHeight, behavior: "smooth" }); }
     function render() {
@@ -292,8 +295,15 @@
         const t = setInterval(() => { i++; card.textContent = w.slice(0, i).join(" "); scroll(); if (i >= w.length) { clearInterval(t); busy = false; if (done) done(); } }, 38);
       }, 700 + Math.min(900, text.length * 6));
     }
+    function showPaywall() {
+      if ($(".lc-paywall", path)) return scroll();
+      const p = document.createElement("div"); p.className = "lc-paywall";
+      p.innerHTML = '<h3>That was your three free questions.</h3><p>Members get unlimited chats with Leaf, plus all ten lessons, their films and the dashboards.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn" href="pricing.html?from=leaf">See plans</a><a class="btn btn-secondary" href="signin.html">I have an account</a></div>';
+      path.appendChild(p); scroll();
+    }
     function send(text, intent) {
-      if (busy) return; text = text.trim(); if (!text && !["missing", "challenge", "other", "explain"].includes(intent)) return;
+      if (busy) return; text = text.trim();
+      if (!member && s.msgs.filter((m) => m.who === "me").length >= Mintly.FREE_LEAF_QUESTIONS) return showPaywall(); if (!text && !["missing", "challenge", "other", "explain"].includes(intent)) return;
       const shown = text || ({ challenge: "Challenge my idea.", other: "Show me the other side.", missing: "What am I missing?", explain: "Explain a money word." }[intent]);
       const m = { who: "me", text: shown }; row(m, true); scroll();
       const reply = leafReply(text || "", s, intent && !text ? intent : null);
@@ -318,7 +328,7 @@
     const nm = signedIn ? user.name : { student: "Maya Lopez", parent: "The Lopez family", teacher: "Ms. Alvarez", admin: "Admin" }[role];
     $("#dash-side").innerHTML = `<div class="dash-who"><div class="avatar">${esc(nm[0])}</div><div><b>${esc(nm)}</b><span>${role[0].toUpperCase() + role.slice(1)}${signedIn ? "" : " · guest"}</span></div></div>
       <div class="side-sec">Menu</div>${v.nav.map((n) => `<button class="side-link" data-page="${n[0]}" aria-current="${n[0] === page}">${ICON[n[2]]}${n[1]}</button>`).join("")}
-      <div class="side-foot"><b>${signedIn ? "You're signed in" : "Save your progress"}</b>${signedIn ? "Progress is saved to this browser." : "<a href='signin.html' style='color:var(--acc);font-weight:600'>Create a free account →</a>"}</div>`;
+      <div class="side-foot">${member ? `<b>${Mintly.planName() || "Member"} plan</b>Everything is unlocked.` : signedIn ? `<b>Free preview</b><a href='pricing.html' style='color:var(--acc);font-weight:600'>Unlock all ten lessons →</a>` : `<b>Save your progress</b><a href='signin.html' style='color:var(--acc);font-weight:600'>Create an account →</a>`}</div>`;
   }
 
   function render(first) {

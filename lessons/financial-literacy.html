@@ -39,7 +39,6 @@
 <script src="../script.js"></script>
 <script src="../art.js"></script>
 <script>
-  Mintly.requireSubscription();
   const UNITS = [[1, "Unit 1 · Foundations", "Budgeting, saving, banking and your first look at investing."], [2, "Unit 2 · Real-world money", "Borrowing, compound interest, paychecks, scams and your own plan."]];
   const list = document.getElementById("lesson-list");
   const total = Mintly.LESSON_IDS.length;
@@ -48,11 +47,13 @@
   list.innerHTML = UNITS.map(([u, title, sub]) => {
     const rows = Mintly.LESSONS.map((l, i) => ({ l, i })).filter(({ l }) => (l.unit || 1) === u).map(({ l, i }) => {
       const d = Mintly.isLessonComplete(l.id);
-      const label = d ? "✓ Complete — review" : (done > 0 && done < total && l.id === next.id) ? "Up next →" : "Start →";
-      return `<a class="lesson-row${d ? " done" : ""}" href="${l.id}.html" id="row-${l.id}"><span class="num">${i + 1}</span><span class="title">${l.title}</span><span class="time">${l.mins} min · ▶ video</span><span class="go">${label}</span></a>`;
+      const lockedRow = !Mintly.canAccess(l.id);
+      const label = lockedRow ? "🔒 Members" : d ? "✓ Complete — review" : (done > 0 && done < total && l.id === next.id) ? "Up next →" : l.id === "lesson-1" && !Mintly.hasActivePlan() ? "Free →" : "Start →";
+      return `<a class="lesson-row${d ? " done" : ""}${lockedRow ? " locked-row" : ""}" href="${l.id}.html" id="row-${l.id}"><span class="num">${i + 1}</span><span class="title">${l.title}</span><span class="time">${l.mins} min · ▶ video</span><span class="go">${label}</span></a>`;
     }).join("");
     return `<div class="explore-label" style="margin:${u === 1 ? 0 : 28}px 0 4px">${title}</div><p class="muted" style="margin:0 0 8px;font-size:14px">${sub}</p>${rows}`;
   }).join("") + `<div class="next-course"><div class="icon">🔒</div><div><div class="title">Collectables</div><div class="desc">Unlocks after you complete every lesson above</div></div><div class="progress" id="course-progress">${done} of ${total} complete</div></div>`;
+  if (!Mintly.hasActivePlan()) list.insertAdjacentHTML("afterbegin", '<div class="unlock-banner"><div><b>Lesson 1 is free.</b> Unlock all ten lessons, their films, Leaf and the dashboards.</div><a class="btn" href="../pricing.html">See plans</a></div>');
   const nextNum = Mintly.LESSON_IDS.indexOf(next.id) + 1;
   const cont = document.getElementById("continue-btn");
   cont.href = next.id + ".html";

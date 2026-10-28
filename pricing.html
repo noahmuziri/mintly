@@ -8,7 +8,7 @@
 <meta property="og:site_name" content="Mintly">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<title>Pricing — Mintly</title>
+<title>Pricing · Mintly</title>
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
@@ -22,8 +22,9 @@
 <main>
   <div class="wrap pricing-hero">
     <div class="eyebrow-mint">Pricing</div>
-    <h1>A Mintly subscription unlocks everything</h1>
-    <p>There's no free tier — every lesson, simulation, and course lives behind a plan. Pick the one that fits your family.</p>
+    <h1>Lesson 1 is free. <em>The rest is $10 a month.</em></h1>
+    <p>Try the first lesson, its film and its quiz with no account. If it clicks, pick a plan. You can cancel whenever you like.</p>
+    <p class="from-note" id="from-note" hidden></p>
   </div>
 
   <div class="wrap plans plans-four">
@@ -31,75 +32,81 @@
       <div class="plan-badge">Most popular</div>
       <h3>Starter</h3>
       <div class="plan-price">$10 <span>/ month</span></div>
-      <p class="plan-desc">For families who want the full course library and a shared view of progress.</p>
+      <p class="plan-desc">For one family. Everything Mintly does, for a teen and the people who care about them.</p>
       <ul class="plan-features">
-        <li>Financial Literacy, Collectables &amp; Cryptocurrency courses</li>
-        <li>Progress saved to your account</li>
-        <li>Practice portfolio simulations</li>
+        <li>All 10 lessons, each with its own film</li>
+        <li>Unlimited chats with Leaf</li>
+        <li>Student and parent dashboards</li>
         <li>Up to 4 learner accounts</li>
-        <li>Parent progress dashboard</li>
+        <li>Progress saved to your account</li>
       </ul>
-      <a class="btn" href="signin.html?plan=family">Choose Starter</a>
+      <a class="btn" href="signin.html?plan=family">Get Starter</a>
     </div>
 
     <div class="plan-card">
       <h3>Plus</h3>
       <div class="plan-price">$15 <span>/ month</span></div>
-      <p class="plan-desc">For teens who want to go deeper, faster.</p>
+      <p class="plan-desc">For the teen who finishes the course and wants more to chew on.</p>
       <ul class="plan-features">
         <li>Everything in Starter</li>
         <li>Advanced investing simulations</li>
-        <li>Money missions &amp; goal challenges</li>
+        <li>Money missions and goal challenges</li>
       </ul>
-      <a class="btn btn-secondary" href="signin.html?plan=premium">Choose Plus</a>
+      <a class="btn btn-secondary" href="signin.html?plan=premium">Get Plus</a>
     </div>
 
     <div class="plan-card">
       <h3>Family Pro</h3>
       <div class="plan-price">$20 <span>/ month</span></div>
-      <p class="plan-desc">For bigger households with more than four learners.</p>
+      <p class="plan-desc">For a full house. More than four learners, one bill.</p>
       <ul class="plan-features">
         <li>Everything in Plus</li>
         <li>Unlimited learner accounts</li>
-        <li>Priority new-course access</li>
+        <li>First access to new courses</li>
       </ul>
-      <a class="btn btn-secondary" href="signin.html?plan=pro">Choose Family Pro</a>
+      <a class="btn btn-secondary" href="signin.html?plan=pro">Get Family Pro</a>
     </div>
 
     <div class="plan-card">
       <h3>School</h3>
       <div class="plan-price">$8 <span>/ student / month</span></div>
-      <p class="plan-desc">A school plan for classrooms and schools with 50+ students.</p>
+      <p class="plan-desc">For classrooms and schools with 50 or more students.</p>
       <ul class="plan-features">
-        <li>For schools with 50+ students</li>
-        <li>Financial Literacy, Collectables &amp; Cryptocurrency courses</li>
-        <li>Practice portfolio simulations</li>
-        <li>Progress saved to each student's account</li>
+        <li>All 10 lessons and films</li>
+        <li>Teacher dashboard with roster and assignments</li>
+        <li>Class skill heatmap</li>
+        <li>Progress saved for every student</li>
       </ul>
-      <a class="btn btn-secondary" href="signin.html?plan=school">Choose School</a>
+      <a class="btn btn-secondary" href="signin.html?plan=school">Get School</a>
     </div>
   </div>
 
+  <div class="wrap free-strip">
+    <div><b>Not ready to pay?</b> Lesson 1, its film, its quiz, three questions for Leaf and the demo are free, forever.</div>
+    <a class="btn btn-secondary" href="lessons/lesson-1.html">Try Lesson 1</a>
+  </div>
+
   <div class="pricing-faq">
-    <h2>Good to know</h2>
-    <div class="faq-item">
-      <h4>Is any real money invested?</h4>
-      <p>No. Every simulation uses play money so kids can practice and make mistakes safely.</p>
-    </div>
-    <div class="faq-item">
-      <h4>Can I cancel anytime?</h4>
-      <p>Yes — paid plans can be cancelled at any time and you'll keep access until the end of your billing period.</p>
-    </div>
-    <div class="faq-item">
-      <h4>Is this a real charge right now?</h4>
-      <p>Not yet — Mintly's billing isn't live. Choosing a plan creates a demo account so you can preview the subscription experience today.</p>
-    </div>
+    <h2>Questions people ask</h2>
+    <div class="faq-item"><h4>Is any real money involved?</h4><p>No. Every simulation uses pretend money, so teens can make mistakes that cost nothing.</p></div>
+    <div class="faq-item"><h4>What's free?</h4><p>Lesson 1 with its film and quiz, three questions for Leaf, and the demo. No account needed.</p></div>
+    <div class="faq-item"><h4>Can I cancel?</h4><p>Yes, any time. You keep access until the end of the period you paid for.</p></div>
+    <div class="faq-item"><h4>Will I be charged today?</h4><p>Not yet. Billing isn't switched on in this preview, so choosing a plan opens an account with full access and nothing is charged.</p></div>
+    <div class="faq-item"><h4>We're a school. What do we get?</h4><p>The School plan gives every student the full course and gives you a class dashboard to assign lessons and see who's stuck. It starts at 50 students.</p></div>
   </div>
 </main>
 
 <footer id="site-footer" class="site-footer"></footer>
 
 <script src="script.js"></script>
+<script>
+  (function () {
+    const from = new URLSearchParams(location.search).get("from"), el = document.getElementById("from-note");
+    const m = /^lesson-(\d+)$/.exec(from || "");
+    const t = m ? "You were reading Lesson " + m[1] + ". Pick a plan to pick up where you left off." : from === "leaf" ? "You've used your three free questions for Leaf. Pick a plan to keep chatting." : "";
+    if (t && el) { el.textContent = t; el.hidden = false; }
+  })();
+</script>
 <script src="art.js"></script>
 </body>
 </html>
