@@ -96,7 +96,7 @@
       }
       requestAnimationFrame(tick);
     }
-    host.querySelector(".lf-poster").addEventListener("click", () => { setState("playing"); enter(0); });
+    host.querySelector(".lf-poster").addEventListener("click", () => { setState("playing"); enter(0); host.dispatchEvent(new CustomEvent("lf:play", { bubbles: true })); });
     host.querySelector(".lf-ctl").addEventListener("click", (e) => {
       const b = e.target.closest("[data-a]"); if (!b) return;
       const a = b.dataset.a;

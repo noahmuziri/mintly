@@ -129,7 +129,7 @@
     admin: {
       title: () => "Admin console",
       sub: () => "Manage accounts and content for this demo. Data here is stored in this browser only.",
-      nav: [["overview", "Overview", "home"], ["accounts", "Accounts", "users"], ["content", "Content", "book"], ["tools", "Tools", "shield"]],
+      nav: [["overview", "Overview", "home"], ["insights", "Insights", "chart"], ["accounts", "Accounts", "users"], ["content", "Content", "book"], ["tools", "Tools", "shield"]],
       pages: {
         overview() {
           const users = Object.values(Mintly.allUsers()), by = (r) => users.filter((u) => u.role === r).length;
@@ -142,6 +142,7 @@
             <section class="card c4"><div class="card-h"><h3>Needs attention</h3></div><ul class="list"><li><div class="ic">${ICON.shield}</div><div class="tx"><b>Billing is not live</b><span>Plans create demo accounts only.</span></div></li><li><div class="ic">${ICON.users}</div><div class="tx"><b>Auth is browser-only</b><span>Add a backend before real students sign up.</span></div></li><li><div class="ic">${ICON.clip}</div><div class="tx"><b>Lessons need review</b><span>Have a finance educator check 6 to 10.</span></div></li></ul></section>
           </div>`;
         },
+        insights() { return `<div id="insroot"><p class="muted">Loading insights…</p></div>`; },
         accounts() {
           const users = Object.values(Mintly.allUsers());
           return `<div class="card"><div class="card-h"><h3>Accounts</h3><span class="pill">${users.length} total</span></div><div class="table-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Plan</th><th></th></tr></thead><tbody>${users.map((u) => `<tr><td><div class="nm"><span class="avatar">${esc(u.name[0])}</span>${esc(u.name)}</div></td><td>${esc(u.email)}</td><td><span class="pill">${esc(u.role || "student")}</span></td><td>${esc(u.plan || "none")}</td><td style="white-space:nowrap"><button class="btn btn-secondary btn-small" data-reset="${esc(u.email)}">Reset progress</button> ${u.demo ? '<span class="pill mute">demo</span>' : `<button class="btn btn-secondary btn-small danger-btn" data-del="${esc(u.email)}">Delete</button>`}</td></tr>`).join("")}</tbody></table></div></div>`;
@@ -228,7 +229,7 @@
     if (intent === "explain") return "Type a money word or question, like APR, inflation, diversification or \u201chow do taxes work?\u201d, and I'll explain it. Then I'll ask you something back.";
     // a topic Leaf knows about: explain it briefly, then ask a question back
     const known = intent ? null : (window.LEAF_BRAIN && LEAF_BRAIN.match(text));
-    if (known) { s.topic = known.id; return (got.length ? ack : "") + known.a + " " + pick(known.q, s.turns + (text.length % 3)); }
+    if (known) { s.topic = known.id; Mintly.track("leaf_topic", LEAF_BRAIN.catOf(known.id)); return (got.length ? ack : "") + known.a + " " + pick(known.q, s.turns + (text.length % 3)); }
     if (intent === "challenge") return quote ? "You said: “" + quote + "”. What's the strongest argument against that?" : "Tell me the idea first, in one sentence. Then I'll push on it.";
     if (intent === "other") return quote ? "Let's flip it. If someone smart disagreed with “" + quote + "”, what would they say?" : "Tell me what you're leaning toward first. Then we'll look at the other side.";
     if (intent === "missing" && !lastUser) return "Start with what you're trying to decide. I'll tell you what's missing as we go.";
@@ -307,6 +308,92 @@
     render();
   }
 
+
+  // ---------- Admin insights: what learners are into, drawn as a graph ----------
+  const CAT_COLORS = { basics: "#6B7280", budgeting: "#1C6847", saving: "#0F8A4E", banking: "#2B4AA3", borrowing: "#A94A18", investing: "#7C3AA8", crypto: "#C0124F", collectibles: "#B8860B", earning: "#0B6E8A", scams: "#B3261E", planning: "#5D5F6B" };
+  const catName = (c) => c[0].toUpperCase() + c.slice(1);
+  const ago = (ts) => { const m = Math.max(1, Math.round((Date.now() - ts) / 60000)); return m < 60 ? m + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : Math.round(m / 1440) + " d ago"; };
+  const hash = (s) => { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return (h >>> 0) / 4294967296; };
+
+  function drawGraph(el, data, pick) {
+    const W = 820, H = 560, cx = W / 2, cy = H / 2, RX = 300, RY = 205;
+    const cats = data.interests, maxS = Math.max(1, ...cats.map((c) => c.score));
+    const cpos = {};
+    cats.forEach((c, i) => { const a = (i / cats.length) * Math.PI * 2 - Math.PI / 2; cpos[c.cat] = { x: cx + RX * Math.cos(a), y: cy + RY * Math.sin(a), r: 20 + 26 * Math.sqrt(c.score / maxS), c }; });
+    const byUid = {}; data.links.forEach((l) => (byUid[l.uid] ||= []).push(l));
+    const nodes = data.learners.filter((l) => byUid[l.uid]).map((l) => {
+      let sx = 0, sy = 0, sw = 0; byUid[l.uid].forEach((k) => { const p = cpos[k.cat]; if (p) { sx += p.x * k.w; sy += p.y * k.w; sw += k.w; } });
+      const tx = sw ? sx / sw : cx, ty = sw ? sy / sw : cy;
+      return { l, tx, ty, x: tx + (hash(l.uid) - .5) * 70, y: ty + (hash(l.uid + "y") - .5) * 70, r: 4 + Math.min(6, l.events / 14) };
+    });
+    for (let it = 0; it < 90; it++) {
+      for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || .01, min = a.r + b.r + 3;
+        if (d < min) { const f = (min - d) / 2 / d; a.x -= dx * f; a.y -= dy * f; b.x += dx * f; b.y += dy * f; }
+      }
+      nodes.forEach((n) => { n.x += (n.tx - n.x) * .03; n.y += (n.ty - n.y) * .03; n.x = Math.max(14, Math.min(W - 14, n.x)); n.y = Math.max(14, Math.min(H - 14, n.y)); });
+    }
+    const idx = Object.fromEntries(nodes.map((n) => [n.l.uid, n]));
+    const edges = data.links.filter((k) => idx[k.uid] && cpos[k.cat]).map((k) => `<line data-u="${k.uid}" data-c="${k.cat}" x1="${idx[k.uid].x.toFixed(1)}" y1="${idx[k.uid].y.toFixed(1)}" x2="${cpos[k.cat].x.toFixed(1)}" y2="${cpos[k.cat].y.toFixed(1)}" stroke="${CAT_COLORS[k.cat]}" stroke-opacity="${(.1 + k.w * .3).toFixed(2)}" stroke-width="${(.6 + k.w * 1.4).toFixed(1)}"/>`).join("");
+    const catSvg = cats.map((c) => { const p = cpos[c.cat]; return `<g class="gc" data-c="${c.cat}" style="cursor:pointer"><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r.toFixed(1)}" fill="${CAT_COLORS[c.cat]}" fill-opacity=".92"/><text x="${p.x.toFixed(1)}" y="${(p.y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" style="font:700 ${p.r > 30 ? 13 : 11}px var(--fb);pointer-events:none">${catName(c.cat)}</text><title>${catName(c.cat)}: ${c.learners} learners</title></g>`; }).join("");
+    const dots = nodes.map((n) => `<circle class="gl" data-u="${n.l.uid}" cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="${n.r.toFixed(1)}" fill="${CAT_COLORS[n.l.top] || "#888"}" stroke="var(--panel)" stroke-width="1.5" style="cursor:pointer"><title>Learner ${n.l.uid.slice(0, 6)} · ${n.l.events} events</title></circle>`).join("");
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="ins-graph" role="img" aria-label="Graph connecting learners to the money topics they are interested in">${edges}${dots}${catSvg}</svg>`;
+    const svg = el.firstChild;
+    const focus = (u, c) => { svg.querySelectorAll("line").forEach((e) => { const on = (!u && !c) || e.dataset.u === u || e.dataset.c === c; e.style.opacity = on ? 1 : .08; }); svg.querySelectorAll(".gl").forEach((e) => { const l = byUid[e.dataset.u] || []; e.style.opacity = (!u && !c) || e.dataset.u === u || (c && l.some((k) => k.cat === c)) ? 1 : .15; }); };
+    svg.addEventListener("click", (e) => { const t = e.target.closest(".gl, .gc"); if (!t) { focus(); pick(null); return; } if (t.classList.contains("gl")) { focus(t.dataset.u); pick({ u: t.dataset.u }); } else { focus(null, t.dataset.c); pick({ c: t.dataset.c }); } });
+  }
+
+  function renderInsights(root, data, state) {
+    const t = data.totals, top = data.interests[0];
+    const pct = (x, tot) => (tot ? Math.round(x / tot * 100) : 0);
+    const maxScore = Math.max(1, ...data.interests.map((c) => c.score));
+    const lessonRows = data.lessons.map((l) => `<tr><td>${l.id.replace("lesson-", "Lesson ")}</td><td>${catName(l.cat)}</td><td>${l.views}</td><td>${l.films}</td><td>${l.complete}</td><td>${l.avgQuiz == null ? "–" : l.avgQuiz + "%"}</td></tr>`).join("");
+    root.innerHTML = `<div class="grid">
+      <section class="card c12 ins-bar"><div class="row" style="justify-content:space-between;width:100%"><div class="row" style="gap:12px"><span class="pill ${state.live ? "good" : "warn"}">${state.live ? "Live data" : "Sample data"}</span><span class="muted" style="font-size:13.5px">${state.note}</span></div>
+        <div class="row" style="gap:8px"><input id="ins-key" type="password" autocomplete="off" placeholder="Admin key" value="${esc(sessionStorage.getItem("mintly:adminkey") || "")}" aria-label="Admin key" style="border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;background:var(--bg);font-size:14px;width:190px"><button class="btn btn-small" id="ins-connect" type="button">Connect</button><button class="btn btn-secondary btn-small" id="ins-csv" type="button">Export CSV</button></div></div></section>
+      <section class="card c3"><div class="kpi"><span class="lbl">Learners</span><div class="stat-big">${t.learners}</div><span class="stat-sub">${t.active7d} active this week</span></div></section>
+      <section class="card c3"><div class="kpi"><span class="lbl">Top interest</span><div class="stat-big" style="font-size:30px">${top ? catName(top.cat) : "–"}</div><span class="stat-sub">${top ? top.learners + " learners" : "no data yet"}</span></div></section>
+      <section class="card c3"><div class="kpi"><span class="lbl">Lessons completed</span><div class="stat-big">${t.completions}</div><span class="stat-sub">across all learners</span></div></section>
+      <section class="card c3"><div class="kpi"><span class="lbl">Events recorded</span><div class="stat-big">${t.events.toLocaleString()}</div><span class="stat-sub">topics and activity only</span></div></section>
+      <section class="card c8"><div class="card-h"><h3>The financial user graph</h3><span class="muted" style="font-size:13px">Each dot is a learner. Click a dot or a topic.</span></div><div id="ins-graph"></div><div class="legend">${data.interests.map((c) => `<span><i style="background:${CAT_COLORS[c.cat]}"></i>${catName(c.cat)}</span>`).join("")}</div></section>
+      <section class="card c4"><div class="card-h"><h3 id="ins-side-h">What they like</h3></div><div id="ins-side"></div></section>
+      <section class="card c6"><div class="card-h"><h3>Interest ranking</h3></div>${data.interests.map((c) => `<div class="skill" style="grid-template-columns:96px 1fr 44px"><span>${catName(c.cat)}</span><div class="bar"><i style="width:${Math.round(c.score / maxScore * 100)}%;background:${CAT_COLORS[c.cat]}"></i></div><span>${c.learners}</span></div>`).join("") || '<p class="muted">No activity yet.</p>'}<p class="muted" style="font-size:12.5px;margin:10px 0 0">Bars show weighted interest. The number is how many learners.</p></section>
+      <section class="card c6"><div class="card-h"><h3>Lesson funnel</h3></div><div class="table-wrap"><table class="tbl"><thead><tr><th>Lesson</th><th>Topic</th><th>Opened</th><th>Film</th><th>Done</th><th>Quiz</th></tr></thead><tbody>${lessonRows}</tbody></table></div></section>
+      <section class="card c12"><div class="card-h"><h3>Topics learners ask Leaf about</h3></div><div class="chip-row" style="margin:0">${data.leafTopics.map((x) => `<span class="pill" style="font-size:13px">${esc(catName(x.key))} <b>${x.count}</b></span>`).join("") || '<span class="muted">Nothing yet.</span>'}</div></section>
+    </div>`;
+    const side = $("#ins-side", root), sideH = $("#ins-side-h", root);
+    const overall = () => { sideH.textContent = "What they like"; side.innerHTML = data.interests.slice(0, 5).map((c, i) => `<div class="list-row"><span class="rk">${i + 1}</span><i class="sw2" style="background:${CAT_COLORS[c.cat]}"></i><b>${catName(c.cat)}</b><span class="muted">${pct(c.learners, t.learners)}% of learners</span></div>`).join("") || '<p class="muted">No activity yet.</p>'; };
+    drawGraph($("#ins-graph", root), data, (sel) => {
+      if (!sel) return overall();
+      if (sel.c) { const who = data.learners.filter((l) => l.top === sel.c); sideH.textContent = catName(sel.c); side.innerHTML = `<p class="muted" style="margin:0 0 10px">${who.length} learners have this as their top interest.</p>` + who.slice(0, 8).map((l) => `<div class="list-row"><i class="sw2" style="background:${CAT_COLORS[sel.c]}"></i><b>Learner ${l.uid.slice(0, 6)}</b><span class="muted">${l.events} events</span></div>`).join(""); return; }
+      const l = data.learners.find((x) => x.uid === sel.u); if (!l) return;
+      const ent = Object.entries(l.interests).sort((a, b) => b[1] - a[1]), mx = ent.length ? ent[0][1] : 1;
+      sideH.textContent = "Learner " + l.uid.slice(0, 6);
+      side.innerHTML = `<p class="muted" style="margin:0 0 12px;font-size:13.5px">${esc(l.role)}${l.plan ? " · " + esc(l.plan) + " plan" : " · free"} · ${l.events} events · last seen ${ago(l.lastSeen)}</p>` + ent.map(([c, v]) => `<div class="skill" style="grid-template-columns:86px 1fr 28px"><span>${catName(c)}</span><div class="bar thin"><i style="width:${Math.round(v / mx * 100)}%;background:${CAT_COLORS[c]}"></i></div><span>${v}</span></div>`).join("") + `<p class="muted" style="margin:12px 0 4px;font-size:13px">Lessons finished: <b style="color:var(--ink)">${l.completed}</b> of 10</p>`;
+    });
+    overall();
+    $("#ins-connect", root).addEventListener("click", () => { sessionStorage.setItem("mintly:adminkey", $("#ins-key", root).value.trim()); loadInsights(root.parentNode.parentNode || root); });
+    $("#ins-csv", root).addEventListener("click", async () => {
+      let csv;
+      if (state.live) { const r = await fetch("/api/admin/export.csv?days=90", { headers: { Authorization: "Bearer " + sessionStorage.getItem("mintly:adminkey") } }); csv = await r.text(); }
+      else { const core = await import("./api-core.mjs"); csv = core.toCsv(data); }
+      const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "mintly-learners" + (state.live ? "" : "-sample") + ".csv"; a.click();
+    });
+    animate(root);
+  }
+
+  async function loadInsights(main) {
+    const root = $("#insroot", main) || main.querySelector("#insroot"); if (!root) return;
+    const key = sessionStorage.getItem("mintly:adminkey");
+    let data = null, live = false, note = "";
+    let backend = false; try { backend = (await (await fetch("/api/health")).json()).backend === true; } catch (e) {}
+    if (backend && key) {
+      try { const r = await fetch("/api/admin/insights?days=90", { headers: { Authorization: "Bearer " + key } }); if (r.ok) { data = await r.json(); live = true; note = "Pseudonymous learners. Topics and activity only, never what they type."; } else note = r.status === 401 ? "That admin key was rejected. Showing sample data." : "Backend error " + r.status + ". Showing sample data."; } catch (e) { note = "Couldn't reach the backend. Showing sample data."; }
+    } else note = backend ? "Backend found. Enter your admin key to load real learners. Sample data shown." : "No backend connected (see BACKEND.md). Showing sample data so you can see what this will look like.";
+    if (!data) { const core = await import("./api-core.mjs"); data = core.insights(core.sampleEvents()); }
+    renderInsights(root, data, { live, note });
+  }
+
   // ---------- render ----------
   let role = MintlyTheme.getRole(), page = null;
   const isAdmin = !!(user && user.role === "admin");
@@ -343,6 +430,7 @@
     $$("[data-export]", main).forEach((b) => b.addEventListener("click", () => { const out = Object.values(Mintly.allUsers()).filter((u) => !u.demo).map((u) => ({ name: u.name, email: u.email, role: u.role, plan: u.plan })); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" })); a.download = "mintly-accounts.json"; a.click(); }));
     $$("[data-wipe]", main).forEach((b) => b.addEventListener("click", () => { if (confirm("Erase all Mintly data in this browser?")) { Object.keys(localStorage).filter((k) => k.startsWith("mintly:")).forEach((k) => localStorage.removeItem(k)); location.href = "index.html"; } }));
     initLeafChat(main);
+    if ($("#insroot", main)) loadInsights(main);
     const form = $("#aform", main);
     if (form) form.addEventListener("submit", (e) => {
       e.preventDefault();

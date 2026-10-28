@@ -21,3 +21,6 @@ build/
 
 # macOS resource forks
 ._*
+
+# Local analytics data
+.data/
