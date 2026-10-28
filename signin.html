@@ -185,7 +185,8 @@
     });
     const errorEl = document.getElementById("signup-error");
     if (result.ok) {
-      window.location.href = Mintly.landingPage();
+      const pay = plan && Mintly.checkoutUrl(plan);
+      window.location.href = pay || Mintly.landingPage();
     } else {
       errorEl.textContent = result.error;
     }
