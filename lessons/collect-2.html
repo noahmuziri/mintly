@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Condition, grading and fakes — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Collectables · Lesson 2</div>
+    <h1>Condition, grading and fakes</h1>
+    <p class="lesson-meta">About 11 minutes · 4 activities · Your answers and progress are saved to your account</p>
+
+    <p>Two items can look identical and sell for completely different prices. One has a tiny corner crease. The other might not be real at all. This lesson shows how condition, grading and authenticity change the price, and how to avoid getting fooled.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>Would you pay full price for a damaged one?</h3>
+      <p>You find two copies of something you want. One is perfect and costs $100. The other has visible wear and costs $60. Which would you buy, and why?</p>
+      <label class="sr-only" for="warmup-text">Would you pay full price for a damaged one?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="I&#x27;d buy the... because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Condition matters a lot</h2>
+    <p>Collectors look closely at wear: creases, scratches, fading, yellowing, missing parts. Items still in their original packaging, never opened or used, are often called <strong>mint</strong> or <strong>sealed</strong> and usually sell for the most. Small flaws can cut the price a lot.</p>
+
+    <h2>What grading is</h2>
+    <div class="definition-card">
+      <div class="definition-term">Grading <span>(noun)</span></div>
+      <p>Paying an independent company to inspect an item, give it a numbered condition score and seal it in a protective case. A high grade can raise the price, but grading costs money and takes time, so it only makes sense for items that could be worth much more.</p>
+    </div>
+    <p>A grade is an opinion about condition, not a promise that the price will go up. Prices for graded items still move with demand like everything else.</p>
+
+    <h2>Fakes and how to protect yourself</h2>
+    <p>The more valuable an item gets, the more likely someone is faking it. Warning signs include:</p>
+    <ul>
+      <li>A price far below what the same item usually sells for.</li>
+      <li>Blurry, copied or very few photos, or photos that don't show the details you ask about.</li>
+      <li>A seller with no history or reviews, who avoids questions or wants you to move to private messages.</li>
+      <li>Details that don't match the real thing, like the wrong font, colors, stitching or packaging.</li>
+    </ul>
+    <p>Protect yourself by buying from sellers with a long record of good reviews, using payment methods with buyer protection, and asking an experienced collector or a parent to look before you pay for anything expensive.</p>
+
+    <h2>Check what things actually sold for</h2>
+    <p>The price a seller asks is a wish. The price something <strong>sold</strong> for is a fact. Before buying, look at completed sales of the same item in the same condition, not at the listings that haven't sold.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      You find a "rare" item listed for half the usual price, and the seller says they need cash fast. What are three reasons this could be a bad deal, and what could you check before paying?
+    </div>
+
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="mint">Mint</button>
+          <button class="match-item" type="button" data-term="grading">Grading</button>
+          <button class="match-item" type="button" data-term="counterfeit">Counterfeit</button>
+          <button class="match-item" type="button" data-term="sold">Sold price</button>
+          <button class="match-item" type="button" data-term="asking">Asking price</button>
+          <button class="match-item" type="button" data-term="sealed">Sealed</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="grading">Independent inspection that gives a condition score</button>
+          <button class="match-item def" type="button" data-def="mint">Perfect or near-perfect condition</button>
+          <button class="match-item def" type="button" data-def="sealed">Still in the original unopened packaging</button>
+          <button class="match-item def" type="button" data-def="asking">What a seller hopes to get</button>
+          <button class="match-item def" type="button" data-def="sold">What an item really sold for</button>
+          <button class="match-item def" type="button" data-def="counterfeit">A fake made to look real</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="counterfeit|fake">
+          <label for="b1">A fake made to look real is called a <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="red">
+          <label for="b2">A price far below normal is a <input id="b2" class="blank-input" autocomplete="off"> flag.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="sold">
+          <label for="b3">Look at the price items actually <input id="b3" class="blank-input" autocomplete="off"> for, not the asking price.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="grading">
+          <label for="b4">An independent condition score comes from <input id="b4" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Spot the risk</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>Someone offers you a rare item for much less than usual, and wants you to pay quickly by sending money to a friend. Explain what you'd do.</p>
+      <label class="sr-only" for="final-text">Spot the risk</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="I would... because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "I wouldn't pay yet. A price that low and a rush to pay are red flags. I'd check the seller's history, ask for more photos, compare with what the item really sold for, use a payment method with buyer protection, and ask a parent before spending the money."
+        <span class="sample-tip">Did you mention checking the seller, comparing sold prices and safe payment?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Mint</dt><dd>Perfect or near-perfect condition.</dd></div>
+      <div><dt>Grading</dt><dd>Paid inspection that gives an item a condition score.</dd></div>
+      <div><dt>Authentic</dt><dd>Genuine, not a fake.</dd></div>
+      <div><dt>Counterfeit</dt><dd>A fake made to look real.</dd></div>
+      <div><dt>Sold price</dt><dd>What an item actually sold for.</dd></div>
+      <div><dt>Asking price</dt><dd>What a seller hopes to get.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>Now that you know what drives value, let's look at buying and selling. <a href="collect-3.html"><strong>Go to Lesson 3: Buying, selling and flipping safely →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. Which price is the best guide to what an item is really worth?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">The seller's asking price</button>
+        <button class="quiz-option" data-correct="true">What similar items actually sold for</button>
+        <button class="quiz-option" data-correct="false">The highest price you've ever seen</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. A grade from a grading company is:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">A guarantee the price will rise</button>
+        <button class="quiz-option" data-correct="true">An expert opinion on condition</button>
+        <button class="quiz-option" data-correct="false">A replacement for checking the seller</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. Which is the biggest red flag?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">A seller with years of good reviews</button>
+        <button class="quiz-option" data-correct="true">A very low price plus pressure to pay fast</button>
+        <button class="quiz-option" data-correct="false">Clear photos from many angles</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Why can grading be a bad idea for cheap items?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">It costs money that may exceed the gain</button>
+        <button class="quiz-option" data-correct="false">It is illegal</button>
+        <button class="quiz-option" data-correct="false">It lowers condition</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="collectables.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="collect-1.html">← Lesson 1: What makes a collectable valuable?</a>
+    <a class="next" href="collect-3.html">Lesson 3: Buying, selling and flipping safely →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="lesson.js"></script>
+</body>
+</html>

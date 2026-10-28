@@ -4,8 +4,28 @@
    Progress is saved to the student's account through Mintly (script.js); teachers and parents can
    preview a lesson but nothing is saved for them. */
 Mintly.ready.then(function () {
-  const LESSON = (location.pathname.match(/(lesson-\d+)\.html$/) || [])[1];
+  const LESSON = (location.pathname.match(/([a-z]+-\d+)\.html$/) || [])[1];
   if (!Mintly.requireLogin()) return;
+
+  // Electives open once the core course is finished (parents and teachers can preview them).
+  const elective = Mintly.ELECTIVES.filter((e) => e.id === LESSON)[0];
+  if (elective && Mintly.currentUser().role === 'student' && !Mintly.isCourseComplete()) {
+    location.replace(elective.course === 'crypto' ? 'cryptocurrencies.html' : 'collectables.html');
+    return;
+  }
+
+  // Reading progress bar along the top of the page
+  const rbar = document.createElement('div');
+  rbar.className = 'read-bar';
+  rbar.innerHTML = '<i></i>';
+  document.body.appendChild(rbar);
+  const rfill = rbar.firstChild;
+  const onScroll = () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    rfill.style.width = (h > 0 ? Math.min(100, window.scrollY / h * 100) : 0) + '%';
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   // --- Progress inside a lesson: quiz picks, solved blanks and matched pairs are saved to the
   // account, so a reload (or another device) puts the student back where they were. The student,
@@ -202,7 +222,9 @@ Mintly.ready.then(function () {
       }
     };
     completeBtn.addEventListener('click', () => {
+      const first = !Mintly.isLessonComplete(LESSON);
       Mintly.markLessonComplete(LESSON);
+      if (first && Mintly.currentUser().role === 'student') Mintly.celebrate();
       renderComplete();
     });
     renderComplete();

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What crypto actually is — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Cryptocurrencies · Lesson 1</div>
+    <h1>What crypto actually is</h1>
+    <p class="lesson-meta">About 11 minutes · 4 activities · Your answers and progress are saved to your account</p>
+
+    <p>You've probably heard crypto described as the future of money, or as a scam. The truth is more interesting, and less dramatic. This lesson explains what cryptocurrency is, how it works in plain language, and what gives it any value at all.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>What do you think crypto is?</h3>
+      <p>Write down what you already know or have heard about crypto, even if you're not sure it's right. Then we'll check it.</p>
+      <label class="sr-only" for="warmup-text">What do you think crypto is?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="I&#x27;ve heard that crypto is..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Digital money with no bank in the middle</h2>
+    <div class="definition-card">
+      <div class="definition-term">Cryptocurrency <span>(noun)</span></div>
+      <p>A digital token that people can send to each other over the internet, recorded on a shared public record instead of in a bank's private books.</p>
+    </div>
+    <p>With normal money, a bank keeps track of who owns what. With crypto, thousands of computers around the world keep copies of the same record and agree on every change. That shared record is called a <strong>blockchain</strong>.</p>
+
+    <h2>Coins you may have heard of</h2>
+    <ul>
+      <li><strong>Bitcoin:</strong> the first and best known. Its supply is capped at 21 million coins.</li>
+      <li><strong>Ethereum:</strong> a network that also runs small programs, called smart contracts.</li>
+      <li><strong>Stablecoins:</strong> tokens designed to hold the value of a regular currency like the dollar. They aim to be steadier, but they can still fail.</li>
+      <li><strong>Thousands of others:</strong> many are created in minutes by anyone, and many end up worth nothing.</li>
+    </ul>
+
+    <h2>Wallets and keys</h2>
+    <p>Crypto is held in a <strong>wallet</strong>, which is protected by a secret <strong>private key</strong> (often a list of recovery words). Whoever has the key controls the coins. If you lose it, the coins can be gone forever, and if someone steals it, there is usually no bank to call.</p>
+
+    <h2>Where does the value come from?</h2>
+    <p>A dollar is backed by a government and accepted for taxes. A company share is a slice of a business that earns profits. Most crypto has neither. Its price comes mainly from what people are willing to pay, which depends on belief and demand. That is why prices can swing so widely.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      If most of a coin's value comes from people believing it will be worth more later, what happens to the price when the belief fades? How is that different from a company that makes money?
+    </div>
+
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="crypto">Cryptocurrency</button>
+          <button class="match-item" type="button" data-term="chain">Blockchain</button>
+          <button class="match-item" type="button" data-term="wallet">Wallet</button>
+          <button class="match-item" type="button" data-term="key">Private key</button>
+          <button class="match-item" type="button" data-term="stable">Stablecoin</button>
+          <button class="match-item" type="button" data-term="btc">Bitcoin</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="chain">A shared record of transactions copied across many computers</button>
+          <button class="match-item def" type="button" data-def="crypto">A digital token recorded on a shared public record</button>
+          <button class="match-item def" type="button" data-def="btc">The first and best-known cryptocurrency</button>
+          <button class="match-item def" type="button" data-def="stable">A token designed to track a regular currency</button>
+          <button class="match-item def" type="button" data-def="key">The secret that controls your coins</button>
+          <button class="match-item def" type="button" data-def="wallet">Where crypto is stored and controlled</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="blockchain">
+          <label for="b1">The shared record of crypto transactions is a <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="wallet">
+          <label for="b2">Crypto is stored in a <input id="b2" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="key">
+          <label for="b3">Whoever holds the private <input id="b3" class="blank-input" autocomplete="off"> controls the coins.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="stablecoin|stable coin">
+          <label for="b4">A token designed to track the dollar is called a <input id="b4" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Explain it to a friend</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>Your friend asks, "What is crypto, and why is it worth anything?" Explain it in your own words, including where the value comes from.</p>
+      <label class="sr-only" for="final-text">Explain it to a friend</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="Crypto is... and its value comes from..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "Crypto is digital money recorded on a shared record called a blockchain instead of a bank's books. Most of its value comes from what people are willing to pay, not from a government or a business earning profits, so the price can swing a lot."
+        <span class="sample-tip">Did yours say what crypto is and that the value mostly comes from demand and belief?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Cryptocurrency</dt><dd>A digital token recorded on a shared public record.</dd></div>
+      <div><dt>Blockchain</dt><dd>A shared record copied across many computers.</dd></div>
+      <div><dt>Wallet</dt><dd>Where crypto is stored.</dd></div>
+      <div><dt>Private key</dt><dd>The secret that controls your coins.</dd></div>
+      <div><dt>Stablecoin</dt><dd>A token designed to track a regular currency.</dd></div>
+      <div><dt>Smart contract</dt><dd>A small program that runs on a blockchain.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>Next, the part most people skip: the risk. <a href="crypto-2.html"><strong>Go to Lesson 2: Volatility and the maths of risk →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. What is a blockchain?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">A bank's private record</button>
+        <button class="quiz-option" data-correct="true">A shared record of transactions copied across many computers</button>
+        <button class="quiz-option" data-correct="false">A type of wallet app</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. Who controls crypto in a wallet?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Whoever has the private key</button>
+        <button class="quiz-option" data-correct="false">The government</button>
+        <button class="quiz-option" data-correct="false">The wallet's brand</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. What mostly sets the price of most coins?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Company profits</button>
+        <button class="quiz-option" data-correct="true">What people are willing to pay</button>
+        <button class="quiz-option" data-correct="false">A government guarantee</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. If you send crypto to the wrong address, you can usually:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Always get it back from a bank</button>
+        <button class="quiz-option" data-correct="true">Not get it back</button>
+        <button class="quiz-option" data-correct="false">Ask the blockchain to undo it</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="cryptocurrencies.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="cryptocurrencies.html">← All Cryptocurrencies lessons</a>
+    <a class="next" href="crypto-2.html">Lesson 2: Volatility and the maths of risk →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="lesson.js"></script>
+</body>
+</html>

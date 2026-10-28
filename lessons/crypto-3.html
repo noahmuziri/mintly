@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Should you? A way to decide — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Cryptocurrencies · Lesson 3</div>
+    <h1>Should you? A way to decide</h1>
+    <p class="lesson-meta">About 12 minutes · 4 activities · Your answers and progress are saved to your account</p>
+
+    <p>Mintly will never tell you to buy or not to buy crypto. What it can do is give you a way to think. This lesson gives you a simple set of questions to use on crypto, or on anything else people are excited about.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>What would make you trust a money tip?</h3>
+      <p>A person online says a coin is about to take off. What would you want to know about them, and about the coin, before believing them?</p>
+      <label class="sr-only" for="warmup-text">What would make you trust a money tip?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="Before believing them I&#x27;d want to know..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Five questions before any decision</h2>
+    <ol>
+      <li><strong>Do I understand it?</strong> Can I explain what it is and how it makes money in a few sentences? If not, wait.</li>
+      <li><strong>What's the worst case?</strong> If it went to zero, would that hurt me? Only use money you can afford to lose.</li>
+      <li><strong>Who benefits if I buy?</strong> Influencers, groups and exchanges often profit when you join. That doesn't make them wrong, but it should make you careful.</li>
+      <li><strong>What would change my mind?</strong> Decide in advance what evidence would make you sell or stay out, so excitement doesn't decide for you.</li>
+      <li><strong>Is it legal and allowed for me?</strong> In most places you must be 18 to use a crypto exchange, so it's a conversation to have with a parent.</li>
+    </ol>
+
+    <h2>Rules and taxes</h2>
+    <p>Rules about crypto vary by country and change often. In many places, gains from selling crypto count as taxable income, and exchanges must follow identity rules. Any real decision should include an adult and up-to-date advice for where you live.</p>
+
+    <h2>Hype, fear and FOMO</h2>
+    <div class="definition-card">
+      <div class="definition-term">FOMO <span>(noun)</span></div>
+      <p>"Fear of missing out". The pressure to jump into something because everyone else seems to be getting rich. It makes people buy near the top.</p>
+    </div>
+    <p>Slow, boring decisions usually beat fast, exciting ones. If you feel rushed, that's a signal to pause, not to act.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      Think of a time you wanted something only because everyone else had it. What would you ask yourself next time, before spending money?
+    </div>
+
+    <h2>Practice without risk</h2>
+    <p>The Mintly simulation uses play money. Try researching a company, writing your reasons, and seeing your Decision Score. Real decisions deserve the same steps.</p>
+
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="fomo">FOMO</button>
+          <button class="match-item" type="button" data-term="worst">Worst case</button>
+          <button class="match-item" type="button" data-term="adult">Adult involvement</button>
+          <button class="match-item" type="button" data-term="influencer">Conflict of interest</button>
+          <button class="match-item" type="button" data-term="tax">Tax on gains</button>
+          <button class="match-item" type="button" data-term="plan">Exit plan</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="worst">What happens if it goes to zero</button>
+          <button class="match-item def" type="button" data-def="fomo">Pressure from fear of missing out</button>
+          <button class="match-item def" type="button" data-def="plan">Deciding in advance what would make you sell</button>
+          <button class="match-item def" type="button" data-def="tax">Profit from selling can count as taxable income</button>
+          <button class="match-item def" type="button" data-def="influencer">When someone profits from your decision</button>
+          <button class="match-item def" type="button" data-def="adult">A parent or guardian helping with real money decisions</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="fomo">
+          <label for="b1">Fear of missing out is called <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="case">
+          <label for="b2">Ask yourself what the worst <input id="b2" class="blank-input" autocomplete="off"> is.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="interest">
+          <label for="b3">Someone who profits if you buy has a conflict of <input id="b3" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="mind">
+          <label for="b4">Decide in advance what evidence would change your <input id="b4" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Your decision checklist</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>Pick any trend you've seen people excited about, crypto or not. Write your answers to the five questions, using what you've learned.</p>
+      <label class="sr-only" for="final-text">Your decision checklist</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="1. Do I understand it?... 2. The worst case is..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "I can explain it in a sentence only after reading about it, which means I'm not ready. The worst case is losing everything I put in, so I'd only use money I could lose. The person pushing it earns a commission, and nothing would change my mind because it's all hype, so I'll wait and talk with a parent first."
+        <span class="sample-tip">Did you answer each of the five questions, including who benefits and what the worst case is?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>FOMO</dt><dd>Pressure from fear of missing out.</dd></div>
+      <div><dt>Conflict of interest</dt><dd>When someone profits from your decision.</dd></div>
+      <div><dt>Exit plan</dt><dd>Deciding in advance when you would sell.</dd></div>
+      <div><dt>Exchange</dt><dd>A service for buying and selling crypto.</dd></div>
+      <div><dt>Regulation</dt><dd>Government rules about how something works.</dd></div>
+      <div><dt>Due diligence</dt><dd>Researching before you decide.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>That completes the electives. Put your thinking to the test in the simulation. <a href="../mintly.demo.html?from=site"><strong>Try the simulation →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. Which question is part of a sensible decision check?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">What's the worst case?</button>
+        <button class="quiz-option" data-correct="false">How many followers does the promoter have?</button>
+        <button class="quiz-option" data-correct="false">Is it trending today?</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. A person promoting a coin earns a commission when you buy. This is:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">A conflict of interest</button>
+        <button class="quiz-option" data-correct="false">A guarantee</button>
+        <button class="quiz-option" data-correct="false">Irrelevant</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. Feeling rushed to buy before you miss out is a sign to:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Buy faster</button>
+        <button class="quiz-option" data-correct="true">Pause and think</button>
+        <button class="quiz-option" data-correct="false">Borrow money</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. In most places, using a crypto exchange requires you to be:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Any age</button>
+        <button class="quiz-option" data-correct="true">18 or older</button>
+        <button class="quiz-option" data-correct="false">Over 50</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="cryptocurrencies.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="crypto-2.html">← Lesson 2: Volatility and the maths of risk</a>
+    <a class="next" href="../mintly.demo.html?from=site">Practice a decision in the simulation →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="lesson.js"></script>
+</body>
+</html>

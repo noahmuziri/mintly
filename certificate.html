@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap cert-wrap">
+    <div id="cert-locked" class="empty-state" hidden>
+      <div class="icon-big">🎓</div>
+      <h2>Your certificate is waiting</h2>
+      <p id="cert-msg"></p>
+      <a class="btn" id="cert-cta" href="lessons/financial-literacy.html">Continue the course</a>
+    </div>
+
+    <div id="cert-ready" hidden>
+      <div class="cert-actions"><button class="btn" id="print-btn" type="button">Print or save as PDF</button><a class="btn btn-secondary" href="student-dashboard.html" style="text-decoration:none;display:inline-flex;align-items:center">Back to dashboard</a></div>
+      <section class="cert" aria-label="Certificate of completion">
+        <div class="cert-in">
+          <div class="cert-brand">mintly<span>.</span></div>
+          <div class="cert-kick">Certificate of completion</div>
+          <p class="cert-small">This certifies that</p>
+          <div class="cert-name" id="cert-name"></div>
+          <p class="cert-small">has completed the Mintly course</p>
+          <h1 class="cert-course">Financial Literacy</h1>
+          <p class="cert-small">ten lessons covering budgeting, saving, banking, investing, earning, credit, inflation, scams and building a money plan</p>
+          <div class="cert-foot">
+            <div><b id="cert-date"></b><span>Date completed</span></div>
+            <div class="cert-seal" aria-hidden="true">✓</div>
+            <div><b id="cert-extra"></b><span>Electives finished</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="site-footer"><div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div></footer>
+<script src="script.js"></script>
+<script>
+Mintly.ready.then(async () => {
+  if (!Mintly.requireLogin("student")) return;
+  const user = Mintly.currentUser();
+  if (!Mintly.isCourseComplete()) {
+    const left = Mintly.LESSONS.length - Mintly.completedCount();
+    document.getElementById("cert-locked").hidden = false;
+    document.getElementById("cert-msg").textContent = "Finish the " + left + " remaining " + (left === 1 ? "lesson" : "lessons") + " in Financial Literacy and your certificate appears here, ready to print.";
+    document.getElementById("cert-cta").href = "lessons/" + Mintly.nextLesson().id + ".html";
+    return;
+  }
+  const p = await Mintly.api("GET", "/api/progress");
+  const times = Mintly.LESSONS.map((l) => p.ok && p.lessons[l.id] && p.lessons[l.id].completedAt).filter(Boolean);
+  const when = times.length ? new Date(Math.max(...times)) : new Date();
+  document.getElementById("cert-name").textContent = user.name;
+  document.getElementById("cert-date").textContent = when.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  const el = Mintly.ELECTIVES.filter((e) => Mintly.isLessonComplete(e.id)).length;
+  document.getElementById("cert-extra").textContent = el + " of " + Mintly.ELECTIVES.length;
+  document.getElementById("cert-ready").hidden = false;
+  document.getElementById("print-btn").onclick = () => window.print();
+  Mintly.celebrate();
+});
+</script>
+</body>
+</html>

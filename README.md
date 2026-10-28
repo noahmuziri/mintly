@@ -135,3 +135,10 @@ Admin sessions last 8 hours, use a separate `SameSite=Strict` cookie, and allow 
 - Animated explainers in lessons 6–10 live in `lessons/explainer.js` (add `<div data-explainer="paycheck|debt|compound|scam|plan"></div>`).
 - `slides.html` plays a one-minute recap per lesson with captions and optional browser narration. The content is in `slides.json`, and `video-scripts.md` holds the same text as scripts for recording real videos.
 - To embed a video in a lesson, add `"video": "<YouTube id>"` to that lesson in `curriculum.json`.
+
+## Electives, certificate and glossary
+
+- Six elective lessons (Collectables and Cryptocurrencies, three each) are listed under `electives` in `curriculum.json`. They open for students once the ten core lessons are finished; parents and teachers can preview them.
+- `certificate.html` shows a printable certificate when a student finishes the core course.
+- `glossary.html` is built from `glossary.json`, which collects the "Key words" from every lesson. Regenerate it after adding lessons.
+- The footer on every page comes from `renderFooter()` in `script.js`.

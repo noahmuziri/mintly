@@ -4,6 +4,7 @@
 const Mintly = (() => {
   let user = null;
   let LESSONS = [];
+  let ELECTIVES = [];
   let progress = { lessons: {}, interest: null };
 
   const inLessons = location.pathname.includes("/lessons/");
@@ -29,6 +30,7 @@ const Mintly = (() => {
   const ready = (async () => {
     const [me, cur] = await Promise.all([api("GET", "/api/me"), api("GET", "/curriculum.json")]);
     LESSONS = cur.lessons || [];
+    ELECTIVES = cur.electives || [];
     user = (me.ok && me.user) || null;
     if (user && user.role === "student") {
       const p = await api("GET", "/api/progress");
@@ -37,6 +39,34 @@ const Mintly = (() => {
   })();
 
   // --- Accounts ---
+
+
+  // A short burst of confetti (used when a lesson is completed). Skipped for reduced motion.
+  function celebrate() {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const cv = document.createElement("canvas");
+    cv.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999";
+    cv.setAttribute("aria-hidden", "true");
+    document.body.appendChild(cv);
+    const ctx = cv.getContext("2d");
+    const W = (cv.width = innerWidth), H = (cv.height = innerHeight);
+    const colors = ["#A8DDC0", "#2F7D58", "#F2C14E", "#151515", "#E9A8A0", "#9FB5E8"];
+    const bits = Array.from({ length: 140 }, () => ({
+      x: W / 2 + (Math.random() - 0.5) * 120, y: H * 0.62, vx: (Math.random() - 0.5) * 16, vy: -8 - Math.random() * 12,
+      s: 5 + Math.random() * 6, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4, c: colors[(Math.random() * colors.length) | 0],
+    }));
+    const t0 = performance.now();
+    (function frame(now) {
+      const t = now - t0;
+      ctx.clearRect(0, 0, W, H);
+      bits.forEach((b) => {
+        b.vy += 0.38; b.x += b.vx; b.y += b.vy; b.r += b.vr; b.vx *= 0.99;
+        ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(b.r); ctx.globalAlpha = Math.max(0, 1 - t / 2600);
+        ctx.fillStyle = b.c; ctx.fillRect(-b.s / 2, -b.s / 4, b.s, b.s / 2); ctx.restore();
+      });
+      if (t < 2600) requestAnimationFrame(frame); else cv.remove();
+    })(t0);
+  }
 
   const currentUser = () => user;
   const dashboardHref = (role) => rootPath(({ student: "student-dashboard.html", parent: "parent-dashboard.html", teacher: "teacher-dashboard.html" })[role] || "signin.html");
@@ -213,7 +243,9 @@ const Mintly = (() => {
   return {
     ready,
     api,
+    celebrate,
     get LESSONS() { return LESSONS; },
+    get ELECTIVES() { return ELECTIVES; },
     get LESSON_IDS() { return LESSONS.map((l) => l.id); },
     nextLesson,
     markActiveNav,
@@ -241,7 +273,26 @@ const Mintly = (() => {
   };
 })();
 
+// One shared footer for every page, so links stay in sync.
+function renderFooter() {
+  const els = document.querySelectorAll(".site-footer");
+  if (!els.length) return;
+  const up = location.pathname.includes("/lessons/") ? "../" : "";
+  const a = (href, text) => '<a href="' + up + href + '">' + text + "</a>";
+  const html =
+    '<div class="wrap foot-grid">' +
+      '<div class="foot-brand"><div class="brand">mintly<span class="dot">.</span></div>' +
+      "<p>Practice real money decisions before they cost real money. Built for teens, with parents and teachers in the loop.</p></div>" +
+      "<div><h4>Learn</h4>" + a("lessons/financial-literacy.html", "Financial Literacy") + a("lessons/collectables.html", "Collectables") + a("lessons/cryptocurrencies.html", "Cryptocurrencies") + a("glossary.html", "Glossary") + a("slides.html", "Lesson recaps") + "</div>" +
+      "<div><h4>Practice</h4>" + a("mintly.demo.html?from=site", "Stock simulation") + a("lessons/explore.html", "Explore a topic") + a("certificate.html", "Certificate") + a("pricing.html", "Pricing") + "</div>" +
+      "<div><h4>For everyone</h4>" + a("signin.html?mode=signup&role=student", "Students") + a("parents.html", "Parents") + a("teachers.html", "Teachers") + a("privacy.html", "Privacy") + a("terms.html", "Terms") + "</div>" +
+    "</div>" +
+    '<div class="wrap foot-base">Mintly is not a brokerage and does not trade in the stock market. Everything in the simulation uses play money and is not financial advice. © ' + new Date().getFullYear() + " Mintly</div>";
+  els.forEach((el) => { el.classList.add("rich"); el.innerHTML = html; });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  renderFooter();
   Mintly.setupMobileNav();
   Mintly.markActiveNav();
   Mintly.ready.then(() => Mintly.renderNavAuth("nav-auth"));

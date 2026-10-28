@@ -76,11 +76,16 @@
   <h2>Your course <small id="course-pct"></small></h2>
   <div id="course"></div>
 
+  <h2>Electives <small id="el-sub"></small></h2>
+  <div class="sd-quick" id="electives"></div>
+
   <h2>Practice</h2>
   <div class="sd-quick">
     <a href="mintly.demo.html?from=site"><span class="ic" aria-hidden="true">📈</span><span><b>Run a simulation</b><small>Research, ask Leaf, decide. Practice money only.</small></span></a>
     <a href="lessons/explore.html"><span class="ic" aria-hidden="true">🧭</span><span><b>Explore a topic</b><small>Sneakers, cards, crypto and more.</small></span></a>
-    <a href="slides.html"><span class="ic" aria-hidden="true">🎞️</span><span><b>Watch the lesson slides</b><small>Short narrated-style recaps.</small></span></a>
+    <a href="slides.html"><span class="ic" aria-hidden="true">🎞️</span><span><b>Watch the lesson slides</b><small>One-minute recaps, with read-aloud.</small></span></a>
+    <a href="glossary.html"><span class="ic" aria-hidden="true">📖</span><span><b>Money glossary</b><small>Every key word, searchable.</small></span></a>
+    <a href="certificate.html" id="cert-link"><span class="ic" aria-hidden="true">🎓</span><span><b>Your certificate</b><small id="cert-sub">Finish the course to unlock it.</small></span></a>
   </div>
   <div class="sd-panel" style="margin-top:14px">
     <h3>Your decisions</h3>
@@ -186,6 +191,18 @@ Mintly.ready.then(async () => {
         (x.pct && !x.complete ? '<span class="bar"><i style="width:' + x.pct + '%"></i></span>' : "") + "</span></a>";
     }).join("") + "</div></div>").join("");
 
+  // ---- electives ----
+  const unlockedEl = done === total;
+  const ELS = [["collect", "collectables.html", "🃏", "Collectables"], ["crypto", "cryptocurrencies.html", "₿", "Cryptocurrencies"]];
+  $("electives").innerHTML = ELS.map(([key, href, ic, name]) => {
+    const items = Mintly.ELECTIVES.filter((e) => e.id.startsWith(key + "-"));
+    const n = items.filter((e) => Mintly.isLessonComplete(e.id)).length;
+    return '<a href="lessons/' + href + '"><span class="ic" aria-hidden="true">' + ic + '</span><span><b>' + name + '</b><small>' +
+      (unlockedEl ? n + " of " + items.length + " lessons done" : "🔒 Unlocks after the course") + "</small></span></a>";
+  }).join("");
+  $("el-sub").textContent = unlockedEl ? "bonus lessons" : "unlock by finishing the course";
+  if (unlockedEl) $("cert-sub").textContent = "Ready to print or save as a PDF.";
+
   // ---- decisions ----
   if (decisions.length) {
     $("decision-list").innerHTML = decisions.slice(0, 6).map((d) =>
@@ -225,6 +242,8 @@ Mintly.ready.then(async () => {
     ["🛡️", "Scam spotter", "Finish lesson 9", has("lesson-9")],
     ["🗺️", "Planner", "Finish lesson 10", has("lesson-10")],
     ["🏫", "Classmate", "Join a class", sum.ok && sum.classes.length > 0],
+    ["🃏", "Collector", "Finish the Collectables elective", ["collect-1", "collect-2", "collect-3"].every(has)],
+    ["₿", "Crypto-wise", "Finish the Cryptocurrencies elective", ["crypto-1", "crypto-2", "crypto-3"].every(has)],
   ];
   $("badge-count").textContent = BADGES.filter((b) => b[3]).length + " of " + BADGES.length;
   $("badges").innerHTML = BADGES.map((b) => '<div class="sd-badge' + (b[3] ? "" : " off") + '"><span class="ic" aria-hidden="true">' + b[0] + "</span><b>" + b[1] + "</b><small>" + (b[3] ? "Earned" : b[2]) + "</small></div>").join("");

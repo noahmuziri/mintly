@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volatility and the maths of risk — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Cryptocurrencies · Lesson 2</div>
+    <h1>Volatility and the maths of risk</h1>
+    <p class="lesson-meta">About 13 minutes · 5 activities · Your answers and progress are saved to your account</p>
+
+    <p>Crypto prices can jump 20% in a day, and fall just as fast. This lesson shows the maths that makes big drops so painful, the kinds of scams that follow the hype, and why the sentence "only use money you can afford to lose" actually matters.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>If something drops 50%, how much must it rise to recover?</h3>
+      <p>A coin is worth $100 and falls by half. What percentage gain would it need to get back to $100? Make a guess first, before using the calculator.</p>
+      <label class="sr-only" for="warmup-text">If something drops 50%, how much must it rise to recover?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="I think it would need to rise by... because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Volatility</h2>
+    <div class="definition-card">
+      <div class="definition-term">Volatility <span>(noun)</span></div>
+      <p>How quickly and how far a price moves up and down. High volatility means big swings in both directions, which means big possible gains and big possible losses.</p>
+    </div>
+    <p>Stocks move, but most crypto moves far more. A single day of news, a tweet or a rumor can change prices a lot.</p>
+
+    <h2>The surprising maths of losses</h2>
+    <p>Losses are harder to undo than they look. A 50% fall needs a <strong>100%</strong> rise to get back. A 90% fall needs a <strong>900%</strong> rise. The bigger the drop, the less likely you ever fully recover.</p>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Calculator</div>
+      <h3>How much do you need to gain to break even?</h3>
+      <p>Choose the size of the drop and your starting amount.</p>
+      <div class="calc-grid">
+        <label class="split-field">Starting amount<span class="money-input">$<input id="cr-start" type="number" min="1" max="100000" step="10" inputmode="decimal" value="100"></span></label>
+        <label class="split-field">Price drop<span class="money-input"><input id="cr-drop" type="number" min="1" max="99" step="1" inputmode="decimal" value="50">%</span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>Left after the drop</span><b id="cr-left">$0</b></div>
+        <div class="grow"><span>Gain needed to break even</span><b id="cr-gain">$0</b></div>
+        <div><span>After a second drop of the same size</span><b id="cr-two">$0</b></div>
+      </div>
+      <p class="calc-note" id="cr-note"></p>
+      <p class="fine-print">Example maths, not a prediction for any coin.</p>
+    </div>
+
+    <h2>Scams love hype</h2>
+    <ul>
+      <li><strong>Rug pull:</strong> creators hype a new coin, collect money, then disappear and the price collapses to zero.</li>
+      <li><strong>Giveaway scams:</strong> "send 1 coin and get 2 back". Nobody gives free money.</li>
+      <li><strong>Impersonation:</strong> fake accounts of celebrities or support staff asking for your keys or recovery words.</li>
+      <li><strong>Romance and "advisor" scams:</strong> a stranger online teaches you to invest on a fake site. You can never withdraw.</li>
+      <li><strong>Pump-and-dump:</strong> a group hypes a coin, sells to everyone who joins late, and the price crashes.</li>
+    </ul>
+    <p>Crypto transfers are usually <strong>irreversible</strong>. If you're tricked, there is rarely a way to get the money back.</p>
+
+    <h2>"Only use money you can afford to lose"</h2>
+    <p>This is not a slogan. If a coin could fall 80% in a month, then the money you put in should be money you wouldn't need next month, and that wouldn't ruin you if it vanished. Money for school, rent or emergencies does not belong anywhere near it.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      A stranger in a chat says they can double your money in a week with a "guaranteed" coin. List three things that don't add up, and what you would do next.
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="vol">Volatility</button>
+          <button class="match-item" type="button" data-term="rug">Rug pull</button>
+          <button class="match-item" type="button" data-term="pump">Pump-and-dump</button>
+          <button class="match-item" type="button" data-term="irrev">Irreversible</button>
+          <button class="match-item" type="button" data-term="afford">Afford to lose</button>
+          <button class="match-item" type="button" data-term="giveaway">Giveaway scam</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="rug">Creators hype a coin, take the money and vanish</button>
+          <button class="match-item def" type="button" data-def="vol">How far and fast a price moves up and down</button>
+          <button class="match-item def" type="button" data-def="giveaway">"Send some, get double back"</button>
+          <button class="match-item def" type="button" data-def="afford">Money whose loss would not hurt your needs</button>
+          <button class="match-item def" type="button" data-def="irrev">Cannot be undone once sent</button>
+          <button class="match-item def" type="button" data-def="pump">Hyping a coin so insiders can sell to late buyers</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="volatility">
+          <label for="b1">How far and fast a price swings is its <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="rug">
+          <label for="b2">A coin whose creators vanish with the money is a <input id="b2" class="blank-input" autocomplete="off"> pull.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="irreversible">
+          <label for="b3">Crypto transfers are usually <input id="b3" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="100">
+          <label for="b4">A 50% drop needs a <input id="b4" class="blank-input" autocomplete="off"> % rise to break even.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Write your own rule</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>Write two personal rules you'd follow before ever putting money into something volatile, and explain why each one matters.</p>
+      <label class="sr-only" for="final-text">Write your own rule</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="Rule 1... because... Rule 2... because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "Rule 1: only use money I could lose without it affecting my needs, because prices can fall by half or more and take years to recover. Rule 2: never act on a stranger's promise of guaranteed returns, because scams are common and crypto transfers can't be reversed."
+        <span class="sample-tip">Did your rules each come with a reason that links back to risk?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Volatility</dt><dd>How far and fast a price moves.</dd></div>
+      <div><dt>Break-even</dt><dd>The point where you have got back what you put in.</dd></div>
+      <div><dt>Rug pull</dt><dd>Creators vanish with investors' money.</dd></div>
+      <div><dt>Pump-and-dump</dt><dd>Hype to sell to late buyers.</dd></div>
+      <div><dt>Irreversible</dt><dd>Cannot be undone once sent.</dd></div>
+      <div><dt>Afford to lose</dt><dd>Money whose loss won't hurt your needs.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>You now know the risks. Let's turn it into a way to decide. <a href="crypto-3.html"><strong>Go to Lesson 3: Should you? A way to decide →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. A coin falls 50%. What gain is needed to get back to where you started?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">50%</button>
+        <button class="quiz-option" data-correct="false">75%</button>
+        <button class="quiz-option" data-correct="true">100%</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. A message says "send 1 coin, get 2 back". This is most likely:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">A good deal</button>
+        <button class="quiz-option" data-correct="true">A giveaway scam</button>
+        <button class="quiz-option" data-correct="false">A bank offer</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. Why is "only use money you can afford to lose" useful advice?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Prices can fall a lot, so you shouldn't risk money you need</button>
+        <button class="quiz-option" data-correct="false">It guarantees profit</button>
+        <button class="quiz-option" data-correct="false">It is a law</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. If you send crypto to a scammer, you can usually:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Reverse it with your bank</button>
+        <button class="quiz-option" data-correct="true">Not get it back</button>
+        <button class="quiz-option" data-correct="false">Cancel within 24 hours</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="cryptocurrencies.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="crypto-1.html">← Lesson 1: What crypto actually is</a>
+    <a class="next" href="crypto-3.html">Lesson 3: Should you? A way to decide →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="lesson.js"></script>
+<script>
+function money(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+const crStart = document.getElementById('cr-start');
+const crDrop = document.getElementById('cr-drop');
+function updateCr() {
+  const start = Math.max(0, Number(crStart.value) || 0);
+  const d = Math.min(99, Math.max(0, Number(crDrop.value) || 0)) / 100;
+  const left = start * (1 - d);
+  const gain = d ? (1 / (1 - d) - 1) * 100 : 0;
+  document.getElementById('cr-left').textContent = money(left);
+  document.getElementById('cr-gain').textContent = Math.round(gain).toLocaleString() + '%';
+  document.getElementById('cr-two').textContent = money(left * (1 - d));
+  document.getElementById('cr-note').textContent = 'A ' + Math.round(d * 100) + '% drop turns ' + money(start) + ' into ' + money(left) + '. To get back to ' + money(start) + ' it must rise ' + Math.round(gain).toLocaleString() + '%.';
+}
+[crStart, crDrop].forEach((el) => el.addEventListener('input', updateCr));
+updateCr();
+</script>
+</body>
+</html>

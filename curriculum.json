@@ -50,5 +50,43 @@
       "title": "Your money plan: putting it all together",
       "mins": 15
     }
+  ],
+  "electives": [
+    {
+      "id": "collect-1",
+      "course": "collectables",
+      "title": "What makes a collectable valuable?",
+      "mins": 10
+    },
+    {
+      "id": "collect-2",
+      "course": "collectables",
+      "title": "Condition, grading and fakes",
+      "mins": 11
+    },
+    {
+      "id": "collect-3",
+      "course": "collectables",
+      "title": "Buying, selling and flipping safely",
+      "mins": 13
+    },
+    {
+      "id": "crypto-1",
+      "course": "crypto",
+      "title": "What crypto actually is",
+      "mins": 11
+    },
+    {
+      "id": "crypto-2",
+      "course": "crypto",
+      "title": "Volatility and the maths of risk",
+      "mins": 13
+    },
+    {
+      "id": "crypto-3",
+      "course": "crypto",
+      "title": "Should you? A way to decide",
+      "mins": 12
+    }
   ]
 }

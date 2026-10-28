@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buying, selling and flipping safely — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Collectables · Lesson 3</div>
+    <h1>Buying, selling and flipping safely</h1>
+    <p class="lesson-meta">About 13 minutes · 5 activities · Your answers and progress are saved to your account</p>
+
+    <p>Buying something for $50 and selling it for $80 sounds like an easy $30. Then the fees, shipping and your time show up. This lesson shows how reselling really works, how to work out your profit honestly, and how to stay safe doing it.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>Is a $30 gap really $30 profit?</h3>
+      <p>You buy an item for $50 and sell it online for $80. How much profit do you think you made? What could shrink it?</p>
+      <label class="sr-only" for="warmup-text">Is a $30 gap really $30 profit?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="I think I&#x27;d make... but it could shrink because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Where the money really goes</h2>
+    <p>The difference between what you paid and what you sold for is not your profit. Costs eat into it:</p>
+    <ul>
+      <li><strong>Platform fees:</strong> marketplaces often take a percentage of the sale, and payment services take a little more.</li>
+      <li><strong>Shipping and packaging:</strong> you may pay to send it, plus the box and padding.</li>
+      <li><strong>Returns and problems:</strong> a refund or damaged package can wipe out the gain.</li>
+      <li><strong>Your time:</strong> hunting, photographing, listing and answering questions. Ten hours for $20 is under $2 an hour.</li>
+    </ul>
+    <p>Use the calculator below with your own numbers before you buy anything to resell.</p>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Calculator</div>
+      <h3>What's your real profit?</h3>
+      <p>Enter what you paid, what you sold for, the platform's fee and your shipping cost.</p>
+      <div class="calc-grid">
+        <label class="split-field">You paid<span class="money-input">$<input id="flip-buy" type="number" min="0" max="5000" step="1" inputmode="decimal" value="50"></span></label>
+        <label class="split-field">You sell for<span class="money-input">$<input id="flip-sell" type="number" min="0" max="5000" step="1" inputmode="decimal" value="80"></span></label>
+        <label class="split-field">Platform fee<span class="money-input"><input id="flip-fee" type="number" min="0" max="50" step="0.5" inputmode="decimal" value="13">%</span></label>
+        <label class="split-field">Shipping and packaging<span class="money-input">$<input id="flip-ship" type="number" min="0" max="200" step="1" inputmode="decimal" value="8"></span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>Fees and shipping</span><b id="flip-costs">$0</b></div>
+        <div class="grow"><span>Your profit</span><b id="flip-profit">$0</b></div>
+        <div class="grow"><span>Return on what you paid</span><b id="flip-roi">0%</b></div>
+      </div>
+      <p class="calc-note" id="flip-note"></p>
+      <p class="fine-print">Example only. Real fees differ by platform and change over time, and taxes may apply to income from reselling. Ask a parent.</p>
+    </div>
+
+    <h2>Selling safely</h2>
+    <ul>
+      <li><strong>Check the rules:</strong> many marketplaces and payment apps require you to be 18, so ask a parent to help you use theirs.</li>
+      <li><strong>Keep conversations on the platform.</strong> Moving to a private chat or sending money through a friend-to-friend payment removes your protection.</li>
+      <li><strong>Watch for overpayment scams</strong> (from lesson 9): a "buyer" sends too much and asks for a refund of the difference before their payment bounces.</li>
+      <li><strong>Meet in public</strong> with an adult for local sales, and never share your address with strangers.</li>
+    </ul>
+
+    <h2>Taxes and records</h2>
+    <p>Money you make from selling for a profit can count as income, depending on where you live and how much you make. Keep a simple record of what you paid, what you sold for and your costs, and ask a parent about whether anything is owed.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      If flipping earns you $4 an hour after fees and time, is it a good use of your weekend? What else could that time earn?
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="fee">Platform fee</button>
+          <button class="match-item" type="button" data-term="flip">Flipping</button>
+          <button class="match-item" type="button" data-term="margin">Profit margin</button>
+          <button class="match-item" type="button" data-term="escrow">Buyer protection</button>
+          <button class="match-item" type="button" data-term="over">Overpayment scam</button>
+          <button class="match-item" type="button" data-term="record">Records</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="flip">Buying something to resell quickly for more</button>
+          <button class="match-item def" type="button" data-def="fee">A cut the marketplace takes from each sale</button>
+          <button class="match-item def" type="button" data-def="record">Notes on what you paid, sold and spent</button>
+          <button class="match-item def" type="button" data-def="over">A fake buyer sends too much and asks for a refund</button>
+          <button class="match-item def" type="button" data-def="escrow">Payment protection if an item never arrives or isn't as described</button>
+          <button class="match-item def" type="button" data-def="margin">How much you keep compared with what you paid</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="flipping|flip">
+          <label for="b1">Buying something to resell quickly is called <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="fees|fee">
+          <label for="b2">Your real profit is what you keep after <input id="b2" class="blank-input" autocomplete="off"> and shipping.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="overpayment|over-payment">
+          <label for="b3">A fake buyer who sends too much money is an <input id="b3" class="blank-input" autocomplete="off"> scam.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="sold|what you sold for">
+          <label for="b4">Keep a simple record of what you paid and <input id="b4" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Would you flip it?</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>A friend wants to buy a $40 item to resell for $55. Work out what could go wrong with the maths and decide whether you'd do it.</p>
+      <label class="sr-only" for="final-text">Would you flip it?</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="I&#x27;d work out... and I would / wouldn&#x27;t because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "After a fee of about 13% and shipping, the $15 gap shrinks to only a few dollars, and a return could wipe it out. Add the time it takes and it isn't worth it unless I can find items that are much cheaper, and I'd need a parent's help to sell safely."
+        <span class="sample-tip">Did yours subtract fees, shipping and time before deciding?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Flipping</dt><dd>Buying something to resell quickly for more.</dd></div>
+      <div><dt>Platform fee</dt><dd>A cut of each sale taken by the marketplace.</dd></div>
+      <div><dt>Profit margin</dt><dd>How much you keep compared with what you paid.</dd></div>
+      <div><dt>Buyer protection</dt><dd>Payment protection if something goes wrong.</dd></div>
+      <div><dt>Overpayment scam</dt><dd>A fake buyer overpays and asks for a refund.</dd></div>
+      <div><dt>Records</dt><dd>Notes on what you paid, sold and spent.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>That finishes Collectables. Ready for something with even bigger swings? <a href="cryptocurrencies.html"><strong>See the Cryptocurrencies elective →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. You buy for $50, sell for $80, and pay $10 in fees and $8 in shipping. What is your profit?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">$30</button>
+        <button class="quiz-option" data-correct="true">$12</button>
+        <button class="quiz-option" data-correct="false">$22</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. Why should sales stay on the platform?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">It is faster</button>
+        <button class="quiz-option" data-correct="true">You keep buyer and seller protection</button>
+        <button class="quiz-option" data-correct="false">It costs less always</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. A buyer sends $200 for a $120 item and asks you to refund $80. What should you do?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Refund right away</button>
+        <button class="quiz-option" data-correct="true">Not refund until the payment is truly confirmed, and treat it as a likely scam</button>
+        <button class="quiz-option" data-correct="false">Send the item and the money</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Which cost is easiest to forget when flipping?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Your time</button>
+        <button class="quiz-option" data-correct="false">The item's name</button>
+        <button class="quiz-option" data-correct="false">The photos' size</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="collectables.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="collect-2.html">← Lesson 2: Condition, grading and fakes</a>
+    <a class="next" href="cryptocurrencies.html">Back to the electives →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="lesson.js"></script>
+<script>
+function money(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+const flipBuy = document.getElementById('flip-buy');
+const flipSell = document.getElementById('flip-sell');
+const flipFee = document.getElementById('flip-fee');
+const flipShip = document.getElementById('flip-ship');
+function updateFlip() {
+  const buy = Math.max(0, Number(flipBuy.value) || 0);
+  const sell = Math.max(0, Number(flipSell.value) || 0);
+  const fee = sell * Math.max(0, Number(flipFee.value) || 0) / 100;
+  const ship = Math.max(0, Number(flipShip.value) || 0);
+  const profit = sell - fee - ship - buy;
+  document.getElementById('flip-costs').textContent = money(fee + ship);
+  document.getElementById('flip-profit').textContent = (profit < 0 ? '-' : '') + money(Math.abs(profit));
+  document.getElementById('flip-roi').textContent = buy ? Math.round(profit / buy * 100) + '%' : '-';
+  document.getElementById('flip-note').textContent = profit < 0
+    ? 'You would lose ' + money(-profit) + ' on this sale.'
+    : 'You made ' + money(profit) + ', not ' + money(sell - buy) + '. Fees and shipping took ' + money(fee + ship) + '.';
+}
+[flipBuy, flipSell, flipFee, flipShip].forEach((el) => el.addEventListener('input', updateFlip));
+updateFlip();
+</script>
+</body>
+</html>

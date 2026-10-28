@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money glossary — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-header">
+    <div class="eyebrow">Glossary</div>
+    <h1>Every money word, in plain English.</h1>
+    <p id="gl-count">All the key words from the lessons, in one searchable list.</p>
+    <div class="field" style="max-width:420px;margin-top:18px"><label class="sr-only" for="gl-q">Search the glossary</label><input id="gl-q" type="search" placeholder="Search a word, like APR or inflation" autocomplete="off"></div>
+  </div>
+  <div class="wrap" style="padding-bottom:72px">
+    <div id="gl-letters" class="gl-letters" aria-label="Jump to a letter"></div>
+    <div id="gl-list"></div>
+  </div>
+</main>
+<footer class="site-footer"><div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div></footer>
+<script src="script.js"></script>
+<script>
+(async function () {
+  const esc = Mintly.escapeHTML;
+  const data = await (await fetch("glossary.json")).json();
+  const list = document.getElementById("gl-list"), letters = document.getElementById("gl-letters"), q = document.getElementById("gl-q");
+  function render() {
+    const term = q.value.trim().toLowerCase();
+    const rows = data.filter((d) => !term || d.term.toLowerCase().includes(term) || d.def.toLowerCase().includes(term));
+    document.getElementById("gl-count").textContent = rows.length + (rows.length === 1 ? " word" : " words") + (term ? " match" : " from the lessons, in one searchable list");
+    let last = "";
+    list.innerHTML = rows.length ? rows.map((d) => {
+      const L = /[a-z]/i.test(d.term[0]) ? d.term[0].toUpperCase() : "#", head = L !== last ? '<h2 class="gl-h" id="gl-' + (L === "#" ? "num" : L) + '">' + L + "</h2>" : "";
+      last = L;
+      return head + '<div class="gl-row"><b>' + esc(d.term) + "</b><span>" + esc(d.def) + '</span><a href="lessons/' + d.lesson + '.html">' + esc(d.title) + " →</a></div>";
+    }).join("") : '<p class="dash-muted">No matching words. Try a shorter search.</p>';
+    const set = [...new Set(rows.map((d) => (/[a-z]/i.test(d.term[0]) ? d.term[0].toUpperCase() : "#")))];
+    letters.innerHTML = set.map((c) => '<a href="#gl-' + (c === "#" ? "num" : c) + '">' + c + "</a>").join("");
+  }
+  q.addEventListener("input", render);
+  render();
+})();
+</script>
+</body>
+</html>

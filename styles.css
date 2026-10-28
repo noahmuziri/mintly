@@ -1340,3 +1340,52 @@ a.lesson-row:hover, a.course-card:hover { transform: translateY(-2px); box-shado
 /* For Parents: readable text on the mint "Act" step */
 .path-stage-real, .path-stage-real h3, .path-stage-real p { color: #151515 !important; }
 .path-stage-real p { opacity: .85; }
+
+/* lesson reading progress bar */
+.read-bar { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 60; pointer-events: none; }
+.read-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--pmint), var(--pgreen)); border-radius: 0 3px 3px 0; transition: width .1s linear; }
+
+/* Glossary */
+.gl-letters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; position: sticky; top: 64px; background: var(--bg); padding: 10px 0; z-index: 5; }
+.gl-letters a { min-width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--line); font-weight: 700; font-size: 14px; text-decoration: none; color: var(--ink); background: var(--panel); }
+.gl-letters a:hover { background: var(--pmint); color: #151515; }
+.gl-h { font: 800 28px var(--fh); margin: 28px 0 8px; scroll-margin-top: 130px; color: var(--pgreen); }
+.gl-row { display: grid; grid-template-columns: 220px 1fr auto; gap: 8px 24px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.gl-row b { font-size: 17px; }
+.gl-row span { color: var(--mute); }
+.gl-row a { font-size: 13px; color: var(--pgreen); font-weight: 600; text-decoration: none; white-space: nowrap; }
+@media (max-width: 760px) { .gl-row { grid-template-columns: 1fr; gap: 4px; } }
+
+/* Certificate */
+.cert-wrap { padding: 32px 0 72px; }
+.cert-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.cert { background: #fffdf7; color: #151515; border-radius: 12px; padding: 14px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); max-width: 1000px; margin: 0 auto; }
+.cert-in { border: 3px solid #151515; outline: 6px solid #A8DDC0; outline-offset: -12px; padding: clamp(28px, 6vw, 64px); text-align: center; background: radial-gradient(500px 220px at 50% 0, rgba(168,221,192,.35), transparent 70%); }
+.cert-brand { font: 800 30px "Sora", sans-serif; letter-spacing: -.04em; }
+.cert-brand span { color: #2F7D58; }
+.cert-kick { font: 700 13px "Inter", sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #2F7D58; margin: 26px 0 22px; }
+.cert-small { color: #5b5b57; margin: 8px auto; max-width: 560px; }
+.cert-name { font: 800 clamp(34px, 6vw, 60px)/1.1 "Fraunces", serif; margin: 14px 0; border-bottom: 2px solid #151515; display: inline-block; padding: 0 28px 8px; }
+.cert-course { font: 800 clamp(28px, 4.4vw, 46px)/1.1 "Sora", sans-serif; letter-spacing: -.03em; margin: 12px 0; }
+.cert-foot { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-top: 40px; }
+.cert-foot b { display: block; font: 700 18px "Sora", sans-serif; border-top: 1px solid #151515; padding-top: 8px; }
+.cert-foot span { font-size: 12px; color: #5b5b57; }
+.cert-foot > div:not(.cert-seal) { min-width: 180px; }
+.cert-seal { width: 74px; height: 74px; border-radius: 50%; background: #A8DDC0; border: 3px solid #151515; display: grid; place-items: center; font-size: 34px; font-weight: 800; }
+@media print {
+  .site-header, .site-footer, .cert-actions, .dock, .cp, .read-bar { display: none !important; }
+  body { background: #fff !important; }
+  .cert { box-shadow: none; max-width: none; }
+  @page { size: landscape; margin: 12mm; }
+}
+
+/* Shared footer */
+.site-footer.rich { text-align: left; padding: 56px 0 28px; border-top: 1px solid var(--line); background: var(--panel); margin-top: 48px; }
+.foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 32px; }
+.foot-brand .brand { font: 800 26px var(--fh); letter-spacing: -.04em; display: inline-block; margin-bottom: 10px; }
+.foot-brand p { color: var(--mute); font-size: 14px; max-width: 320px; margin: 0; line-height: 1.55; }
+.foot-grid h4 { font: 700 12px var(--fb); letter-spacing: .1em; text-transform: uppercase; color: var(--mute); margin: 4px 0 14px; }
+.foot-grid a { display: block; color: var(--ink); text-decoration: none; font-size: 15px; padding: 5px 0; }
+.foot-grid a:hover { color: var(--pgreen); text-decoration: underline; text-underline-offset: 3px; }
+.foot-base { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--mute); font-size: 13px; line-height: 1.55; }
+@media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; } }

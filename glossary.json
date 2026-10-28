@@ -1,0 +1,560 @@
+[
+ {
+  "term": "24-hour rule",
+  "def": "Waiting a day before an unplanned purchase.",
+  "lesson": "lesson-3",
+  "title": "Saving for something you want"
+ },
+ {
+  "term": "50/30/20 rule",
+  "def": "About 50% needs, 30% wants, 20% savings.",
+  "lesson": "lesson-10",
+  "title": "Your money plan: putting it all together"
+ },
+ {
+  "term": "Afford to lose",
+  "def": "Money whose loss won't hurt your needs.",
+  "lesson": "crypto-2",
+  "title": "Volatility and the maths of risk"
+ },
+ {
+  "term": "APR",
+  "def": "The yearly cost of borrowing as a percentage.",
+  "lesson": "lesson-7",
+  "title": "Credit and debt: borrowing without getting stuck"
+ },
+ {
+  "term": "Asking price",
+  "def": "What a seller hopes to get.",
+  "lesson": "collect-2",
+  "title": "Condition, grading and fakes"
+ },
+ {
+  "term": "Authentic",
+  "def": "Genuine, not a fake.",
+  "lesson": "collect-2",
+  "title": "Condition, grading and fakes"
+ },
+ {
+  "term": "Balance",
+  "def": "How much is in your account right now.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Blockchain",
+  "def": "A shared record copied across many computers.",
+  "lesson": "crypto-1",
+  "title": "What crypto actually is"
+ },
+ {
+  "term": "BNPL",
+  "def": "Buy now, pay later: splitting a purchase into instalments.",
+  "lesson": "lesson-7",
+  "title": "Credit and debt: borrowing without getting stuck"
+ },
+ {
+  "term": "Break-even",
+  "def": "The point where you have got back what you put in.",
+  "lesson": "crypto-2",
+  "title": "Volatility and the maths of risk"
+ },
+ {
+  "term": "Budget",
+  "def": "A plan for your money before you spend it.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Buyer protection",
+  "def": "Payment protection if something goes wrong.",
+  "lesson": "collect-3",
+  "title": "Buying, selling and flipping safely"
+ },
+ {
+  "term": "Checking account",
+  "def": "An everyday spending account, usually with a debit card.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Collectable",
+  "def": "An item people collect, often for hobby or possible resale value.",
+  "lesson": "collect-1",
+  "title": "What makes a collectable valuable?"
+ },
+ {
+  "term": "Compound growth",
+  "def": "Earning returns on your past returns.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Compound interest",
+  "def": "Interest on both your original amount and earlier interest.",
+  "lesson": "lesson-8",
+  "title": "Time, inflation and compounding"
+ },
+ {
+  "term": "Condition",
+  "def": "The physical state of an item.",
+  "lesson": "collect-1",
+  "title": "What makes a collectable valuable?"
+ },
+ {
+  "term": "Conflict of interest",
+  "def": "When someone profits from your decision.",
+  "lesson": "crypto-3",
+  "title": "Should you? A way to decide"
+ },
+ {
+  "term": "Cosigner",
+  "def": "Someone who agrees to repay if you can't.",
+  "lesson": "lesson-7",
+  "title": "Credit and debt: borrowing without getting stuck"
+ },
+ {
+  "term": "Counterfeit",
+  "def": "A fake made to look real.",
+  "lesson": "collect-2",
+  "title": "Condition, grading and fakes"
+ },
+ {
+  "term": "Credit / debt",
+  "def": "Ability to borrow, and the money you owe once you do.",
+  "lesson": "lesson-7",
+  "title": "Credit and debt: borrowing without getting stuck"
+ },
+ {
+  "term": "Credit score",
+  "def": "A number showing how reliably you repay borrowed money.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Cryptocurrency",
+  "def": "A digital token recorded on a shared public record.",
+  "lesson": "crypto-1",
+  "title": "What crypto actually is"
+ },
+ {
+  "term": "Debit card",
+  "def": "A card that spends money from your checking account.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Decision Score",
+  "def": "Mintly's score for how well you decided, not how the price moved.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Demand",
+  "def": "How many people want to buy.",
+  "lesson": "collect-1",
+  "title": "What makes a collectable valuable?"
+ },
+ {
+  "term": "Deposit / withdrawal",
+  "def": "Money put into / taken out of an account.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Diversification",
+  "def": "Spreading money across many investments.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Dividend",
+  "def": "Part of a company's profit paid to shareholders.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Due diligence",
+  "def": "Researching before you decide.",
+  "lesson": "crypto-3",
+  "title": "Should you? A way to decide"
+ },
+ {
+  "term": "Earnings",
+  "def": "How much profit a company makes.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Emergency fund",
+  "def": "Savings set aside for surprises.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Exchange",
+  "def": "A service for buying and selling crypto.",
+  "lesson": "crypto-3",
+  "title": "Should you? A way to decide"
+ },
+ {
+  "term": "Exit plan",
+  "def": "Deciding in advance when you would sell.",
+  "lesson": "crypto-3",
+  "title": "Should you? A way to decide"
+ },
+ {
+  "term": "Expense",
+  "def": "Money that goes out.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Fad",
+  "def": "A craze that fades once attention moves on.",
+  "lesson": "collect-1",
+  "title": "What makes a collectable valuable?"
+ },
+ {
+  "term": "FDIC / NCUA",
+  "def": "US agencies that insure bank / credit union deposits.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Flipping",
+  "def": "Buying something to resell quickly for more.",
+  "lesson": "collect-3",
+  "title": "Buying, selling and flipping safely"
+ },
+ {
+  "term": "FOMO",
+  "def": "Pressure from fear of missing out.",
+  "lesson": "crypto-3",
+  "title": "Should you? A way to decide"
+ },
+ {
+  "term": "Goal",
+  "def": "A specific amount and date for something you want.",
+  "lesson": "lesson-10",
+  "title": "Your money plan: putting it all together"
+ },
+ {
+  "term": "Grading",
+  "def": "Paid inspection that gives an item a condition score.",
+  "lesson": "collect-2",
+  "title": "Condition, grading and fakes"
+ },
+ {
+  "term": "Gross pay",
+  "def": "Pay before anything is taken out.",
+  "lesson": "lesson-6",
+  "title": "Earning money: jobs, paychecks and taxes"
+ },
+ {
+  "term": "Gross pay / net pay",
+  "def": "Pay before deductions / pay you actually take home.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Impulse buy",
+  "def": "A purchase made on the spot, without planning.",
+  "lesson": "lesson-3",
+  "title": "Saving for something you want"
+ },
+ {
+  "term": "Income",
+  "def": "Money that comes in.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Index fund",
+  "def": "A fund that holds every company in an index.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Inflation",
+  "def": "A general rise in prices over time.",
+  "lesson": "lesson-8",
+  "title": "Time, inflation and compounding"
+ },
+ {
+  "term": "Interest",
+  "def": "The cost of borrowing, or the reward for saving.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Interest / APY",
+  "def": "The price of money / the yearly interest a savings account pays.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Investing",
+  "def": "Putting money into something that could grow, with a risk of loss.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Irreversible",
+  "def": "Cannot be undone once sent.",
+  "lesson": "crypto-2",
+  "title": "Volatility and the maths of risk"
+ },
+ {
+  "term": "Minimum payment",
+  "def": "The smallest amount you can pay without being late.",
+  "lesson": "lesson-7",
+  "title": "Credit and debt: borrowing without getting stuck"
+ },
+ {
+  "term": "Mint",
+  "def": "Perfect or near-perfect condition.",
+  "lesson": "collect-2",
+  "title": "Condition, grading and fakes"
+ },
+ {
+  "term": "Money mule",
+  "def": "A person used to move money for scammers.",
+  "lesson": "lesson-9",
+  "title": "Scams and staying safe with money"
+ },
+ {
+  "term": "Need",
+  "def": "Something you must have to stay safe, healthy and get to school or work.",
+  "lesson": "lesson-2",
+  "title": "Needs vs. wants: building a simple budget"
+ },
+ {
+  "term": "Net pay",
+  "def": "Take-home pay, after taxes and deductions.",
+  "lesson": "lesson-6",
+  "title": "Earning money: jobs, paychecks and taxes"
+ },
+ {
+  "term": "Opportunity cost",
+  "def": "What you give up when you choose something.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Overdraft",
+  "def": "Spending more than your balance, which can cause a fee.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Overpayment scam",
+  "def": "A fake payment bigger than agreed, with a request to send back the difference.",
+  "lesson": "lesson-9",
+  "title": "Scams and staying safe with money"
+ },
+ {
+  "term": "Pay stub",
+  "def": "A record of hours, pay, deductions and net pay for a pay period.",
+  "lesson": "lesson-6",
+  "title": "Earning money: jobs, paychecks and taxes"
+ },
+ {
+  "term": "Pay yourself first",
+  "def": "Move money to savings before spending on wants.",
+  "lesson": "lesson-3",
+  "title": "Saving for something you want"
+ },
+ {
+  "term": "Payroll tax (FICA)",
+  "def": "Social Security and Medicare taxes, 7.65% of pay in the US.",
+  "lesson": "lesson-6",
+  "title": "Earning money: jobs, paychecks and taxes"
+ },
+ {
+  "term": "Phishing",
+  "def": "Fake messages that try to steal your login or card details.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Platform fee",
+  "def": "A cut of each sale taken by the marketplace.",
+  "lesson": "collect-3",
+  "title": "Buying, selling and flipping safely"
+ },
+ {
+  "term": "Private key",
+  "def": "The secret that controls your coins.",
+  "lesson": "crypto-1",
+  "title": "What crypto actually is"
+ },
+ {
+  "term": "Profit margin",
+  "def": "How much you keep compared with what you paid.",
+  "lesson": "collect-3",
+  "title": "Buying, selling and flipping safely"
+ },
+ {
+  "term": "Provenance",
+  "def": "The record of who has owned an item.",
+  "lesson": "collect-1",
+  "title": "What makes a collectable valuable?"
+ },
+ {
+  "term": "Pump and dump",
+  "def": "Hyping a cheap asset, then selling to those who buy in.",
+  "lesson": "lesson-9",
+  "title": "Scams and staying safe with money"
+ },
+ {
+  "term": "Pump-and-dump",
+  "def": "Hype to sell to late buyers.",
+  "lesson": "crypto-2",
+  "title": "Volatility and the maths of risk"
+ },
+ {
+  "term": "Purchasing power",
+  "def": "How much your money can buy.",
+  "lesson": "lesson-8",
+  "title": "Time, inflation and compounding"
+ },
+ {
+  "term": "Records",
+  "def": "Notes on what you paid, sold and spent.",
+  "lesson": "collect-3",
+  "title": "Buying, selling and flipping safely"
+ },
+ {
+  "term": "Red flag",
+  "def": "A warning sign of a scam.",
+  "lesson": "lesson-9",
+  "title": "Scams and staying safe with money"
+ },
+ {
+  "term": "Regulation",
+  "def": "Government rules about how something works.",
+  "lesson": "crypto-3",
+  "title": "Should you? A way to decide"
+ },
+ {
+  "term": "Return",
+  "def": "How much an investment gained or lost.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Risk",
+  "def": "The chance an investment loses value.",
+  "lesson": "lesson-1",
+  "title": "What is financial literacy?"
+ },
+ {
+  "term": "Rug pull",
+  "def": "Creators vanish with investors' money.",
+  "lesson": "crypto-2",
+  "title": "Volatility and the maths of risk"
+ },
+ {
+  "term": "Rule of 72",
+  "def": "72 divided by the yearly return ≈ years to double.",
+  "lesson": "lesson-8",
+  "title": "Time, inflation and compounding"
+ },
+ {
+  "term": "Savings account",
+  "def": "An account for money you're keeping, which pays more interest.",
+  "lesson": "lesson-4",
+  "title": "How banks work: accounts, debit cards and interest"
+ },
+ {
+  "term": "Savings goal",
+  "def": "A specific amount, for a specific thing, by a specific date.",
+  "lesson": "lesson-3",
+  "title": "Saving for something you want"
+ },
+ {
+  "term": "Scarcity",
+  "def": "How few of something exist.",
+  "lesson": "collect-1",
+  "title": "What makes a collectable valuable?"
+ },
+ {
+  "term": "Smart contract",
+  "def": "A small program that runs on a blockchain.",
+  "lesson": "crypto-1",
+  "title": "What crypto actually is"
+ },
+ {
+  "term": "Sold price",
+  "def": "What an item actually sold for.",
+  "lesson": "collect-2",
+  "title": "Condition, grading and fakes"
+ },
+ {
+  "term": "Stablecoin",
+  "def": "A token designed to track a regular currency.",
+  "lesson": "crypto-1",
+  "title": "What crypto actually is"
+ },
+ {
+  "term": "Statement balance",
+  "def": "What you owe at the end of the billing period.",
+  "lesson": "lesson-7",
+  "title": "Credit and debt: borrowing without getting stuck"
+ },
+ {
+  "term": "Stock / share",
+  "def": "Ownership in a company / one piece of that ownership.",
+  "lesson": "lesson-5",
+  "title": "Intro to investing: stocks, risk and diversification"
+ },
+ {
+  "term": "Surplus",
+  "def": "Money left over after your expenses.",
+  "lesson": "lesson-2",
+  "title": "Needs vs. wants: building a simple budget"
+ },
+ {
+  "term": "Time horizon",
+  "def": "How long you plan to keep money invested.",
+  "lesson": "lesson-8",
+  "title": "Time, inflation and compounding"
+ },
+ {
+  "term": "Two-factor authentication (2FA)",
+  "def": "A second step after your password to prove it's you.",
+  "lesson": "lesson-9",
+  "title": "Scams and staying safe with money"
+ },
+ {
+  "term": "Volatility",
+  "def": "How far and fast a price moves.",
+  "lesson": "crypto-2",
+  "title": "Volatility and the maths of risk"
+ },
+ {
+  "term": "W-4",
+  "def": "The form that tells your employer how much income tax to withhold.",
+  "lesson": "lesson-6",
+  "title": "Earning money: jobs, paychecks and taxes"
+ },
+ {
+  "term": "Wallet",
+  "def": "Where crypto is stored.",
+  "lesson": "crypto-1",
+  "title": "What crypto actually is"
+ },
+ {
+  "term": "Want",
+  "def": "Something nice to have that you could live without.",
+  "lesson": "lesson-2",
+  "title": "Needs vs. wants: building a simple budget"
+ },
+ {
+  "term": "Withholding",
+  "def": "Tax your employer holds back and sends to the government for you.",
+  "lesson": "lesson-6",
+  "title": "Earning money: jobs, paychecks and taxes"
+ }
+]

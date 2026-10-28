@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What makes a collectable valuable? — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Collectables · Lesson 1</div>
+    <h1>What makes a collectable valuable?</h1>
+    <p class="lesson-meta">About 10 minutes · 4 activities · Your answers and progress are saved to your account</p>
+
+    <p>Trading cards, sneakers, comics, game consoles, vinyl records. Some collectables sell for far more than they cost, and plenty sell for far less. This lesson explains what actually drives the price, so you can tell the difference between something rare and something that's just hyped.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>Why would anyone pay $500 for a piece of cardboard?</h3>
+      <p>Think of something people collect that you think is overpriced, or something that you'd pay extra for. What makes it worth that much to them?</p>
+      <label class="sr-only" for="warmup-text">Why would anyone pay $500 for a piece of cardboard?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="People pay a lot for it because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Value is what someone will pay</h2>
+    <p>A collectable has no fixed value. Its price is simply what a buyer and a seller agree on today. That means the price can move quickly, and it can fall as easily as it rises. Four things push it around.</p>
+    <ul>
+      <li><strong>Scarcity:</strong> how few exist. A card with a small print run is harder to find than one printed in the millions.</li>
+      <li><strong>Demand:</strong> how many people want it, and how badly. Something rare that nobody wants is still cheap.</li>
+      <li><strong>Condition:</strong> the same item in perfect shape can be worth many times more than a worn one.</li>
+      <li><strong>Story:</strong> who owned it, which famous moment it's tied to, or whether it's a first edition. People pay for the story.</li>
+    </ul>
+
+    <h2>Rare is not the same as valuable</h2>
+    <p>Scarcity only matters when there is demand. A hand-drawn doodle from your class is one of a kind, and still worth nothing to a stranger. Value needs both: few available and plenty of people who want it.</p>
+    <div class="definition-card">
+      <div class="definition-term">Supply and demand <span>(noun)</span></div>
+      <p>Supply is how many are for sale. Demand is how many people want to buy. When demand beats supply, prices rise. When supply beats demand, prices fall.</p>
+    </div>
+
+    <h2>Trends and fads</h2>
+    <p>Many collectables spike because of a movie, a streamer, a famous owner or a social media wave. When the attention moves on, so does the price. Items that held their value for decades usually had lasting, widespread appeal, not just a moment of hype.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      A card is selling for ten times its price from last month because a video went viral. What would have to be true for it to still be worth that next year? What happens if you're the last person who bought it?
+    </div>
+
+    <h2>Collecting vs. investing</h2>
+    <p>Collecting for fun is a hobby. Treating collectables as an investment is a bet, with extra problems: there's no guaranteed buyer, fees can be high, and fakes exist. A good rule is to buy what you love and only spend money you could comfortably lose.</p>
+
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="scarcity">Scarcity</button>
+          <button class="match-item" type="button" data-term="demand">Demand</button>
+          <button class="match-item" type="button" data-term="condition">Condition</button>
+          <button class="match-item" type="button" data-term="provenance">Provenance</button>
+          <button class="match-item" type="button" data-term="fad">Fad</button>
+          <button class="match-item" type="button" data-term="market">Market price</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="demand">How many people want to buy something</button>
+          <button class="match-item def" type="button" data-def="scarcity">How few of something exist</button>
+          <button class="match-item def" type="button" data-def="market">What a buyer and seller agree on right now</button>
+          <button class="match-item def" type="button" data-def="fad">A craze that fades once attention moves on</button>
+          <button class="match-item def" type="button" data-def="provenance">The history of who owned an item</button>
+          <button class="match-item def" type="button" data-def="condition">The physical state of an item</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="scarcity">
+          <label for="b1">How few of something exist is its <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="demand">
+          <label for="b2">When <input id="b2" class="blank-input" autocomplete="off"> is higher than supply, prices tend to rise.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="fad">
+          <label for="b3">A craze that fades quickly is called a <input id="b3" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="condition">
+          <label for="b4">The same item in better <input id="b4" class="blank-input" autocomplete="off"> is usually worth more.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Is it rare, or just hyped?</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>A friend says a new collectable will "definitely be worth a fortune". Write the questions you'd ask before agreeing, using scarcity, demand and trends.</p>
+      <label class="sr-only" for="final-text">Is it rare, or just hyped?</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="I&#x27;d ask... because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "I'd ask how many exist and whether people will still want it in a few years, or if it's just trending right now. I'd look at what similar items sold for, check the condition, and only spend what I can afford to lose."
+        <span class="sample-tip">Did yours cover both how many exist and how many people want it, plus whether it's a trend?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Collectable</dt><dd>An item people collect, often for hobby or possible resale value.</dd></div>
+      <div><dt>Scarcity</dt><dd>How few of something exist.</dd></div>
+      <div><dt>Demand</dt><dd>How many people want to buy.</dd></div>
+      <div><dt>Condition</dt><dd>The physical state of an item.</dd></div>
+      <div><dt>Provenance</dt><dd>The record of who has owned an item.</dd></div>
+      <div><dt>Fad</dt><dd>A craze that fades once attention moves on.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>Value also depends on condition and on whether the item is real. <a href="collect-2.html"><strong>Go to Lesson 2: Condition, grading and fakes →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. A one-of-a-kind item that nobody wants is usually:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Very valuable</button>
+        <button class="quiz-option" data-correct="true">Not worth much</button>
+        <button class="quiz-option" data-correct="false">A guaranteed investment</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. Which combination tends to push a price up?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Low supply and high demand</button>
+        <button class="quiz-option" data-correct="false">High supply and low demand</button>
+        <button class="quiz-option" data-correct="false">High supply and high demand, always</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. A card's price jumps because of a viral video. This is most likely:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">A permanent price</button>
+        <button class="quiz-option" data-correct="true">A possible fad</button>
+        <button class="quiz-option" data-correct="false">A sign it can't fall</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. A sensible rule for collecting is to:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Borrow money to buy more</button>
+        <button class="quiz-option" data-correct="true">Only spend what you could afford to lose</button>
+        <button class="quiz-option" data-correct="false">Buy whatever is trending</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="collectables.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="collectables.html">← All Collectables lessons</a>
+    <a class="next" href="collect-2.html">Lesson 2: Condition, grading and fakes →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="lesson.js"></script>
+</body>
+</html>

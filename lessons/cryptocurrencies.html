@@ -32,12 +32,25 @@
 </header>
 
 <main>
-  <div class="wrap empty-state">
-    <div class="icon-big">🔒</div>
-    <h2>Cryptocurrencies is locked</h2>
-    <p>This course unlocks after Financial Literacy and Collectables. Start with Financial Literacy first.</p>
-    <p id="lock-progress"></p>
-    <a class="btn" href="financial-literacy.html" id="lock-cta">Go to Financial Literacy</a>
+  <div class="wrap page-header">
+    <div class="eyebrow">Elective · Cryptocurrencies</div>
+    <h1>₿ Cryptocurrencies</h1>
+    <p>What crypto actually is, the maths of its risk, and a simple way to decide. Mintly never tells you to buy or sell, it teaches you how to think. Three short lessons with a break-even calculator.</p>
+    <div class="course-progress">
+      <div class="progress-track" role="progressbar" aria-label="Elective progress" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" id="el-bar"><div class="progress-fill" id="el-fill" style="width:0%"></div></div>
+      <div class="label" id="el-label">0 of 3 lessons complete</div>
+    </div>
+    <p class="plan-note" id="lock-note" hidden style="max-width:560px"></p>
+    <a class="btn" href="crypto-1.html" id="el-cta">Start lesson 1 →</a>
+  </div>
+
+  <div class="wrap lesson-list" id="el-list"></div>
+
+  <div class="wrap lesson-list" style="margin-top:12px">
+    <a class="next-course" href="collectables.html" style="text-decoration:none;color:inherit">
+      <div class="icon">➜</div>
+      <div><div class="title">Next elective: Collectables</div><div class="desc">Another three short lessons</div></div>
+    </a>
   </div>
 </main>
 
@@ -47,22 +60,36 @@
 
 <script src="../script.js"></script>
 <script>
-  Mintly.ready.then(() => {
-    if (!Mintly.requireLogin()) return;
-    const done = Mintly.completedCount();
-    const total = Mintly.LESSON_IDS.length;
-    if (done < total) {
-      const next = Mintly.nextLesson();
-      document.getElementById('lock-progress').textContent =
-        "You've completed " + done + " of " + total + " Financial Literacy lessons so far.";
-      const cta = document.getElementById('lock-cta');
-      cta.href = next.id + '.html';
-      cta.textContent = 'Continue with lesson ' + (Mintly.LESSON_IDS.indexOf(next.id) + 1) + ': ' + next.title;
-    } else {
-      document.getElementById('lock-progress').textContent =
-        "You've finished Financial Literacy. Cryptocurrencies opens once the Collectables lessons are out.";
-    }
+Mintly.ready.then(() => {
+  if (!Mintly.requireLogin()) return;
+  const items = Mintly.ELECTIVES.filter((e) => e.course === "crypto");
+  const unlocked = Mintly.isCourseComplete() || Mintly.currentUser().role !== "student";
+  const done = items.filter((e) => Mintly.isLessonComplete(e.id)).length;
+  const list = document.getElementById("el-list");
+  items.forEach((l, i) => {
+    const row = document.createElement(unlocked ? "a" : "div");
+    row.className = "lesson-row" + (unlocked ? "" : " locked") + (Mintly.isLessonComplete(l.id) ? " done" : "");
+    if (unlocked) row.href = l.id + ".html";
+    row.innerHTML = '<span class="num">' + (unlocked ? i + 1 : "🔒") + '</span><span class="title">' + Mintly.escapeHTML(l.title) +
+      '</span><span class="time">' + l.mins + ' min</span><span class="go">' + (!unlocked ? "Locked" : Mintly.isLessonComplete(l.id) ? "✓ Complete — review" : "Start →") + '</span>';
+    list.appendChild(row);
   });
+  document.getElementById("el-fill").style.width = Math.round(done / items.length * 100) + "%";
+  document.getElementById("el-bar").setAttribute("aria-valuenow", done);
+  document.getElementById("el-label").textContent = done + " of " + items.length + " lessons complete";
+  const cta = document.getElementById("el-cta"), note = document.getElementById("lock-note");
+  if (!unlocked) {
+    const left = Mintly.LESSONS.length - Mintly.completedCount();
+    note.hidden = false;
+    note.textContent = "Locked: finish the " + left + " remaining Financial Literacy " + (left === 1 ? "lesson" : "lessons") + " to open this elective.";
+    cta.href = Mintly.nextLesson().id + ".html";
+    cta.textContent = "Continue Financial Literacy →";
+  } else {
+    const next = items.find((e) => !Mintly.isLessonComplete(e.id));
+    cta.href = (next || items[0]).id + ".html";
+    cta.textContent = done === items.length ? "Review from lesson 1 →" : done ? "Continue →" : "Start lesson 1 →";
+  }
+});
 </script>
 </body>
 </html>

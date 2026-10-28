@@ -7,7 +7,7 @@ const curriculum = require("../curriculum.json");
 
 const scrypt = promisify(crypto.scrypt);
 const ROLES = ["student", "parent", "teacher"];
-const LESSON_IDS = curriculum.lessons.map((l) => l.id);
+const LESSON_IDS = [...curriculum.lessons, ...(curriculum.electives || [])].map((l) => l.id);
 const SESSION_DAYS = 30;
 const COOKIE = "mintly_session";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;

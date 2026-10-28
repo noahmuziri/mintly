@@ -82,3 +82,30 @@
   .sd-rank { min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .sd-xp i { transition: none; } .sd-lesson { transition: none; } }
+
+/* Shared by the parent and teacher dashboards */
+.child-card { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 26px; margin-bottom: 20px; }
+.child-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+.child-head h2 { margin: 0; font: 800 24px var(--fh); letter-spacing: -.02em; }
+.child-head small { color: var(--mute); }
+.child-card h3 { font: 700 16px var(--fh); margin: 26px 0 10px; }
+.child-card .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 0; }
+.child-card .dash-stat { background: var(--bg); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; }
+.child-card .dash-stat .n { font: 800 28px var(--fh); letter-spacing: -.02em; }
+.dash-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+.dash-panel h3 { margin: 0 0 8px; font: 700 17px var(--fh); }
+.dash-row { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.dash-row:last-child { border-bottom: 0; }
+.dash-row small { color: var(--mute); }
+.status { font: 600 12px var(--fb); padding: 4px 12px; border-radius: 999px; background: rgba(128,128,128,.16); white-space: nowrap; }
+.status.complete { background: var(--gainsoft); color: var(--pgreen); }
+.status.in-progress { background: #FFF2D6; color: #7a5200; }
+.bar { display: block; height: 6px; border-radius: 3px; background: rgba(128,128,128,.2); margin-top: 8px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--pgreen); border-radius: 3px; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; }
+.roster { width: 100%; border-collapse: collapse; font-size: 14px; }
+.roster th { text-align: left; padding: 12px 14px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--mute); border-bottom: 1px solid var(--line); background: var(--bg); }
+.roster td { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.roster tr:last-child td { border-bottom: 0; }
+.talk { background: var(--gainsoft); border-radius: 16px; padding: 14px 16px; color: var(--ink) !important; margin-top: 18px; }
+.code-chip.small { font-size: 14px; padding: 2px 10px; letter-spacing: .12em; }
