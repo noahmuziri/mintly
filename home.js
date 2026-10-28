@@ -1,94 +1,136 @@
-/* Homepage only (index.html): live NVDA teaser, Buy/Wait/Pass prompts, lesson progress, scroll reveals.
-   Live data comes from server.js (/api/chart), which reads ALPHA_VANTAGE_API_KEY from the environment.
-   Without a key (or when opened as a file) the card falls back to practice data. */
+/* Homepage only (index.html): the role switch, the live Decision Score, lesson tiles and Leaf's chat.
+   Switching role re-colours the whole page (theme.js sets <html data-role>) and swaps the hero's
+   illustration, copy and product card. Motion is skipped for people who ask for reduced motion. */
 (function () {
   const $ = (id) => document.getElementById(id);
-  const API = location.protocol === "file:" ? "http://localhost:8000" : "";
-  const usd = (n) => "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  let range = "1M", live = false;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-  function path(p) {
-    const mn = Math.min(...p), mx = Math.max(...p), w = 600 / Math.max(1, p.length - 1);
-    return p.map((v, i) => (i ? "L" : "M") + (i * w).toFixed(1) + "," + (94 - (v - mn) / ((mx - mn) || 1) * 88).toFixed(1)).join("");
-  }
-  // Same seeded practice line the demo uses, so the fallback looks familiar.
-  function mockPoints(seed) {
-    let s = 0; for (const ch of seed) s = s * 31 + ch.charCodeAt(0);
-    const r = () => (s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296;
-    let y = 50; const p = [];
-    for (let i = 0; i < 40; i++) { y += (r() - .45) * 12 + .9; p.push(y); }
-    return p;
-  }
-  function draw(p, color) {
-    $("hm-chart").innerHTML = '<svg viewBox="0 0 600 100" preserveAspectRatio="none" class="spark" role="img" aria-label="NVDA price chart"><path d="' + path(p) +
-      '" pathLength="1" fill="none" stroke="' + color + '" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>';
-  }
-  function setRangeButtons(ok) {
-    $("hm-rng").querySelectorAll("button").forEach((b) => {
-      b.classList.toggle("on", b.dataset.r === range);
-      if (ok) { const yes = ok.includes(b.dataset.r); b.disabled = !yes; b.title = yes ? "" : "Needs a premium Alpha Vantage key"; }
-    });
-  }
+  const COPY = {
+    student: { h: "Don't just learn about money. <em>Learn how to use it.</em>", lead: "Short lessons, safe simulations and Leaf, a learning partner that asks the right questions, help you think a money decision all the way through.", cta: ["Start learning", "lessons/lesson-1.html"], cta2: ["See the dashboard", "dashboard.html?role=student"] },
+    parent: { h: "See how your teen <em>thinks about money.</em>", lead: "A clear weekly view of what they learned, how their reasoning is growing, and a question to ask over dinner. Understanding, not surveillance.", cta: ["See the parent view", "dashboard.html?role=parent"], cta2: ["How it keeps them safe", "parents.html"] },
+    teacher: { h: "Financial literacy your class <em>can actually practise.</em>", lead: "Assign a lesson, watch the class move through it, and see exactly which skill needs another look. Ready for the classroom, built for real decisions.", cta: ["See the teacher view", "dashboard.html?role=teacher"], cta2: ["Plans for schools", "pricing.html"] }
+  };
 
-  async function loadChart() {
-    try {
-      const r = await fetch(API + "/api/chart?symbol=NVDA&range=" + range), d = await r.json();
-      if (!r.ok) throw Error(d.error);
-      const p = d.points.map((x) => x.c), chg = (p[p.length - 1] / p[0] - 1) * 100, col = "var(" + (chg >= 0 ? "--gain" : "--bad") + ")";
-      // label color: deep green / ink keep 4.5:1 contrast on white (the line keeps gain/loss colors)
-      const lbl = chg >= 0 ? "var(--pgreen)" : "var(--ink)";
-      draw(p, col);
-      $("hm-px").textContent = usd(d.quote.price);
-      $("hm-chg").textContent = (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%";
-      $("hm-chg").style.color = lbl;
-      setRangeButtons(d.ranges);
-      $("hm-src").textContent = "Simulation. No real money. Live price from Alpha Vantage, last trading day " + d.quote.day +
-        (d.stale ? " (rate limit reached, showing last saved data)." : ".");
-      live = true;
-    } catch (e) {
-      if (live) return;
-      draw(mockPoints("NVDA" + range), "var(--gain)");
-      setRangeButtons();
-      $("hm-src").textContent = "Simulation. No real money. Practice data shown: the live price needs the Mintly server with an Alpha Vantage key.";
+  // ---- Decision Score: a gently drifting random walk. The number, arc and bars all read the same value. ----
+  const score = { cur: 62, target: 82, bars: [70, 64, 58, 74], btarget: [78, 70, 66, 80], next: 0 };
+  let gaugeLen = 100;
+  function tickScore(now) {
+    if (now > score.next) {
+      score.target = clamp(score.target + rand(-14, 14), 52, 97);
+      score.btarget = score.btarget.map((b, i) => clamp(score.target + [-6, -12, -18, 2][i] + rand(-9, 9), 30, 99));
+      score.next = now + rand(1100, 2000);
     }
-  }
-
-  function initQuote() {
-    if (!$("hm-chart")) return;
-    $("hm-rng").addEventListener("click", (e) => {
-      const b = e.target.closest("button"); if (!b || b.disabled) return;
-      range = b.dataset.r; live = false; setRangeButtons(); loadChart();
+    score.cur += (score.target - score.cur) * 0.06;
+    score.bars = score.bars.map((b, i) => b + (score.btarget[i] - b) * 0.05);
+    const v = Math.round(score.cur);
+    $("g-num").textContent = v;
+    $("g-fill").style.strokeDashoffset = String(gaugeLen - score.cur);
+    document.querySelectorAll("#mini-bars .mini-bar").forEach((row, i) => {
+      const b = Math.round(score.bars[i]);
+      row.querySelector("b").style.width = b + "%";
+      row.lastElementChild.textContent = b;
     });
-    document.querySelectorAll(".hm-pick .chip").forEach((c) => c.addEventListener("click", () => {
-      document.querySelectorAll(".hm-pick .chip").forEach((x) => x.classList.toggle("on", x === c));
-      $("hm-fb").textContent = "Leaf: " + c.dataset.m;
-    }));
-    loadChart();
-    setInterval(() => { if (!document.hidden && live) loadChart(); }, 60000);
+    if (!reduce) requestAnimationFrame(tickScore);
   }
 
-  function initProgress() {
-    if (typeof Mintly === "undefined") return;
-    let done = 0;
-    document.querySelectorAll("[data-lesson]").forEach((row) => {
-      if (Mintly.isLessonComplete(row.dataset.lesson)) {
-        done++; row.classList.add("done");
-        row.querySelector(".num").textContent = "✓";
-        row.querySelector(".go").textContent = "Review →";
+  // ---- Parent and teacher cards also breathe a little ----
+  function buildParent() {
+    const bars = $("p-bars"), h = [34, 52, 44, 66, 58, 40, 72];
+    bars.innerHTML = h.map((x) => `<i style="height:${x}%"></i>`).join("");
+    if (reduce) return;
+    setInterval(() => {
+      if (document.hidden) return;
+      const els = bars.children;
+      Array.from(els).forEach((e, i) => { const n = clamp(parseFloat(e.style.height) + rand(-14, 14), 18, 92); e.style.height = n.toFixed(0) + "%"; });
+      const s = clamp(+$("p-score").textContent + Math.round(rand(-3, 3)), 66, 91); $("p-score").textContent = s;
+    }, 1700);
+  }
+  function buildTeacher() {
+    const heat = $("t-heat");
+    heat.innerHTML = Array.from({ length: 24 }, () => `<i style="opacity:${rand(.35, 1).toFixed(2)}"></i>`).join("");
+    if (reduce) return;
+    setInterval(() => {
+      if (document.hidden) return;
+      const cells = heat.children;
+      for (let n = 0; n < 5; n++) {
+        const c = cells[Math.floor(Math.random() * cells.length)];
+        const low = Math.random() < .12; c.classList.toggle("lo", low); c.style.opacity = low ? 0.9 : rand(.4, 1).toFixed(2);
       }
+      const d = clamp(+$("t-done").textContent.replace("%", "") + Math.round(rand(-2, 2)), 62, 84); $("t-done").textContent = d + "%";
+    }, 1500);
+  }
+
+  // ---- Role switch ----
+  function placeThumb() {
+    const sw = $("role-switch"), on = sw.querySelector('[aria-pressed="true"]'), th = sw.querySelector(".thumb");
+    th.style.width = on.offsetWidth + "px";
+    th.style.transform = "translateX(" + (on.offsetLeft - 4) + "px)";
+  }
+  function showRole(role, first) {
+    const copy = $("hero-copy");
+    document.querySelectorAll("#role-switch button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.role === role)));
+    placeThumb();
+    document.querySelectorAll("[data-scene]").forEach((s) => s.classList.toggle("off", s.dataset.scene !== role));
+    document.querySelectorAll("[data-card]").forEach((s) => s.classList.toggle("off", s.dataset.card !== role));
+    const c = COPY[role];
+    const apply = () => {
+      $("hero-h1").innerHTML = c.h; $("hero-lead").textContent = c.lead;
+      $("hero-cta").textContent = c.cta[0]; $("hero-cta").href = c.cta[1];
+      $("hero-cta2").textContent = c.cta2[0]; $("hero-cta2").href = c.cta2[1];
+      copy.classList.remove("swap");
+    };
+    if (first || reduce) apply(); else { copy.classList.add("swap"); setTimeout(apply, 230); }
+  }
+
+  function initRoles() {
+    const start = MintlyTheme.getRole();
+    showRole(start, true);
+    $("role-switch").addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-role]"); if (!b) return;
+      MintlyTheme.setRole(b.dataset.role); showRole(b.dataset.role);
     });
-    const total = Mintly.LESSON_IDS.length;
-    $("hm-progress").textContent = done ? done + " of " + total + " lessons complete." : "Five lessons are ready now. More are on the way.";
+    addEventListener("resize", placeThumb);
+    document.fonts && document.fonts.ready.then(placeThumb);
   }
 
-  function initReveal() {
-    if (!("IntersectionObserver" in window)) return;
-    document.documentElement.classList.add("js-reveal");
-    const io = new IntersectionObserver((es) => es.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-    }), { threshold: 0.15 });
-    document.querySelectorAll(".hm-reveal").forEach((el) => io.observe(el));
+  // ---- Lesson tiles with the viewer's real progress ----
+  function initLessons() {
+    const icons = ["book", "piggy", "target", "bank", "chart"];
+    const tiles = $("lesson-tiles");
+    tiles.innerHTML = Mintly.LESSONS.map((l, i) => {
+      const done = Mintly.isLessonComplete(l.id);
+      return `<a class="tile${done ? " done" : ""}" href="lessons/${l.id}.html"><span class="tick" aria-label="Completed">&#10003;</span><div class="art" data-art="${icons[i]}"></div><div class="k">Lesson ${i + 1}</div><h3>${l.title}</h3><div class="foot"><span>${l.mins} min</span><span class="go">${done ? "Review" : "Start"} &rarr;</span></div></a>`;
+    }).join("");
+    MintlyArt.mount();
+    const st = Mintly.stats();
+    $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Five lessons are ready now. More are on the way.";
   }
 
-  document.addEventListener("DOMContentLoaded", () => { initQuote(); initProgress(); initReveal(); });
+  // ---- Leaf's looping conversation ----
+  function initChat() {
+    const log = $("chat-log");
+    const script = [["me", "I want to buy NVIDIA. Everyone says it's going up."], ["leaf", "What would need to be true for it to keep going up?"], ["me", "Customers keep buying chips, I guess."], ["leaf", "Good. What if the big customers slow down? Which article covers that?"], ["me", "The bearish one. It says spending may be a bubble."], ["leaf", "So what would change your mind?"]];
+    let i = 0;
+    function step() {
+      if (document.hidden) return setTimeout(step, 1500);
+      if (i >= script.length) { setTimeout(() => { log.innerHTML = ""; i = 0; step(); }, 3200); return; }
+      const [who, text] = script[i++];
+      if (who === "leaf") {
+        const t = document.createElement("div"); t.className = "bubble leaf typing"; t.innerHTML = "<i></i><i></i><i></i>"; log.appendChild(t);
+        setTimeout(() => { t.className = "bubble leaf"; t.textContent = text; setTimeout(step, 1500); }, 900);
+      } else {
+        const b = document.createElement("div"); b.className = "bubble me"; b.textContent = text; log.appendChild(b); setTimeout(step, 1300);
+      }
+    }
+    const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { io.disconnect(); step(); } }, { threshold: .3 });
+    io.observe(log);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    gaugeLen = 100;
+    initRoles(); buildParent(); buildTeacher(); initLessons(); initChat();
+    if (reduce) { score.cur = 82; tickScore(0); } else requestAnimationFrame(tickScore);
+  });
 })();
