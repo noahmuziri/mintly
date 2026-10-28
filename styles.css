@@ -709,8 +709,8 @@
    Tokens use light-dark(), so one set of values serves light mode, dark mode and the OS setting.
    The active role (student / parent / teacher) swaps the accent via <html data-role="...">. */
 :root {
-  --fh: 'Newsreader', 'Iowan Old Style', Georgia, serif;
-  --fb: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fh: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  --fb: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --bg: light-dark(#F7F5EF, #0B1410);
   --panel: light-dark(#FFFFFF, #131E18);
@@ -1698,3 +1698,57 @@ html { scrollbar-color: color-mix(in srgb, var(--ink) 28%, transparent) transpar
 
 .link-btn { display: block; margin: 0 0 10px; padding: 0; border: 0; background: none; color: var(--muted); font: 500 12.5px var(--fb); text-decoration: underline; cursor: pointer; text-align: left; }
 .link-btn:hover { color: var(--bad); }
+
+/* =====================================================================
+   Plainer, flatter pass: fewer effects, more structure
+   ===================================================================== */
+:root { --radius: 8px; --radius-lg: 10px; }
+h1, h2, h3, h4, .brand-name { font-weight: 600; letter-spacing: -.015em; }
+h1 em, h2 em, h3 em { font-style: normal !important; color: inherit !important; }
+.scribble::after { display: none; }
+
+/* drop the decoration */
+body::before, .hero-new::before, .hero-new::after, .page-header::before, .dash-main::before, .doodle, .cta-banner::after, .site-footer::after { display: none !important; }
+.fc-small { animation: none; }
+.site-footer { background: var(--panel2); border-top: 1px solid var(--border); padding: 48px 0 40px; margin-top: 0; }
+.site-footer .wrap { padding-bottom: 0; }
+.eyebrow-mint::before, .section-eyebrow::before { display: none; }
+.eyebrow-mint, .section-eyebrow, .eyebrow { letter-spacing: .08em; }
+
+/* flat shapes: hairline borders, small radii, no shadows or lifting */
+.card, .tile, .step, .role-card, .plan-card, .price-mini, .faq, .chat, .takeaways, .quiz-box, .activity, .callout, .definition-card, .paywall, .lc-board, .lc-side, .lc-pad, .float-card, .consent, .cp, .lf, .free-strip, .unlock-banner, .lc-paywall, .course-card, .lesson-row, .path-track, .auth-card, .faq-item, .vocab-list div, .next-course, .toast, .cta-banner, .lf-poster, .ins-graph, .dash-side .side-foot { border-radius: 10px; box-shadow: none; }
+.btn, .btn-dark, .btn-secondary, .btn-ghost { border-radius: 8px; box-shadow: none; }
+.btn::after, .btn-dark::after { display: none; }
+.btn:hover, .btn-dark:hover { transform: none; box-shadow: none; filter: brightness(1.1); }
+.btn-secondary:hover, .btn-ghost:hover { transform: none; }
+.card:hover, .tile:hover, .step:hover, .role-card:hover, .plan-card:hover, .lesson-row:not(.locked):hover, .showcase .lf:hover { transform: none; box-shadow: none; border-color: var(--ink); }
+.showcase .lf { transform: none; }
+.role-switch, .seg, .auth-tabs { border-radius: 8px; } .role-switch button, .role-switch .thumb, .seg button, .auth-tab { border-radius: 6px; }
+.field input, .field select, .write-box, .quiz-option, .match-item, .curious-option, .money-input input, .split-field select, .role-pick span { border-radius: 6px; }
+.plan-card.featured { border-width: 2px; }
+.plan-card h3, .path-stage h3, .role-card h3 { font-weight: 600; }
+.floating, .reveal { will-change: auto; }
+@keyframes revealIn { from { opacity: 0; transform: translateY(8px); } }
+.lesson-body h2::before, .quiz-box::before { display: none; }
+.callout { background: var(--accsoft); }
+.hero-copy h1 { font-weight: 600; letter-spacing: -.025em; }
+
+/* the five steps, as a plain numbered list */
+.flow { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--border); }
+.flow li { display: grid; grid-template-columns: 36px 52px 180px 1fr; gap: 20px; align-items: center; padding: 22px 0; border-top: 1px solid var(--border); }
+.flow .n { font: 600 14px var(--fb); color: var(--muted); }
+.flow .art { width: 46px; margin: 0; }
+.flow h3 { margin: 0; font-size: 24px; }
+.flow p { margin: 0; color: var(--muted); font-size: 16px; }
+@media (max-width: 700px) { .flow li { grid-template-columns: 28px 1fr; gap: 6px 14px; } .flow .art { display: none; } .flow h3, .flow p { grid-column: 2; } }
+
+/* the lesson list, like a syllabus */
+.syllabus { border-bottom: 1px solid var(--border); }
+.syl-row { display: grid; grid-template-columns: 44px 1fr 80px 96px; gap: 16px; align-items: baseline; padding: 16px 6px; border-top: 1px solid var(--border); transition: background .15s; }
+.syl-row:hover { background: var(--panel2); }
+.syl-row .no { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; }
+.syl-row .t { font: 600 19px/1.3 var(--fh); }
+.syl-row .m { color: var(--muted); font-size: 14px; }
+.syl-row .go { text-align: right; color: var(--acc); font-weight: 600; font-size: 14px; }
+.syl-row.done .go { color: var(--gain); }
+@media (max-width: 640px) { .syl-row { grid-template-columns: 32px 1fr 70px; } .syl-row .m { display: none; } }

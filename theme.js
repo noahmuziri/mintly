@@ -16,7 +16,7 @@
     ["Ocean", ["#0B6E8A", "#DDF1F7", "#fff"], ["#6FD0E8", "#10303B", "#06161C"]],
     ["Ink", ["#1B1B1B", "#E9E9E6", "#fff"], ["#E6E6E2", "#262625", "#111"]]];
   const BGS = [["Paper"], ["White", ["#FFFFFF", "#F4F2EC"], ["#000000", "#101010"]], ["Silver", ["#E9EBEA", "#F6F7F6"], ["#141816", "#1B201D"]]];
-  const FONTS = [["Newsreader + Inter"], ["Fraunces + Inter", "'Fraunces',Georgia,serif", "'Inter',system-ui,sans-serif"], ["Inter only", "'Inter',system-ui,sans-serif", "'Inter',system-ui,sans-serif"], ["System", "system-ui,-apple-system,'Segoe UI',sans-serif", "system-ui,-apple-system,'Segoe UI',sans-serif"]];
+  const FONTS = [["Source Serif + Public Sans"], ["Fraunces + Public Sans", "'Fraunces',Georgia,serif", "'Public Sans',system-ui,sans-serif"], ["Sans only", "'Public Sans',system-ui,sans-serif", "'Public Sans',system-ui,sans-serif"], ["System", "system-ui,-apple-system,'Segoe UI',sans-serif", "system-ui,-apple-system,'Segoe UI',sans-serif"]];
 
   let C = Object.assign({ a: 0, b: 0, f: 0 }, read(KEY_CUSTOM, {}));
   const saved = read(KEY_THEME, null);
@@ -66,7 +66,7 @@
     cp.innerHTML = `<a class="cp-demo" href="${here}mintly.demo.html?from=site" id="cp-demo"><span class="play">${ICON.play}</span><span><b>Watch the demo</b><span>A one minute tour. Press start and sit back.</span></span></a>
 <h4>Accent colour</h4><div class="sw">${PAL.map((p, i) => i === 0 ? `<button type="button" class="auto" data-k="a" data-i="0" title="Follows your role" aria-label="Role colour"></button>` : `<button type="button" data-k="a" data-i="${i}" title="${p[0]}" aria-label="${p[0]}" style="background:${p[1][0]}"></button>`).join("")}</div>
 <h4>Background</h4><div class="sw">${BGS.map((p, i) => `<button type="button" class="sq" data-k="b" data-i="${i}" title="${p[0]}" aria-label="${p[0]}" style="background:${i === 0 ? "#F7F5EF" : p[1][0]}"></button>`).join("")}</div>
-<h4>Font</h4><div class="cp-chips">${FONTS.map((p, i) => `<button type="button" class="cp-chip" data-k="f" data-i="${i}" style="font-family:${i === 0 ? "'Newsreader',serif" : p[2]}">${p[0]}</button>`).join("")}</div>
+<h4>Font</h4><div class="cp-chips">${FONTS.map((p, i) => `<button type="button" class="cp-chip" data-k="f" data-i="${i}" style="font-family:${i === 0 ? "'Source Serif 4',serif" : p[2]}">${p[0]}</button>`).join("")}</div>
 <button type="button" class="cp-reset" id="cp-reset">Reset to original</button>`;
     document.body.append(cp, dock);
 

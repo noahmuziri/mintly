@@ -97,13 +97,11 @@
 
   // ---- Lesson tiles with the viewer's real progress ----
   function initLessons() {
-    const icons = ["book", "piggy", "target", "bank", "chart", "card", "percent", "wallet", "alert", "plan"];
-    const tiles = $("lesson-tiles");
-    tiles.innerHTML = Mintly.LESSONS.map((l, i) => {
-      const done = Mintly.isLessonComplete(l.id);
-      return `<a class="tile${done ? " done" : ""}" href="lessons/${l.id}.html"><span class="tick" aria-label="Completed">&#10003;</span><div class="art" data-art="${icons[i]}"></div><div class="k">Lesson ${i + 1}</div><h3>${l.title}</h3><div class="foot"><span>${l.mins} min</span><span class="go">${done ? "Review" : "Start"} &rarr;</span></div></a>`;
+    const rows = $("lesson-tiles");
+    rows.innerHTML = Mintly.LESSONS.map((l, i) => {
+      const done = Mintly.isLessonComplete(l.id), open = Mintly.canAccess(l.id);
+      return `<a class="syl-row${done ? " done" : ""}" href="lessons/${l.id}.html"><span class="no">${String(i + 1).padStart(2, "0")}</span><span class="t">${l.title}</span><span class="m">${l.mins} min</span><span class="go">${done ? "Done" : !open ? "Members" : i === 0 && !Mintly.hasActivePlan() ? "Free" : "Start"} &rarr;</span></a>`;
     }).join("");
-    MintlyArt.mount();
     const st = Mintly.stats();
     $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Ten lessons, each with a film, something to do and a quiz. The first one is free.";
   }
@@ -130,6 +128,7 @@
 
   // ---- Topic ticker, counting stats, and a live sample film ----
   function initTicker() {
+    if (!$("ticker")) return;
     const words = ["Budgeting", "Saving", "Compound interest", "Credit", "Paychecks", "Scams", "Investing", "Risk", "Diversifying", "Leaf", "Decision Score", "Your money plan"];
     const html = words.map((w, i) => `<span>${w}</span><i>${i % 2 ? "\u2766" : "\u2022"}</i>`).join("");
     $("ticker").innerHTML = html + html;
