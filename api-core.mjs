@@ -86,7 +86,7 @@ export function insights(rows, now = Date.now()) {
 export function toCsv(data) {
   const head = ["learner", "role", "plan", "events", "lessons_completed", "top_interest", ...CATS];
   const lines = [head.join(",")];
-  for (const l of data.learners) lines.push([l.uid.slice(0, 8), l.role, l.plan || "", l.events, l.completed, l.top || "", ...CATS.map((c) => l.interests[c] || 0)].join(","));
+  for (const l of data.learners) lines.push([l.uid.slice(-8), l.role, l.plan || "", l.events, l.completed, l.top || "", ...CATS.map((c) => l.interests[c] || 0)].join(","));
   return lines.join("\n");
 }
 

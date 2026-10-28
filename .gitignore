@@ -24,3 +24,6 @@ build/
 
 # Local analytics data
 .data/
+
+# Wrangler local state
+.wrangler/

@@ -306,7 +306,8 @@ const Mintly = (() => {
     } catch (e) {}
   }
   function track(type, key, value) {
-    if (consent() !== "yes" || location.protocol === "file:") return;
+    const au = currentUser();
+    if (consent() !== "yes" || location.protocol === "file:" || (au && au.role === "admin")) return;
     trackQueue.push({ type, key: String(key == null ? "" : key).slice(0, 64), value: value == null ? null : +value, ts: Date.now() });
     clearTimeout(trackTimer); trackTimer = setTimeout(flushTrack, 2500);
   }
@@ -315,7 +316,8 @@ const Mintly = (() => {
   document.addEventListener("lf:play", (e) => { const t = e.target && e.target.dataset && e.target.dataset.film; if (t) track("film_play", t); });
 
   function consentBanner() {
-    if (consent() || document.body.classList.contains("film") || location.pathname.endsWith("/dashboard.html") && false) return;
+    const cu = currentUser();
+    if (consent() || document.body.classList.contains("film") || (cu && cu.role === "admin")) return;
     const up = location.pathname.includes("/lessons/") ? "../" : "";
     const b = document.createElement("div");
     b.className = "consent"; b.setAttribute("role", "dialog"); b.setAttribute("aria-label", "Privacy choice");
