@@ -1,129 +1,78 @@
+// Mintly client library. Accounts and progress live on the server (server/api.js); this keeps an
+// in-memory copy so pages can read progress synchronously once `Mintly.ready` resolves:
+//   Mintly.ready.then(() => { ... Mintly.currentUser(), Mintly.isLessonComplete("lesson-1") ... });
 const Mintly = (() => {
-  const PROGRESS_PREFIX = "mintly:completed:";
-  const USERS_KEY = "mintly:users";
-  const SESSION_KEY = "mintly:session";
-  const INTEREST_PREFIX = "mintly:interest:";
-  // The Financial Literacy course, in order. Add a lesson here and it shows up in the course
-  // list, progress counts, "Continue learning" links and the locked-course messages.
-  const LESSONS = [
-    { id: "lesson-1", title: "What is financial literacy?", mins: 20 },
-    { id: "lesson-2", title: "Needs vs. wants: building a simple budget", mins: 10 },
-    { id: "lesson-3", title: "Saving for something you want", mins: 12 },
-    { id: "lesson-4", title: "How banks work: accounts, debit cards and interest", mins: 12 },
-    { id: "lesson-5", title: "Intro to investing: stocks, risk and diversification", mins: 15 },
-  ];
-  const LESSON_IDS = LESSONS.map((l) => l.id);
+  let user = null;
+  let LESSONS = [];
+  let progress = { lessons: {}, interest: null };
 
-  function readJSON(key, fallback) {
+  const inLessons = location.pathname.includes("/lessons/");
+  const rootPath = (page) => (inLessons ? "../" + page : page);
+
+  // JSON call to the server. Never throws: resolves {ok, status, ...body}, so callers show body.error.
+  async function api(method, path, body) {
     try {
-      const raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : fallback;
+      const res = await fetch(path, {
+        method,
+        credentials: "same-origin",
+        headers: body ? { "Content-Type": "application/json" } : {},
+        body: body ? JSON.stringify(body) : undefined,
+        keepalive: method !== "GET",
+      });
+      const json = await res.json().catch(() => ({}));
+      return { ok: res.ok, status: res.status, ...json };
     } catch (e) {
-      return fallback;
+      return { ok: false, status: 0, error: "Can't reach the Mintly server. Is it running (npm start)?" };
     }
   }
 
-  function writeJSON(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {}
-  }
-
-  // localStorage throws when storage is blocked (private mode, disabled site data, sandboxed frames).
-  // Every raw access goes through these so the nav and menu still work without it.
-  function getItem(key) {
-    try {
-      return localStorage.getItem(key);
-    } catch (e) {
-      return null;
+  const ready = (async () => {
+    const [me, cur] = await Promise.all([api("GET", "/api/me"), api("GET", "/curriculum.json")]);
+    LESSONS = cur.lessons || [];
+    user = (me.ok && me.user) || null;
+    if (user && user.role === "student") {
+      const p = await api("GET", "/api/progress");
+      if (p.ok) progress = { lessons: p.lessons || {}, interest: p.interest || null };
     }
+  })();
+
+  // --- Accounts ---
+
+  const currentUser = () => user;
+  const dashboardHref = (role) => rootPath(({ student: "student-dashboard.html", parent: "parent-dashboard.html", teacher: "teacher-dashboard.html" })[role] || "signin.html");
+
+  async function signUp(fields) {
+    const r = await api("POST", "/api/auth/signup", fields);
+    if (r.ok) user = r.user;
+    return r;
+  }
+  async function logIn(fields) {
+    const r = await api("POST", "/api/auth/login", fields);
+    if (r.ok && !r.admin) user = r.user;
+    return r;
+  }
+  async function googleSignIn(fields) {
+    const r = await api("POST", "/api/auth/google", fields);
+    if (r.ok) user = r.user;
+    return r;
+  }
+  async function logOut() {
+    await api("POST", "/api/auth/logout", {});
+    user = null;
   }
 
-  function setItem(key, value) {
-    try {
-      localStorage.setItem(key, value);
-    } catch (e) {}
-  }
-
-  function removeItem(key) {
-    try {
-      localStorage.removeItem(key);
-    } catch (e) {}
-  }
-
-  // --- Auth (demo only: accounts live in this browser's localStorage,
-  // not a real server. Do not reuse this pattern for real passwords.) ---
-
-  function getUsers() {
-    return readJSON(USERS_KEY, {});
-  }
-
-  function currentUser() {
-    const email = getItem(SESSION_KEY);
-    if (!email) return null;
-    const users = getUsers();
-    return users[email] || null;
-  }
-
-  function progressScope() {
-    const user = currentUser();
-    return user ? user.email : "guest";
-  }
-
-  function signUp({ name, email, password, plan }) {
-    email = (email || "").trim().toLowerCase();
-    if (!name || !email || !password) {
-      return { ok: false, error: "Please fill in every field." };
+  // Send visitors who aren't signed in to the sign-in page, and come back afterwards.
+  // Pass a role to also keep other account types out (they are sent to their own dashboard).
+  function requireLogin(role) {
+    if (!user) {
+      location.replace(rootPath("signin.html") + "?next=" + encodeURIComponent(location.pathname.split("/").slice(inLessons ? -2 : -1).join("/")));
+      return false;
     }
-    const users = getUsers();
-    if (users[email]) {
-      return { ok: false, error: "An account with that email already exists." };
+    if (role && user.role !== role) {
+      location.replace(dashboardHref(user.role));
+      return false;
     }
-
-    const guestCompleted = LESSON_IDS.filter((id) =>
-      getItem(PROGRESS_PREFIX + "guest:" + id) === "true"
-    );
-
-    users[email] = { name, email, password, plan: plan || null };
-    writeJSON(USERS_KEY, users);
-    setItem(SESSION_KEY, email);
-
-    guestCompleted.forEach((id) => markLessonComplete(id));
-
-    return { ok: true };
-  }
-
-  function logIn({ email, password }) {
-    email = (email || "").trim().toLowerCase();
-    const users = getUsers();
-    const user = users[email];
-    if (!user || user.password !== password) {
-      return { ok: false, error: "That email and password don't match." };
-    }
-    setItem(SESSION_KEY, email);
-    return { ok: true };
-  }
-
-  function logOut() {
-    removeItem(SESSION_KEY);
-  }
-
-  function setPlan(plan) {
-    const email = getItem(SESSION_KEY);
-    if (!email) return;
-    const users = getUsers();
-    if (!users[email]) return;
-    users[email].plan = plan;
-    writeJSON(USERS_KEY, users);
-  }
-
-  function hasActivePlan() {
-    const user = currentUser();
-    return !!(user && user.plan);
-  }
-
-  function rootPath(page) {
-    return location.pathname.includes("/lessons/") ? "../" + page : page;
+    return true;
   }
 
   function escapeHTML(str) {
@@ -135,56 +84,84 @@ const Mintly = (() => {
   function renderNavAuth(containerId) {
     const el = document.getElementById(containerId);
     if (!el) return;
-    const user = currentUser();
     const signinHref = rootPath("signin.html");
     if (user) {
       const firstName = escapeHTML(user.name.split(" ")[0]);
       el.innerHTML =
-        '<span class="nav-account-link">Hi, ' + firstName + '</span>' +
+        '<a class="nav-account-link" href="' + dashboardHref(user.role) + '">Dashboard</a>' +
+        '<a class="nav-account-link" href="' + rootPath("account.html") + '">Hi, ' + firstName + '</a>' +
         '<button class="btn-dark" id="nav-logout-btn">Log out</button>';
-      document.getElementById("nav-logout-btn").addEventListener("click", () => {
-        logOut();
-        window.location.href = rootPath("index.html");
+      document.getElementById("nav-logout-btn").addEventListener("click", async () => {
+        await logOut();
+        location.href = rootPath("index.html");
       });
     } else {
       el.innerHTML =
         '<a class="nav-account-link" href="' + signinHref + '">Log in</a>' +
-        '<a class="btn-dark" href="' + signinHref + '">Join the waitlist</a>';
+        '<a class="btn-dark" href="' + signinHref + '?mode=signup">Sign up</a>';
     }
   }
 
-  // --- Lesson progress (scoped to the signed-in account, or "guest") ---
+  // --- Lesson progress (students only; other roles can preview lessons but nothing is saved) ---
 
-  function isLessonComplete(id) {
-    return getItem(PROGRESS_PREFIX + progressScope() + ":" + id) === "true";
+  const isStudent = () => !!user && user.role === "student";
+  const record = (id) => (progress.lessons[id] = progress.lessons[id] || {});
+  const isLessonComplete = (id) => !!(progress.lessons[id] && progress.lessons[id].completedAt);
+  const completedCount = () => LESSONS.filter((l) => isLessonComplete(l.id)).length;
+  const isCourseComplete = () => LESSONS.length > 0 && completedCount() === LESSONS.length;
+  const nextLesson = () => LESSONS.find((l) => !isLessonComplete(l.id)) || LESSONS[0];
+
+  // Saves are batched per lesson, so typing in a box doesn't send a request per keystroke.
+  const pending = {};
+  function queueSave(id, patch) {
+    if (!isStudent()) return;
+    const p = (pending[id] = pending[id] || { timer: null, body: {} });
+    Object.assign(p.body, patch);
+    clearTimeout(p.timer);
+    p.timer = setTimeout(() => flush(id), 600);
   }
+  function flush(id) {
+    const p = pending[id];
+    if (!p) return;
+    clearTimeout(p.timer);
+    delete pending[id];
+    api("PUT", "/api/progress/" + id, p.body);
+  }
+  addEventListener("pagehide", () => Object.keys(pending).forEach(flush));
 
   function markLessonComplete(id) {
-    setItem(PROGRESS_PREFIX + progressScope() + ":" + id, "true");
+    if (!isStudent()) return;
+    record(id).completedAt = record(id).completedAt || Date.now();
+    queueSave(id, { completed: true });
   }
 
-  function completedCount() {
-    return LESSON_IDS.filter(isLessonComplete).length;
+  // Activities finished inside a lesson (quiz answers, blanks, matches), saved by lessons/lesson.js.
+  function lessonActivity(id) {
+    const st = (progress.lessons[id] && progress.lessons[id].state) || {};
+    return { done: st.done || 0, total: st.total || 0 };
+  }
+  const getLessonState = (id) => (progress.lessons[id] && progress.lessons[id].state) || {};
+  function saveLessonState(id, state) {
+    if (!isStudent()) return;
+    record(id).state = state;
+    queueSave(id, { state });
+  }
+  const getAnswers = (id) => (progress.lessons[id] && progress.lessons[id].answers) || {};
+  function saveAnswer(id, key, value) {
+    if (!isStudent()) return;
+    const answers = (record(id).answers = record(id).answers || {});
+    answers[key] = value;
+    queueSave(id, { answers });
   }
 
-  function isCourseComplete() {
-    return completedCount() === LESSON_IDS.length;
-  }
-
-  // The first lesson not yet completed (or lesson 1 again once everything is done).
-  function nextLesson() {
-    return LESSONS.find((l) => !isLessonComplete(l.id)) || LESSONS[0];
-  }
-
-  // --- Research interest (what the user chose to learn about on Explore) ---
+  // --- Research interest (what the student chose to learn about on Explore) ---
 
   function saveInterest(interest) {
-    writeJSON(INTEREST_PREFIX + progressScope(), interest);
+    if (!isStudent()) return;
+    progress.interest = interest;
+    api("PUT", "/api/interest", { interest });
   }
-
-  function getInterest() {
-    return readJSON(INTEREST_PREFIX + progressScope(), null);
-  }
+  const getInterest = () => progress.interest;
 
   // Phones hide .nav-links, so add a menu button that shows them as a dropdown.
   function setupMobileNav() {
@@ -233,37 +210,39 @@ const Mintly = (() => {
     });
   }
 
-  function requireSubscription() {
-    if (!hasActivePlan()) {
-      window.location.href = rootPath("pricing.html");
-    }
-  }
-
   return {
-    LESSONS,
-    LESSON_IDS,
+    ready,
+    api,
+    get LESSONS() { return LESSONS; },
+    get LESSON_IDS() { return LESSONS.map((l) => l.id); },
     nextLesson,
     markActiveNav,
     isLessonComplete,
+    lessonActivity,
+    getLessonState,
+    saveLessonState,
+    getAnswers,
+    saveAnswer,
     markLessonComplete,
     completedCount,
     isCourseComplete,
     saveInterest,
     getInterest,
     currentUser,
+    dashboardHref,
     signUp,
     logIn,
+    googleSignIn,
     logOut,
-    setPlan,
-    hasActivePlan,
-    requireSubscription,
+    requireLogin,
+    escapeHTML,
     renderNavAuth,
     setupMobileNav,
   };
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
-  Mintly.renderNavAuth("nav-auth");
   Mintly.setupMobileNav();
   Mintly.markActiveNav();
+  Mintly.ready.then(() => Mintly.renderNavAuth("nav-auth"));
 });

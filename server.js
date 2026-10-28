@@ -2,11 +2,22 @@
 // The API key is read from the environment and never sent to the browser.
 //
 // Env:
+//   HOST, PORT, BASE_URL, DATA_DIR, CONTACT_EMAIL, RESEND_API_KEY, MAIL_FROM, COOKIE_SECURE: see README
+//   GOOGLE_CLIENT_ID         enables "Continue with Google" (see README)
 //   ALPHA_VANTAGE_API_KEY    required
 //   ALPHA_VANTAGE_PREMIUM=1  unlocks intraday bars for the 1D and 1W charts
 //   QUOTE_REFRESH_SECONDS    how often to call Alpha Vantage for the live price
 //                            (default 3600 on free keys, 10 on premium)
 const http = require("http");
+const fs0 = require("fs");
+// Read a .env file next to this script (KEY=value per line) without overriding real environment variables.
+try {
+  for (const line of fs0.readFileSync(require("path").join(__dirname, ".env"), "utf8").split("\n")) {
+    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
+    if (m && !(m[1] in process.env)) process.env[m[1]] = m[2].replace(/^(["'])(.*)\1$/, "$2");
+  }
+} catch (e) {}
+const api = require("./server/api");
 const fs = require("fs");
 const path = require("path");
 
@@ -190,7 +201,12 @@ async function chart(res, symbol, range) {
 }
 
 http
-  .createServer((req, res) => {
+  .createServer(async (req, res) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    if (req.headers["x-forwarded-proto"] === "https") res.setHeader("Strict-Transport-Security", "max-age=15552000");
     // a malformed path ("//x", "/%E0") throws here; answer 400 instead of crashing the server
     let url, pathname;
     try {
@@ -200,6 +216,8 @@ http
       res.writeHead(400);
       return res.end("Bad request");
     }
+    if (pathname === "/healthz") return send(res, 200, { ok: true });
+    if (await api.handle(req, res, pathname)) return;
     const symbol = (url.searchParams.get("symbol") || "").toUpperCase();
     // lets the page check for a key before polling, so a keyless server doesn't log errors every 10s
     if (pathname === "/api/status") return send(res, 200, { live: !!KEY, premium: PREMIUM });
@@ -208,20 +226,24 @@ http
 
     const file = path.join(ROOT, pathname === "/" ? "/index.html" : pathname);
     // refuse anything outside the site and any hidden path (.git/, .claude/, .env)
-    if (!file.startsWith(ROOT + path.sep) || path.relative(ROOT, file).split(path.sep).some((s) => s.startsWith("."))) {
+    if (!file.startsWith(ROOT + path.sep) || path.relative(ROOT, file).split(path.sep).some((s) => s.startsWith(".") || s === "server") || path.basename(file) === "server.js") {
       res.writeHead(403);
       return res.end();
     }
     fs.readFile(file, (err, buf) => {
       if (err) {
-        res.writeHead(404);
-        return res.end("Not found");
+        // pages get the friendly 404; assets just a plain one
+        return fs.readFile(path.join(ROOT, "404.html"), (e2, page) => {
+          res.writeHead(404, { "Content-Type": e2 || path.extname(file) ? "text/plain" : "text/html; charset=utf-8" });
+          res.end(e2 || path.extname(file) ? "Not found" : page);
+        });
       }
       res.writeHead(200, { "Content-Type": TYPES[path.extname(file)] || "application/octet-stream" });
       res.end(buf);
     });
   })
-  .listen(PORT, "127.0.0.1", () => {
+  // HOST=0.0.0.0 when deployed (a container or host must be reachable from outside); localhost-only on your computer
+  .listen(PORT, process.env.HOST || "127.0.0.1", () => {
     console.log(`Mintly running at http://localhost:${PORT}`);
     console.log(`Live price refreshes from Alpha Vantage every ${QUOTE_TTL / 1000}s (${PREMIUM ? "premium" : "free"} key)`);
     if (!KEY) console.warn("Warning: ALPHA_VANTAGE_API_KEY is not set; live data will fail.");

@@ -357,10 +357,14 @@ function scores(){const t=S.text,w=(t.match(/\S+/g)||[]).length,c=co();
  const r=cl(60+S.read.size*10+S.sel.size*2),e=cl(62+Math.min(w,120)/6+ev*4),k=cl(RISKW.test(t)?78+Math.min(w,100)/10:58),n=cl(66+Math.min(w,150)/7+(S.choice=="WAIT"?3:0));
  return[["Research","Did you look at multiple sources?",r],["Evidence","Did you support your thesis with relevant information?",e],["Risk awareness","Did you identify potential downsides?",k],["Reasoning","Did your conclusion logically follow from your evidence?",n]]}
 
-function vScore(){const sc=scores(),all=Math.round(sc.reduce((a,x)=>a+x[2],0)/4);const last=OUTCOME[2][1];
+function saveDecision(sc,all){/* signed-in students keep their decisions: parents and teachers see the reasoning behind each one */
+ if(S.saved)return;S.saved=1;const c=co();
+ fetch("/api/decisions",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({company:c.name,ticker:c.ticker,choice:S.choice,reasoning:S.text,confidence:S.conf,score:all,scores:sc.map(x=>[x[0],x[2]])})})
+  .then(r=>{const n=$("savednote");if(r.ok&&n)n.textContent="Saved to your Mintly account. Your parent or teacher can see how you reasoned."}).catch(()=>{})}
+function vScore(){const sc=scores(),all=Math.round(sc.reduce((a,x)=>a+x[2],0)/4);const last=OUTCOME[2][1];saveDecision(sc,all);
  const weak=sc.slice().sort((a,b)=>a[2]-b[2])[0][0];
  const recs=weak=="Risk awareness"?[0,1,2]:weak=="Evidence"?[3,5,1]:[1,4,0];
- app.innerHTML=`<h2>Your Decision Score</h2><div style="display:flex;gap:56px;flex-wrap:wrap;align-items:center;margin:24px 0"><div><div class="big" id="ov">0</div><p class="mute">Overall decision quality / 100</p></div>${radar(sc)}</div>
+ app.innerHTML=`<h2>Your Decision Score</h2><p class="mute" id="savednote" style="font-size:14px;margin-top:6px"></p><div style="display:flex;gap:56px;flex-wrap:wrap;align-items:center;margin:24px 0"><div><div class="big" id="ov">0</div><p class="mute">Overall decision quality / 100</p></div>${radar(sc)}</div>
 <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">${sc.map(x=>`<div class="card ex" onclick="this.classList.toggle('open')"><div class="sc"><span>${x[0]}</span><span>${x[2]}/100</span></div><div class="bar"><i data-w="${x[2]}"></i></div><p class="mute" style="font-size:14px">${x[1]}</p><div class="more"><p style="font-size:14px;margin-top:4px"><b>To improve:</b> ${TIPS[x[0]]}</p></div></div>`).join("")}</div>
 <p style="margin-top:28px;max-width:640px;font:700 22px var(--fh)">A good investment decision isn't necessarily one that makes money. A good decision is one made using good information, thoughtful reasoning, and an understanding of risk.</p>
 <div class="card" id="run" style="margin-top:28px"></div><p class="mute" style="margin-top:20px;max-width:640px"><b style="color:var(--ink)">Confidence check.</b> ${calib(sc)}</p><div class="card" style="margin-top:40px"><h3>Want to see what happened?</h3><p class="mute" style="margin:8px 0">Simulated market timeline for your ${S.choice} on ${co().name}. Illustrative only.</p><button class="btn sm" id="rev" onclick="reveal()">Show what happened</button><div id="tl" style="display:none;margin-top:24px"><div class="stats">${OUTCOME.map(o=>`<div><b class="tv" data-v="${o[1]}">$1,000</b>${o[0]}</div>`).join("")}</div>

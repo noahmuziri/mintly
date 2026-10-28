@@ -22,6 +22,7 @@
       <li><a href="../index.html#simulate">Simulate</a></li>
       <li><a href="../pricing.html">Pricing</a></li>
       <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
       <li><a href="../mintly.demo.html?from=site">Demo</a></li>
     </ul>
     <div class="nav-right">
@@ -85,7 +86,7 @@
       <div class="icon bg-mint">📘</div>
       <div>
         <div class="title">Financial Literacy</div>
-        <div class="desc">5 lessons: budgeting, saving, how banks work and investing basics</div>
+        <div class="desc">10 lessons: budgeting, saving, banking, investing, credit, scams and your own money plan</div>
       </div>
       <div class="meta" id="fl-meta">Start here</div>
     </a>
@@ -124,11 +125,12 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">Mintly · Financial learning for the next generation</div>
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
 </footer>
 
 <script src="../script.js"></script>
 <script>
+Mintly.ready.then(() => {
   const done = Mintly.completedCount();
   const total = Mintly.LESSON_IDS.length;
   document.getElementById('fl-meta').textContent =
@@ -179,6 +181,7 @@
       document.getElementById(id).querySelector('.meta').textContent = 'Unlocked →';
     });
   }
+});
 </script>
 </body>
 </html>

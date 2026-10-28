@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time, inflation and compounding — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="explainer.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Financial Literacy · Lesson 8</div>
+    <h1>Time, inflation and compounding</h1>
+    <p class="lesson-meta">About 14 minutes · 5 activities · Your answers and progress are saved to your account</p>
+
+    <p>Two quiet forces shape every dollar you own. One shrinks it: <strong>inflation</strong>. The other grows it: <strong>compounding</strong>. Understanding both, and how much <em>time</em> matters, is one of the biggest advantages a teenager can have.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>Would you rather have $1,000 now or $1,000 in ten years?</h3>
+      <p>Pick one and explain your choice. There's a reason that isn't about spending it right away.</p>
+      <label class="sr-only" for="warmup-text">Would you rather have $1,000 now or $1,000 in ten years?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="I&#x27;d rather have... because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Inflation: why money buys less over time</h2>
+    <p><strong>Inflation</strong> is the general rise in prices over time. When prices go up, each dollar buys less. This is called a loss of <strong>purchasing power</strong>.</p>
+    <p>For example, with 3% inflation a year, something that costs $10 today costs about $13.44 in ten years. Your $10 hasn't changed, but it now buys about three-quarters of what it used to.</p>
+    <p>That's why money sitting in a drawer, or in an account that pays almost no interest, slowly loses value. Savings need to earn at least about as much as prices rise, or they shrink in real terms.</p>
+    <div class="definition-card">
+      <div class="definition-term">Purchasing power <span>(noun)</span></div>
+      <p>How much you can buy with a given amount of money. Inflation lowers it; earning a return on your money can protect or increase it.</p>
+    </div>
+
+    <div data-explainer="compound"></div>
+
+    <h2>Compound interest: interest on your interest</h2>
+    <p>With <strong>simple interest</strong> you earn only on your original amount. With <strong>compound interest</strong> you earn on your original amount <em>and</em> on the interest you've already earned. That makes growth start slowly, then speed up, like a snowball getting bigger as it rolls.</p>
+    <p>A handy shortcut is the <strong>Rule of 72</strong>: divide 72 by the yearly return to estimate how many years it takes to double. At 6% a year, money doubles in about 12 years (72 ÷ 6). At 3%, about 24 years.</p>
+
+    <h2>Time is the secret ingredient</h2>
+    <p>The most powerful lever isn't a big amount; it's <strong>starting early</strong>. Someone who invests a little each month for 40 years can end up with far more than someone who starts 10 years later, even if the second person saves more each month. The early money has more time to compound.</p>
+    <p>You can't control inflation or the market. You <em>can</em> control when you start and how steadily you save.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      The calculator assumes your money earns the same return every year. Real investments go up and down, and some years lose money. How does that change how you'd think about a result like this? (Hint: it's an example, not a promise.)
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Calculator</div>
+      <h3>Watch compounding work</h3>
+      <p>Choose how much you save each month, for how many years, and an example yearly return. We also show what the result is worth in today's money after 3% yearly inflation, and what happens if you wait 10 years to start.</p>
+      <div class="calc-grid">
+        <label class="split-field">Saved per month<span class="money-input">$<input id="grow-month" type="number" min="1" max="5000" step="5" inputmode="decimal" value="50"></span></label>
+        <label class="split-field">Years<span class="money-input"><input id="grow-years" type="number" min="1" max="60" step="1" inputmode="decimal" value="40"></span></label>
+        <label class="split-field">Yearly return<span class="money-input"><input id="grow-rate" type="number" min="0" max="15" step="0.5" inputmode="decimal" value="7">%</span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>You put in</span><b id="grow-in">$0</b></div>
+        <div class="grow"><span>It grows to</span><b id="grow-out">$0</b></div>
+        <div class="grow"><span>In today's money</span><b id="grow-real">$0</b></div>
+        <div><span>If you wait 10 years</span><b id="grow-late">$0</b></div>
+      </div>
+      <p class="calc-note" id="grow-note"></p>
+      <p class="fine-print">Example only: assumes the same return every year and 3% inflation. Real returns are uneven and not guaranteed.</p>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="inflation">Inflation</button>
+          <button class="match-item" type="button" data-term="power">Purchasing power</button>
+          <button class="match-item" type="button" data-term="compound">Compound interest</button>
+          <button class="match-item" type="button" data-term="r72">Rule of 72</button>
+          <button class="match-item" type="button" data-term="return">Return</button>
+          <button class="match-item" type="button" data-term="horizon">Time horizon</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="power">How much you can buy with your money</button>
+          <button class="match-item def" type="button" data-def="inflation">A general rise in prices over time</button>
+          <button class="match-item def" type="button" data-def="horizon">How long you plan to keep money invested</button>
+          <button class="match-item def" type="button" data-def="return">The gain or loss on an investment, usually shown as a percentage</button>
+          <button class="match-item def" type="button" data-def="r72">Divide 72 by the yearly return to estimate years to double</button>
+          <button class="match-item def" type="button" data-def="compound">Interest earned on your interest as well as your original amount</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="inflation">
+          <label for="b1">Prices rising over time is called <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="compound">
+          <label for="b2">Earning interest on your interest is called <input id="b2" class="blank-input" autocomplete="off"> interest.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="72">
+          <label for="b3">The Rule of <input id="b3" class="blank-input" autocomplete="off"> estimates how long money takes to double.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="early|earlier|sooner">
+          <label for="b4">Starting to save <input id="b4" class="blank-input" autocomplete="off"> gives your money more time to grow.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Why start early?</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>Your cousin is 25 and says, "I'll start investing when I'm older and have more money." Explain how inflation and compounding show why that might cost them, and what you'd suggest.</p>
+      <label class="sr-only" for="final-text">Why start early?</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="Waiting costs because... I&#x27;d suggest..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "Prices rise every year, so cash loses buying power, and compounding means money invested earlier has more years to earn interest on its interest. Even small amounts started now can end up bigger than larger amounts started later. I'd suggest starting with whatever they can afford each month and increasing it over time."
+        <span class="sample-tip">Did yours mention inflation shrinking cash, compounding, and that time matters more than amount?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Inflation</dt><dd>A general rise in prices over time.</dd></div>
+      <div><dt>Purchasing power</dt><dd>How much your money can buy.</dd></div>
+      <div><dt>Compound interest</dt><dd>Interest on both your original amount and earlier interest.</dd></div>
+      <div><dt>Rule of 72</dt><dd>72 divided by the yearly return ≈ years to double.</dd></div>
+      <div><dt>Return</dt><dd>The gain or loss on an investment.</dd></div>
+      <div><dt>Time horizon</dt><dd>How long you plan to keep money invested.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>Growth only helps if you keep your money safe from people who want to take it. <a href="lesson-9.html"><strong>Go to Lesson 9: Scams and staying safe →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. With steady inflation, what happens to cash left in a drawer?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">It buys more each year</button>
+        <button class="quiz-option" data-correct="true">It buys less each year</button>
+        <button class="quiz-option" data-correct="false">It stays exactly as useful</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. What makes compound interest different from simple interest?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">You earn interest on your earlier interest too</button>
+        <button class="quiz-option" data-correct="false">It's only for banks</button>
+        <button class="quiz-option" data-correct="false">It pays the same amount every year</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. At a 6% yearly return, about how long does the Rule of 72 say money takes to double?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">6 years</button>
+        <button class="quiz-option" data-correct="true">12 years</button>
+        <button class="quiz-option" data-correct="false">72 years</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Two people save the same each month. One starts 10 years earlier. Who usually ends up with more?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">The one who started earlier</button>
+        <button class="quiz-option" data-correct="false">The one who started later</button>
+        <button class="quiz-option" data-correct="false">They always end up with the same</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="financial-literacy.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="lesson-7.html">← Lesson 7: Credit and debt</a>
+    <a class="next" href="lesson-9.html">Lesson 9: Scams and staying safe →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="explainer.js"></script>
+<script src="lesson.js"></script>
+<script>
+function money(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+const growMonth = document.getElementById('grow-month');
+const growYears = document.getElementById('grow-years');
+const growRate = document.getElementById('grow-rate');
+function futureValue(monthly, rate, years) {
+  const i = rate / 12, n = Math.round(years * 12);
+  if (n <= 0) return 0;
+  return i === 0 ? monthly * n : monthly * (Math.pow(1 + i, n) - 1) / i;
+}
+function updateGrow() {
+  const monthly = Math.max(0, Number(growMonth.value) || 0);
+  const years = Math.min(60, Math.max(0, Number(growYears.value) || 0));
+  const rate = Math.max(0, Number(growRate.value) || 0) / 100;
+  const fv = futureValue(monthly, rate, years);
+  const real = fv / Math.pow(1.03, years);
+  document.getElementById('grow-in').textContent = money(monthly * 12 * years);
+  document.getElementById('grow-out').textContent = money(fv);
+  document.getElementById('grow-real').textContent = money(real);
+  const late = years > 10 ? futureValue(monthly, rate, years - 10) : 0;
+  document.getElementById('grow-late').textContent = years > 10 ? money(late) : 'n/a';
+  document.getElementById('grow-note').textContent = years > 10
+    ? 'Waiting 10 years to start would cost you about ' + money(fv - late) + ' at the end, even though you would only have saved ' + money(monthly * 120) + ' less.'
+    : 'Try 11 or more years to see what waiting costs.';
+}
+[growMonth, growYears, growRate].forEach((el) => el.addEventListener('input', updateGrow));
+updateGrow();
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher dashboard — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-header">
+    <div class="eyebrow">Teacher dashboard</div>
+    <h1 id="dash-title">Your classes</h1>
+    <p>Create a class, share its code, and watch progress come in.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="dash-panel" style="margin-bottom:28px;">
+      <h3>New class</h3>
+      <form class="dash-inline" id="class-form">
+        <input id="class-name" placeholder="e.g. Period 3 Economics" maxlength="80" required aria-label="Class name">
+        <button class="btn" type="submit">Create class</button>
+      </form>
+      <div class="auth-error" id="class-error"></div>
+    </div>
+
+    <div id="classes"></div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+<script>
+Mintly.ready.then(async () => {
+  if (!Mintly.requireLogin("teacher")) return;
+  const esc = Mintly.escapeHTML;
+  $("dash-title").textContent = Mintly.currentUser().name + "'s classes";
+  const WEEK = 7 * 86400000;
+
+  function classHTML(c) {
+    const n = c.students.length;
+    const avg = n ? Math.round(c.students.reduce((a, s) => a + s.completed / s.total, 0) / n * 100) : 0;
+    const active = c.students.filter((s) => s.lastActive && Date.now() - s.lastActive < WEEK).length;
+    return '<section class="child-card">' +
+      '<div class="child-head"><div><h2>' + esc(c.name) + '</h2><small>Class code <span class="code-chip small">' + esc(c.code) + '</span> · students enter this on their dashboard</small></div>' +
+      '<button class="link-btn" data-delete="' + c.id + '">Delete class</button></div>' +
+      '<div class="dash-grid">' +
+        '<div class="dash-stat"><div class="n">' + n + '</div><div class="l">Students</div></div>' +
+        '<div class="dash-stat"><div class="n">' + avg + '%</div><div class="l">Average completion</div></div>' +
+        '<div class="dash-stat"><div class="n">' + active + '</div><div class="l">Active this week</div></div>' +
+      '</div>' +
+      (n ? '<h3>Lesson completion</h3><div class="dash-list">' + c.perLesson.map((l, i) =>
+        '<div class="dash-row"><span style="flex:1"><b>Lesson ' + (i + 1) + '</b> ' + esc(l.title) + barHTML(Math.round(l.complete / n * 100)) + '</span>' +
+        '<span class="status">' + l.complete + '/' + n + '</span></div>').join("") + '</div>' +
+      '<h3>Students</h3><div class="table-wrap"><table class="roster"><thead><tr><th>Name</th><th>Lessons</th><th>Progress</th><th>Decisions</th><th>Last active</th><th></th></tr></thead><tbody>' +
+        c.students.map((s) => '<tr><td>' + esc(s.name) + '<br><small>' + esc(s.email) + '</small></td><td>' + s.completed + '/' + s.total + '</td>' +
+          '<td style="min-width:120px">' + barHTML(Math.round(s.completed / s.total * 100)) + '</td>' +
+          '<td>' + (s.decisions.count ? s.decisions.count + " · avg " + s.decisions.avgScore : "—") + '</td><td>' + ago(s.lastActive) + '</td>' +
+          '<td><button class="link-btn" data-remove="' + c.id + ':' + s.id + '">Remove</button></td></tr>').join("") + '</tbody></table></div>'
+        : '<p class="dash-muted">No students yet. Share the code <b>' + esc(c.code) + '</b> and ask them to enter it under "Your classes" on their dashboard.</p>') +
+      '</section>';
+  }
+
+  async function load() {
+    const r = await Mintly.api("GET", "/api/teacher/classes");
+    if (!r.ok) return;
+    $("classes").innerHTML = r.classes.length ? r.classes.map(classHTML).join("") : '<p class="dash-muted">No classes yet. Create one above.</p>';
+  }
+  $("classes").addEventListener("click", async (e) => {
+    const { delete: del, remove } = e.target.dataset;
+    if (del && confirm("Delete this class? Students keep their own progress.")) { await Mintly.api("DELETE", "/api/teacher/classes/" + del); load(); }
+    if (remove) {
+      const [cid, sid] = remove.split(":");
+      if (confirm("Remove this student from the class?")) { await Mintly.api("DELETE", "/api/teacher/classes/" + cid + "/students/" + sid); load(); }
+    }
+  });
+  $("class-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const r = await Mintly.api("POST", "/api/teacher/classes", { name: $("class-name").value });
+    $("class-error").textContent = r.ok ? "" : r.error;
+    if (r.ok) { $("class-name").value = ""; load(); }
+  });
+  load();
+});
+</script>
+</body>
+</html>

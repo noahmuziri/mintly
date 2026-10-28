@@ -22,6 +22,7 @@
       <li><a href="../index.html#simulate">Simulate</a></li>
       <li><a href="../pricing.html">Pricing</a></li>
       <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
       <li><a href="../mintly.demo.html?from=site">Demo</a></li>
     </ul>
     <div class="nav-right">
@@ -41,25 +42,27 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">Mintly · Financial learning for the next generation</div>
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
 </footer>
 
 <script src="../script.js"></script>
 <script>
-  Mintly.requireSubscription();
-  const done = Mintly.completedCount();
-  const total = Mintly.LESSON_IDS.length;
-  if (done < total) {
-    const next = Mintly.nextLesson();
-    document.getElementById('lock-progress').textContent =
-      "You've completed " + done + " of " + total + " Financial Literacy lessons so far.";
-    const cta = document.getElementById('lock-cta');
-    cta.href = next.id + '.html';
-    cta.textContent = 'Continue with lesson ' + (Mintly.LESSON_IDS.indexOf(next.id) + 1) + ': ' + next.title;
-  } else {
-    document.getElementById('lock-progress').textContent =
-      "You've finished Financial Literacy. Cryptocurrencies opens once the Collectables lessons are out.";
-  }
+  Mintly.ready.then(() => {
+    if (!Mintly.requireLogin()) return;
+    const done = Mintly.completedCount();
+    const total = Mintly.LESSON_IDS.length;
+    if (done < total) {
+      const next = Mintly.nextLesson();
+      document.getElementById('lock-progress').textContent =
+        "You've completed " + done + " of " + total + " Financial Literacy lessons so far.";
+      const cta = document.getElementById('lock-cta');
+      cta.href = next.id + '.html';
+      cta.textContent = 'Continue with lesson ' + (Mintly.LESSON_IDS.indexOf(next.id) + 1) + ': ' + next.title;
+    } else {
+      document.getElementById('lock-progress').textContent =
+        "You've finished Financial Literacy. Cryptocurrencies opens once the Collectables lessons are out.";
+    }
+  });
 </script>
 </body>
 </html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body legal">
+    <div class="eyebrow">Legal</div>
+    <h1>Terms of Use</h1>
+    <p><em>Last updated: October 2026</em></p>
+    <p>By creating a Mintly account or using the site you agree to these terms and to our <a href="privacy.html">Privacy Policy</a>.</p>
+
+    <h2>What Mintly is</h2>
+    <p>Mintly is an educational service. Everything in its simulations uses practice money. Mintly is not a brokerage, doesn't trade in the stock market, and nothing on it is financial, investment, tax or legal advice. Prices come from third parties and may be delayed or wrong. News and company details in the simulation are examples written for learning.</p>
+
+    <h2>Who can use it</h2>
+    <ul>
+      <li>You must be 13 or older. If you're under 18, you need a parent or guardian's permission.</li>
+      <li>Parents and teachers who create accounts confirm they're entitled to follow the students they link to.</li>
+      <li>Give accurate information and keep your password private. You're responsible for what happens under your account.</li>
+    </ul>
+
+    <h2>Using Mintly properly</h2>
+    <ul>
+      <li>Don't try to break, overload or get around the security of the service, or access another person's account or data.</li>
+      <li>Don't post anything unlawful, hateful or harassing in the places where you can type, such as your answers and reasoning. Parents and teachers may read them.</li>
+      <li>Don't copy or resell Mintly's lessons without permission.</li>
+    </ul>
+
+    <h2>Plans and payment</h2>
+    <p>Mintly is free during early access. If we introduce paid plans we'll tell you well beforehand, and you won't be charged without agreeing first.</p>
+
+    <h2>Ending your account</h2>
+    <p>You can delete your account at any time from <a href="account.html">your account page</a>. We may suspend accounts that break these terms.</p>
+
+    <h2>Our responsibility</h2>
+    <p>We work hard to keep Mintly accurate and available, but it's provided "as is" and we can't promise it will always be error-free or uninterrupted. To the extent the law allows, Mintly isn't liable for losses that come from relying on the content; nothing here limits rights you have that the law doesn't allow us to limit.</p>
+
+    <h2>Changes</h2>
+    <p>If we change these terms in a way that matters, we'll tell you in the service or by email before it takes effect.</p>
+
+    <h2>Contact</h2>
+    <p><span class="contact-email"></span></p>
+  </article>
+</main>
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+<script>
+Mintly.ready.then(async () => {
+  const cfg = await Mintly.api("GET", "/api/config");
+  document.querySelectorAll(".contact-email").forEach((el) => {
+    if (cfg.contactEmail) el.innerHTML = '<a href="mailto:' + Mintly.escapeHTML(cfg.contactEmail) + '">' + Mintly.escapeHTML(cfg.contactEmail) + "</a>";
+    else el.textContent = "the Mintly team (contact address shown here once the site is live)";
+  });
+});
+</script>
+</body>
+</html>

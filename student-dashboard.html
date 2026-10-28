@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student dashboard — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="student.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap sd">
+  <div id="verify-banner" class="plan-note" hidden style="margin-top:20px">Confirm your email to keep your account safe. <a href="account.html">Resend the email</a></div>
+
+  <section class="sd-hero">
+    <div>
+      <h1 id="dash-title">Welcome</h1>
+      <p id="dash-sub">Pick up where you left off.</p>
+    </div>
+    <div class="sd-rank" aria-label="Your level">
+      <div class="sd-lvl" id="lvl">1</div>
+      <div style="flex:1">
+        <b id="lvl-name">Saver</b>
+        <small id="xp-text">0 XP</small>
+        <div class="sd-xp"><i id="xp-bar"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sd-stats">
+    <div class="sd-stat"><div class="n"><span aria-hidden="true">🔥</span><span id="stat-streak">0</span></div><div class="l">Day streak</div></div>
+    <div class="sd-stat"><div class="n" id="stat-done">0/10</div><div class="l">Lessons complete</div></div>
+    <div class="sd-stat"><div class="n" id="stat-score">–</div><div class="l">Avg decision score</div></div>
+    <div class="sd-stat"><div class="n" id="stat-mins">0</div><div class="l">Minutes left in the course</div></div>
+  </div>
+
+  <div class="sd-two">
+    <div class="sd-next">
+      <div class="eyebrow" id="resume-eyebrow">Up next</div>
+      <h2 id="resume-title"></h2>
+      <p id="resume-sub"></p>
+      <a class="btn" id="resume-btn" href="lessons/financial-literacy.html">Start</a>
+    </div>
+    <div class="sd-week">
+      <h3>This week</h3>
+      <div class="sd-days" id="week"></div>
+      <p id="week-note"></p>
+    </div>
+  </div>
+
+  <div class="sd-tip"><span class="ic" aria-hidden="true">💡</span><div><b>Money tip of the day</b><p id="tip"></p></div></div>
+
+  <h2>Your course <small id="course-pct"></small></h2>
+  <div id="course"></div>
+
+  <h2>Practice</h2>
+  <div class="sd-quick">
+    <a href="mintly.demo.html?from=site"><span class="ic" aria-hidden="true">📈</span><span><b>Run a simulation</b><small>Research, ask Leaf, decide. Practice money only.</small></span></a>
+    <a href="lessons/explore.html"><span class="ic" aria-hidden="true">🧭</span><span><b>Explore a topic</b><small>Sneakers, cards, crypto and more.</small></span></a>
+    <a href="slides.html"><span class="ic" aria-hidden="true">🎞️</span><span><b>Watch the lesson slides</b><small>Short narrated-style recaps.</small></span></a>
+  </div>
+  <div class="sd-panel" style="margin-top:14px">
+    <h3>Your decisions</h3>
+    <div id="decision-list" class="dash-list"><p class="dash-muted">Nothing yet. Finish a simulation and your reasoning and score appear here.</p></div>
+  </div>
+
+  <h2>Badges <small id="badge-count"></small></h2>
+  <div class="sd-badges" id="badges"></div>
+
+  <h2>Classes and family</h2>
+  <div class="sd-panels">
+    <div class="sd-panel">
+      <h3>Your classes</h3>
+      <div id="class-list" class="dash-list"></div>
+      <form class="dash-inline" id="join-form">
+        <input id="join-code" placeholder="Class code" maxlength="8" autocomplete="off" required aria-label="Class code">
+        <button class="btn" type="submit">Join class</button>
+      </form>
+      <div class="auth-error" id="join-error"></div>
+    </div>
+    <div class="sd-panel">
+      <h3>Share with a parent</h3>
+      <p class="dash-muted">A parent with a Mintly parent account can enter this code to follow your progress.</p>
+      <div class="code-chip" id="link-code">------</div>
+      <p class="dash-muted" id="parent-list"></p>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+<script>
+Mintly.ready.then(async () => {
+  if (!Mintly.requireLogin("student")) return;
+  const esc = Mintly.escapeHTML;
+  const user = Mintly.currentUser();
+  const L = Mintly.LESSONS;
+  const total = L.length;
+  const done = Mintly.completedCount();
+  const first = user.name.split(" ")[0];
+
+  // ---- greeting ----
+  const hr = new Date().getHours();
+  $("dash-title").textContent = (hr < 12 ? "Good morning" : hr < 18 ? "Good afternoon" : "Good evening") + ", " + first;
+  $("verify-banner").hidden = user.verified;
+
+  // ---- XP and level ----
+  const state = L.map((l) => {
+    const complete = Mintly.isLessonComplete(l.id), a = Mintly.lessonActivity(l.id);
+    return { l, complete, a, pct: complete ? 100 : a.total ? Math.round(a.done / a.total * 100) : 0 };
+  });
+  let decisions = [];
+  const dec = await Mintly.api("GET", "/api/decisions");
+  if (dec.ok) decisions = dec.decisions;
+  const xp = state.reduce((s, x) => s + (x.complete ? 100 : x.a.done * 10), 0) + decisions.length * 25;
+  const level = Math.floor(xp / 200) + 1, into = xp % 200;
+  const NAMES = ["Saver", "Budgeter", "Smart Spender", "Investor", "Strategist", "Money Pro"];
+  $("lvl").textContent = level;
+  $("lvl-name").textContent = NAMES[Math.min(level - 1, NAMES.length - 1)];
+  $("xp-text").textContent = xp + " XP · " + (200 - into) + " to level " + (level + 1);
+  requestAnimationFrame(() => setTimeout(() => { $("xp-bar").style.width = into / 2 + "%"; }, 80));
+
+  // ---- stats ----
+  $("stat-done").textContent = done + "/" + total;
+  $("stat-mins").textContent = state.filter((x) => !x.complete).reduce((m, x) => m + x.l.mins, 0);
+  if (decisions.length) $("stat-score").textContent = Math.round(decisions.reduce((a, d) => a + d.score, 0) / decisions.length);
+
+  // ---- continue card ----
+  const next = Mintly.nextLesson();
+  const nextNum = Mintly.LESSON_IDS.indexOf(next.id) + 1;
+  const act = Mintly.lessonActivity(next.id);
+  const btn = $("resume-btn");
+  btn.href = "lessons/" + next.id + ".html";
+  if (done === total) {
+    $("resume-eyebrow").textContent = "Course complete";
+    $("resume-title").textContent = "You finished Financial Literacy";
+    $("resume-sub").textContent = "Run a simulation to put it all to work, or review any lesson.";
+    btn.textContent = "Try the simulation";
+    btn.href = "mintly.demo.html?from=site";
+    $("dash-sub").textContent = "That's the whole course. Nicely done.";
+  } else {
+    const started = act.done > 0;
+    $("resume-eyebrow").textContent = started ? "Continue" : done ? "Up next" : "Start here";
+    $("resume-title").textContent = "Lesson " + nextNum + ": " + next.title;
+    $("resume-sub").textContent = started ? act.done + " of " + act.total + " activities done · about " + next.mins + " min" : "About " + next.mins + " minutes";
+    btn.textContent = (started ? "Continue" : "Start") + " lesson " + nextNum;
+    $("dash-sub").textContent = done ? done + " of " + total + " lessons done. Keep it going." : "Your first lesson takes about " + next.mins + " minutes.";
+  }
+
+  // ---- course map ----
+  const PARTS = [["Foundations", 0, 3], ["Banking and investing", 3, 5], ["Real-life money", 5, 10]];
+  $("course-pct").textContent = Math.round(done / total * 100) + "% complete";
+  $("course").innerHTML = PARTS.map(([name, a, b]) =>
+    '<div class="sd-part"><h3>' + name + '</h3><div class="sd-lessons">' +
+    state.slice(a, b).map((x, j) => {
+      const i = a + j, cls = x.complete ? "done" : x.pct > 0 ? "doing" : "";
+      return '<a class="sd-lesson ' + cls + (x.l.id === next.id && done < total ? " current" : "") + '" href="lessons/' + x.l.id + '.html">' +
+        '<span class="sd-node">' + (x.complete ? "✓" : i + 1) + '</span><span style="flex:1"><b>' + esc(x.l.title) + '</b><small>' +
+        (x.complete ? "Complete" : x.pct ? "In progress · " + x.pct + "%" : x.l.mins + " min") + "</small>" +
+        (x.pct && !x.complete ? '<span class="bar"><i style="width:' + x.pct + '%"></i></span>' : "") + "</span></a>";
+    }).join("") + "</div></div>").join("");
+
+  // ---- decisions ----
+  if (decisions.length) {
+    $("decision-list").innerHTML = decisions.slice(0, 6).map((d) =>
+      '<div class="dash-row"><span><b>' + esc(d.choice) + " " + esc(d.ticker) + "</b> · " + esc(d.company) + "<br><small>" + ago(d.at) + " · " + esc(d.reasoning.slice(0, 110)) + (d.reasoning.length > 110 ? "…" : "") + "</small></span>" +
+      '<span class="status complete">' + d.score + "/100</span></div>").join("");
+  }
+
+  // ---- summary: streak, week, classes ----
+  const sum = await Mintly.api("GET", "/api/student/summary");
+  const dayKey = (t) => { const d = new Date(t); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); };
+  const days = new Set((sum.ok ? sum.activity : []).map(dayKey));
+  let streak = 0;
+  const cur = new Date();
+  if (!days.has(dayKey(cur))) cur.setDate(cur.getDate() - 1); // today doesn't break a streak until it's over
+  while (days.has(dayKey(cur))) { streak++; cur.setDate(cur.getDate() - 1); }
+  $("stat-streak").textContent = streak;
+
+  const week = [], today = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    week.push({ n: d.toLocaleDateString(undefined, { weekday: "narrow" }), on: days.has(dayKey(d)), today: i === 0 });
+  }
+  $("week").innerHTML = week.map((w) => '<div class="sd-day ' + (w.on ? "on " : "") + (w.today ? "today" : "") + '"><span>' + w.n + "</span><i>" + (w.on ? "✓" : "") + "</i></div>").join("");
+  const active = week.filter((w) => w.on).length;
+  $("week-note").textContent = streak >= 2 ? streak + " days in a row. Come back tomorrow to keep it alive." : active ? "You were active " + active + (active === 1 ? " day" : " days") + " this week." : "Do a little today to start a streak.";
+
+  // ---- badges ----
+  const has = (id) => Mintly.isLessonComplete(id);
+  const BADGES = [
+    ["🌱", "First steps", "Finish a lesson", done >= 1],
+    ["🎯", "Halfway", "Finish 5 lessons", done >= 5],
+    ["🏆", "Graduate", "Finish all lessons", done === total],
+    ["🧠", "First decision", "Complete a simulation", decisions.length >= 1],
+    ["⭐", "Sharp thinker", "Score 80+ in a simulation", decisions.some((d) => d.score >= 80)],
+    ["🔥", "On a roll", "3-day streak", streak >= 3],
+    ["⚡", "Dedicated", "7-day streak", streak >= 7],
+    ["🛡️", "Scam spotter", "Finish lesson 9", has("lesson-9")],
+    ["🗺️", "Planner", "Finish lesson 10", has("lesson-10")],
+    ["🏫", "Classmate", "Join a class", sum.ok && sum.classes.length > 0],
+  ];
+  $("badge-count").textContent = BADGES.filter((b) => b[3]).length + " of " + BADGES.length;
+  $("badges").innerHTML = BADGES.map((b) => '<div class="sd-badge' + (b[3] ? "" : " off") + '"><span class="ic" aria-hidden="true">' + b[0] + "</span><b>" + b[1] + "</b><small>" + (b[3] ? "Earned" : b[2]) + "</small></div>").join("");
+
+  // ---- tip of the day ----
+  const TIPS = [
+    "Pay yourself first: move money to savings the moment you get paid, before you spend any.",
+    "A price is also a number of hours you worked. Ask whether it's worth that many hours.",
+    "Wait 48 hours before any purchase that isn't a need. Lots of wants fade.",
+    "The Rule of 72: divide 72 by an interest rate to see roughly how many years it takes money to double.",
+    "If someone is rushing you to pay, that's the red flag. Real deals can wait.",
+    "Compare the unit price, not the sticker price. Bigger isn't always cheaper.",
+    "Interest works for you on savings and against you on debt. Know which side you're on.",
+    "Spreading money across many things (diversifying) means one bad pick can't sink you.",
+    "Never share a one-time code with anyone. Real companies never ask for it.",
+    "Small amounts add up: $20 a month at 7% for 40 years grows to about $52,000.",
+  ];
+  $("tip").textContent = TIPS[Math.floor(Date.now() / 86400000) % TIPS.length];
+
+  // ---- classes / family ----
+  function loadSummary(r) {
+    if (!r.ok) return;
+    $("link-code").textContent = r.linkCode;
+    $("parent-list").textContent = r.parents.length ? "Linked parents: " + r.parents.join(", ") : "No parent linked yet.";
+    $("class-list").innerHTML = r.classes.length
+      ? r.classes.map((c) => '<div class="dash-row"><span><b>' + esc(c.name) + '</b><br><small>' + esc(c.teacher) + '</small></span>' +
+          '<button class="link-btn" data-leave="' + c.id + '">Leave</button></div>').join("")
+      : '<p class="dash-muted">You haven\'t joined a class. Ask your teacher for a class code.</p>';
+  }
+  loadSummary(sum);
+  $("class-list").addEventListener("click", async (e) => {
+    const id = e.target.dataset.leave;
+    if (id && confirm("Leave this class? Your teacher will stop seeing your progress.")) {
+      await Mintly.api("DELETE", "/api/student/classes/" + id);
+      loadSummary(await Mintly.api("GET", "/api/student/summary"));
+    }
+  });
+  $("join-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const r = await Mintly.api("POST", "/api/student/classes", { code: $("join-code").value });
+    $("join-error").textContent = r.ok ? "" : r.error;
+    if (r.ok) { $("join-code").value = ""; loadSummary(await Mintly.api("GET", "/api/student/summary")); }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson recaps — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0e1210; --ink: #F5F5F4; --mute: #98a79f; --mint: #A8DDC0; --line: rgba(255,255,255,.14); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+  body { display: flex; flex-direction: column; background: radial-gradient(900px 500px at 85% -10%, rgba(168,221,192,.22), transparent 60%), var(--bg); }
+  .bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 14px clamp(14px, 3vw, 32px); border-bottom: 1px solid var(--line); }
+  .brand { font: 800 22px Sora, sans-serif; color: var(--ink); text-decoration: none; margin-right: 8px; }
+  .brand span { color: var(--mint); }
+  select, button { min-height: 40px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.06); color: var(--ink); font: 600 14px Inter, sans-serif; padding: 0 14px; cursor: pointer; }
+  select option { color: #151515; }
+  button:hover:not(:disabled) { border-color: #fff; }
+  button:disabled { opacity: .35; cursor: default; }
+  button.on { background: var(--mint); color: #0e1210; border-color: var(--mint); }
+  :focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
+  .sp { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+  .progress { height: 4px; background: var(--line); }
+  .progress i { display: block; height: 100%; width: 0; background: var(--mint); transition: width .4s; }
+  .stage { flex: 1; display: grid; place-items: center; padding: clamp(20px, 5vw, 64px); }
+  .slide { max-width: 980px; width: 100%; animation: in .5s ease both; }
+  @keyframes in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .kick { font: 700 13px Inter, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--mint); margin-bottom: 18px; }
+  h1 { font: 800 clamp(34px, 6vw, 72px)/1.04 Sora, sans-serif; letter-spacing: -.035em; margin: 0 0 28px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  li { font: 600 clamp(20px, 2.6vw, 30px)/1.3 Inter, sans-serif; padding-left: 40px; position: relative; opacity: 0; animation: in .5s ease both; }
+  li::before { content: ""; position: absolute; left: 0; top: .35em; width: 22px; height: 22px; border-radius: 50%; background: var(--mint); }
+  li:nth-child(1) { animation-delay: .25s; } li:nth-child(2) { animation-delay: .5s; } li:nth-child(3) { animation-delay: .75s; } li:nth-child(4) { animation-delay: 1s; }
+  .say { max-width: 1108px; width: 100%; margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px) 28px; color: var(--mute); font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; min-height: 5.5em; }
+  .say[hidden] { display: none; }
+  .foot { padding: 0 clamp(20px, 5vw, 64px) 28px; max-width: 1108px; width: 100%; margin: 0 auto; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--mute); font-size: 14px; }
+  .foot a { color: var(--mint); font-weight: 600; }
+  @media (prefers-reduced-motion: reduce) { .slide, li { animation: none; opacity: 1; } }
+</style>
+</head>
+<body>
+<div class="bar">
+  <a class="brand" href="index.html">mintly<span>.</span></a>
+  <label class="sr" for="pick" style="position:absolute;left:-9999px">Choose a lesson</label>
+  <select id="pick"></select>
+  <button id="prev" type="button" aria-label="Previous slide">←</button>
+  <button id="next" type="button" aria-label="Next slide">→</button>
+  <div class="sp">
+    <button id="narrate" type="button" aria-pressed="false">🔊 Narrate</button>
+    <button id="caps" type="button" class="on" aria-pressed="true">Captions</button>
+    <button id="full" type="button">Full screen</button>
+  </div>
+</div>
+<div class="progress"><i id="prog"></i></div>
+<div class="stage"><div class="slide" id="slide" aria-live="polite"></div></div>
+<p class="say" id="say"></p>
+<div class="foot"><span id="count"></span><a id="open" href="lessons/financial-literacy.html">Open the full lesson →</a></div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var data, lesson = 0, i = 0, narrate = false, timer = null;
+  var synth = window.speechSynthesis;
+  if (!synth) $("narrate").hidden = true;
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+
+  function speak(text, then) {
+    if (!synth) return;
+    synth.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.rate = 1; u.onend = then;
+    synth.speak(u);
+  }
+  function render() {
+    var L = data.lessons[lesson], s = L.slides[i];
+    $("slide").style.animation = "none"; void $("slide").offsetWidth; $("slide").style.animation = "";
+    $("slide").innerHTML = '<div class="kick">Lesson ' + (lesson + 1) + " · " + (i + 1) + " of " + L.slides.length + "</div><h1>" + esc(s.h) + "</h1><ul>" +
+      s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
+    $("say").textContent = s.say;
+    $("prog").style.width = (i + 1) / L.slides.length * 100 + "%";
+    $("count").textContent = L.title;
+    $("prev").disabled = i === 0 && lesson === 0;
+    $("next").disabled = i === L.slides.length - 1 && lesson === data.lessons.length - 1;
+    $("open").href = "lessons/" + L.id + ".html";
+    if (narrate) speak(s.say, function () { if (narrate) setTimeout(function () { if (narrate) go(1); }, 700); });
+  }
+  function go(d) {
+    var L = data.lessons[lesson];
+    i += d;
+    if (i >= L.slides.length) { if (lesson < data.lessons.length - 1) { lesson++; i = 0; } else { i = L.slides.length - 1; narrate = false; $("narrate").classList.remove("on"); } }
+    if (i < 0) { if (lesson > 0) { lesson--; i = data.lessons[lesson].slides.length - 1; } else i = 0; }
+    $("pick").value = lesson;
+    history.replaceState(null, "", "?lesson=" + (lesson + 1));
+    render();
+  }
+  fetch("slides.json").then(function (r) { return r.json(); }).then(function (d) {
+    data = d;
+    $("pick").innerHTML = d.lessons.map(function (l, k) { return '<option value="' + k + '">Lesson ' + (k + 1) + ": " + esc(l.title) + "</option>"; }).join("");
+    var n = parseInt(new URLSearchParams(location.search).get("lesson"), 10);
+    if (n >= 1 && n <= d.lessons.length) lesson = n - 1;
+    $("pick").value = lesson;
+    render();
+  });
+  $("pick").onchange = function () { lesson = +this.value; i = 0; go(0); };
+  $("prev").onclick = function () { go(-1); };
+  $("next").onclick = function () { go(1); };
+  $("narrate").onclick = function () {
+    narrate = !narrate;
+    this.classList.toggle("on", narrate); this.setAttribute("aria-pressed", narrate);
+    if (narrate) render(); else synth.cancel();
+  };
+  $("caps").onclick = function () { var on = $("say").hidden; $("say").hidden = !on; this.classList.toggle("on", on); this.setAttribute("aria-pressed", on); };
+  $("full").onclick = function () { (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(function () {}); };
+  document.addEventListener("keydown", function (e) {
+    if (e.target.tagName === "SELECT") return;
+    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(1); }
+    if (e.key === "ArrowLeft") go(-1);
+  });
+  window.addEventListener("pagehide", function () { if (synth) synth.cancel(); });
+})();
+</script>
+</body>
+</html>

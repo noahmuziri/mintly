@@ -24,3 +24,6 @@ build/
 
 # Alpha Vantage response cache (server.js)
 .av-cache.json
+
+# Accounts and progress (server/db.js)
+.data/

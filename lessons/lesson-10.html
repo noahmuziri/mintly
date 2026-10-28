@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your money plan: putting it all together — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="explainer.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Financial Literacy · Lesson 10</div>
+    <h1>Your money plan: putting it all together</h1>
+    <p class="lesson-meta">About 15 minutes · 5 activities · Your answers and progress are saved to your account</p>
+
+    <p>You've now seen the whole picture: earning, budgeting, saving, banking, investing, borrowing, compounding and staying safe. This last lesson ties them into one plan that fits your life. It doesn't need to be perfect; it needs to be yours.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>What's one money goal for the next year?</h3>
+      <p>It could be saving for something, earning a certain amount, or learning one new skill with money. Write it down.</p>
+      <label class="sr-only" for="warmup-text">What&#x27;s one money goal for the next year?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="By this time next year I want to..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>The plan, step by step</h2>
+    <ol>
+      <li><strong>Know what comes in.</strong> Use your <em>net</em> (take-home) pay and any allowance or gifts (Lessons 1 and 6).</li>
+      <li><strong>Split it on purpose.</strong> A simple starting point is the <strong>50/30/20 rule</strong>: about 50% for needs, 30% for wants, 20% for savings and goals. Adjust it to your life (Lesson 2).</li>
+      <li><strong>Name a goal.</strong> A goal with an amount and a date is far easier to reach than "save more" (Lesson 3).</li>
+      <li><strong>Build a cushion.</strong> An emergency fund covers surprises so you don't need to borrow (Lesson 3).</li>
+      <li><strong>Keep it in the right place.</strong> A savings account that is insured and pays interest (Lesson 4).</li>
+      <li><strong>Avoid costly debt.</strong> Pay cards in full, read the APR, and be wary of "easy payments" (Lesson 7).</li>
+      <li><strong>Let time work.</strong> Invest for the long term, spread across many investments, and start early (Lessons 5 and 8).</li>
+      <li><strong>Stay safe.</strong> Pause, verify, tell, and use 2FA (Lesson 9).</li>
+    </ol>
+
+    <div data-explainer="plan"></div>
+
+    <h2>Make it automatic</h2>
+    <p>The best plans don't rely on willpower. <strong>Pay yourself first</strong>: move your savings share the day you're paid, before you can spend it. If your bank offers it, set up an automatic transfer.</p>
+
+    <h2>Check in and adjust</h2>
+    <p>Look at your plan once a month. Did you hit your savings amount? Did your income or goals change? A plan you adjust is a plan that lasts.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      What's one thing from this course you would actually change in how you handle money this month, and how will you know you did it?
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Calculator</div>
+      <h3>Try the 50/30/20 split</h3>
+      <p>Enter your monthly take-home money and how much you'd like to save. The rest is divided between needs and wants in the same proportion as 50/30.</p>
+      <div class="calc-grid">
+        <label class="split-field">Monthly money in<span class="money-input">$<input id="plan-income" type="number" min="1" max="100000" step="10" inputmode="decimal" value="200"></span></label>
+        <label class="split-field">Savings share<span class="money-input"><input id="plan-save" type="number" min="0" max="90" step="1" inputmode="decimal" value="20">%</span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>Needs</span><b id="plan-needs">$0</b></div>
+        <div><span>Wants</span><b id="plan-wants">$0</b></div>
+        <div class="grow"><span>Savings per month</span><b id="plan-saved">$0</b></div>
+        <div class="grow"><span>Savings per year</span><b id="plan-year">$0</b></div>
+      </div>
+      <p class="calc-note" id="plan-note"></p>
+      <p class="fine-print">A starting point, not a rule. Your needs may take a bigger or smaller share.</p>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="budget">Budget</button>
+          <button class="match-item" type="button" data-term="emergency">Emergency fund</button>
+          <button class="match-item" type="button" data-term="diversify">Diversification</button>
+          <button class="match-item" type="button" data-term="compound">Compound interest</button>
+          <button class="match-item" type="button" data-term="net">Net pay</button>
+          <button class="match-item" type="button" data-term="pyf">Pay yourself first</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="emergency">Money set aside for surprises</button>
+          <button class="match-item def" type="button" data-def="budget">A plan for your money before you spend it</button>
+          <button class="match-item def" type="button" data-def="pyf">Move savings aside before you spend</button>
+          <button class="match-item def" type="button" data-def="net">What you take home after taxes</button>
+          <button class="match-item def" type="button" data-def="compound">Interest on your interest</button>
+          <button class="match-item def" type="button" data-def="diversify">Spreading money across many investments</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="savings|saving">
+          <label for="b1">In the 50/30/20 rule, 20% goes to <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="first">
+          <label for="b2">Moving money to savings as soon as you're paid is paying yourself <input id="b2" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="diversification|diversifying">
+          <label for="b3">Spreading money across many investments is <input id="b3" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="emergency">
+          <label for="b4">A fund for surprises is an <input id="b4" class="blank-input" autocomplete="off"> fund.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Write your one-page money plan</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>In a few sentences: name one goal with an amount and date, how much you'll save each month and where you'll keep it, one habit you'll follow, and one thing you'll watch out for.</p>
+      <label class="sr-only" for="final-text">Write your one-page money plan</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="My goal is... I&#x27;ll save $... each month in... My habit is... I&#x27;ll watch out for..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "My goal is to save $300 for a new phone by next June. I'll move $30 a month into my savings account on the day I'm paid. My habit is to wait 24 hours before any unplanned purchase, and I'll watch out for texts or DMs that offer easy money."
+        <span class="sample-tip">Did yours include an amount, a date, a place to keep it, a habit and a safety rule?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Budget</dt><dd>A plan for your money before you spend it.</dd></div>
+      <div><dt>50/30/20 rule</dt><dd>About 50% needs, 30% wants, 20% savings.</dd></div>
+      <div><dt>Emergency fund</dt><dd>Money set aside for surprises.</dd></div>
+      <div><dt>Pay yourself first</dt><dd>Save before you spend.</dd></div>
+      <div><dt>Diversification</dt><dd>Spreading money across many investments.</dd></div>
+      <div><dt>Goal</dt><dd>A specific amount and date for something you want.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>You've finished the Financial Literacy course. Now put it into practice: research a real company, ask Leaf, and make your own Buy, Sell or Wait decision in the simulation. <a href="../index.html#simulate"><strong>Try the simulation →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. You have $200 a month and use 50/30/20. How much goes to savings?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">$20</button>
+        <button class="quiz-option" data-correct="true">$40</button>
+        <button class="quiz-option" data-correct="false">$100</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. Which is the best example of "pay yourself first"?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Saving whatever is left at the end of the month</button>
+        <button class="quiz-option" data-correct="true">Moving a set amount to savings right after you're paid</button>
+        <button class="quiz-option" data-correct="false">Never spending anything</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. Why is an emergency fund worth having?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">It covers surprises so you don't have to borrow</button>
+        <button class="quiz-option" data-correct="false">It earns the highest return possible</button>
+        <button class="quiz-option" data-correct="false">It lets you skip budgeting</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Which combination best builds long-term wealth?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Starting early, saving steadily and spreading investments out</button>
+        <button class="quiz-option" data-correct="false">Waiting for a hot tip</button>
+        <button class="quiz-option" data-correct="false">Keeping everything in cash</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="financial-literacy.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="lesson-9.html">← Lesson 9: Scams and staying safe</a>
+    <a class="next" href="../index.html#simulate">Try the simulation →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="explainer.js"></script>
+<script src="lesson.js"></script>
+<script>
+function money(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+const planIncome = document.getElementById('plan-income');
+const planSave = document.getElementById('plan-save');
+function updatePlan() {
+  const income = Math.max(0, Number(planIncome.value) || 0);
+  const save = Math.min(90, Math.max(0, Number(planSave.value) || 0)) / 100;
+  const spend = income * (1 - save);
+  document.getElementById('plan-needs').textContent = money(spend * 50 / 80);
+  document.getElementById('plan-wants').textContent = money(spend * 30 / 80);
+  document.getElementById('plan-saved').textContent = money(income * save);
+  document.getElementById('plan-year').textContent = money(income * save * 12);
+  document.getElementById('plan-note').textContent = 'Saving ' + money(income * save) + ' a month is ' + money(income * save * 12) + ' a year before any interest.';
+}
+[planIncome, planSave].forEach((el) => el.addEventListener('input', updatePlan));
+updatePlan();
+</script>
+</body>
+</html>

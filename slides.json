@@ -1,0 +1,486 @@
+{
+ "lessons": [
+  {
+   "id": "lesson-1",
+   "title": "What is financial literacy?",
+   "slides": [
+    {
+     "h": "Money decisions are everywhere",
+     "points": [
+      "Snacks, games, phones, first jobs",
+      "Every choice has a trade-off"
+     ],
+     "say": "You make money decisions every single day, usually without noticing. Financial literacy is simply knowing enough to make those choices on purpose."
+    },
+    {
+     "h": "It's a skill, not a talent",
+     "points": [
+      "Nobody is born knowing this",
+      "Skills get better with practice"
+     ],
+     "say": "Nobody is born good with money. It's a skill, which means anyone can learn it, and the earlier you start, the more it helps."
+    },
+    {
+     "h": "The four big ideas",
+     "points": [
+      "Earn",
+      "Spend",
+      "Save",
+      "Invest"
+     ],
+     "say": "Everything in this course sits on four ideas: earning money, spending it wisely, saving some, and making it grow."
+    },
+    {
+     "h": "Trade-offs and opportunity cost",
+     "points": [
+      "Spending on one thing means not spending on another",
+      "The thing you give up is the real cost"
+     ],
+     "say": "Every dollar can only be used once. What you give up when you choose something is called the opportunity cost."
+    },
+    {
+     "h": "Your turn",
+     "points": [
+      "Do the warm-up",
+      "Finish the quiz",
+      "Move to lesson 2"
+     ],
+     "say": "Do the warm-up, take the quick quiz, and then let's build your first budget."
+    }
+   ]
+  },
+  {
+   "id": "lesson-2",
+   "title": "Needs vs. wants: building a simple budget",
+   "slides": [
+    {
+     "h": "Needs vs. wants",
+     "points": [
+      "Needs: you can't do without",
+      "Wants: nice to have"
+     ],
+     "say": "A need is something you must have to stay safe, healthy and get to school or work. A want is everything else, however much you love it."
+    },
+    {
+     "h": "The gray area",
+     "points": [
+      "A phone is a need. The newest one is a want",
+      "Ask: what's the basic version?"
+     ],
+     "say": "Some things are both. You may need a phone, but you probably don't need the newest model. Ask what the basic version would cost."
+    },
+    {
+     "h": "A budget is a plan",
+     "points": [
+      "Income in",
+      "Spending out",
+      "Savings on purpose"
+     ],
+     "say": "A budget isn't a punishment. It's a plan that tells your money where to go before it disappears."
+    },
+    {
+     "h": "Build one in four steps",
+     "points": [
+      "List your income",
+      "List your needs",
+      "Set a wants limit",
+      "Pay yourself first"
+     ],
+     "say": "List what comes in, cover your needs, set a limit for wants, and move something to savings first."
+    },
+    {
+     "h": "Check in",
+     "points": [
+      "Review every month",
+      "Adjust, don't quit"
+     ],
+     "say": "A budget gets better each month. If it doesn't fit, adjust it. Don't throw it away."
+    }
+   ]
+  },
+  {
+   "id": "lesson-3",
+   "title": "Saving for something you want",
+   "slides": [
+    {
+     "h": "Pick a goal",
+     "points": [
+      "Make it specific",
+      "Give it a price and a date"
+     ],
+     "say": "Vague goals don't get funded. Name the thing, find its price and pick a date."
+    },
+    {
+     "h": "Do the math",
+     "points": [
+      "Price ÷ weeks = weekly amount",
+      "$120 in 12 weeks is $10 a week"
+     ],
+     "say": "Divide the price by the number of weeks. A $120 goal in twelve weeks is just ten dollars a week."
+    },
+    {
+     "h": "Make it automatic",
+     "points": [
+      "Pay yourself first",
+      "Move money on payday"
+     ],
+     "say": "Move the money the day you get it. What you don't see, you don't spend."
+    },
+    {
+     "h": "Emergency fund",
+     "points": [
+      "Small cushion for surprises",
+      "Start with $100"
+     ],
+     "say": "Surprises happen. A small emergency fund keeps one bad day from becoming a debt."
+    },
+    {
+     "h": "Stay motivated",
+     "points": [
+      "Track it",
+      "Celebrate milestones"
+     ],
+     "say": "Track your progress where you can see it, and celebrate the halfway point."
+    }
+   ]
+  },
+  {
+   "id": "lesson-4",
+   "title": "How banks work: accounts, debit cards and interest",
+   "slides": [
+    {
+     "h": "What a bank does",
+     "points": [
+      "Keeps money safe",
+      "Lends money out",
+      "Pays you interest on savings"
+     ],
+     "say": "A bank keeps your money safe, and lends some of what everyone deposits to other people, paying you a little interest for the use of yours."
+    },
+    {
+     "h": "Checking vs. savings",
+     "points": [
+      "Checking: spending",
+      "Savings: growing"
+     ],
+     "say": "Checking accounts are for everyday spending. Savings accounts are for money you want to keep and grow."
+    },
+    {
+     "h": "Debit cards",
+     "points": [
+      "Spend money you already have",
+      "Watch for fees and overdrafts"
+     ],
+     "say": "A debit card spends money you already have. It's not credit, and some accounts charge fees, so read the terms."
+    },
+    {
+     "h": "Interest",
+     "points": [
+      "APY is what you earn in a year",
+      "Higher is better for savers"
+     ],
+     "say": "Interest is the price of using money. When you save, the bank pays you. Compare the APY to find the best deal."
+    },
+    {
+     "h": "Keep it safe",
+     "points": [
+      "FDIC insured in the US",
+      "Never share your PIN"
+     ],
+     "say": "In the US, deposits at insured banks are protected up to the limit. Never share your PIN or passwords."
+    }
+   ]
+  },
+  {
+   "id": "lesson-5",
+   "title": "Intro to investing: stocks, risk and diversification",
+   "slides": [
+    {
+     "h": "Saving vs. investing",
+     "points": [
+      "Saving is safe and small",
+      "Investing can grow more and can lose"
+     ],
+     "say": "Saving keeps money safe. Investing aims to grow it more, but it comes with the chance of losing some."
+    },
+    {
+     "h": "What a stock is",
+     "points": [
+      "A small piece of a company",
+      "Price moves with demand"
+     ],
+     "say": "A stock is a tiny piece of ownership in a company. Its price moves as people's opinions of that company change."
+    },
+    {
+     "h": "Risk and return",
+     "points": [
+      "Higher possible reward means higher risk",
+      "No guarantees"
+     ],
+     "say": "Higher possible returns almost always come with higher risk. No one can promise you a profit."
+    },
+    {
+     "h": "Diversify",
+     "points": [
+      "Don't put everything in one place",
+      "Funds hold many companies"
+     ],
+     "say": "Spreading your money across many things means one bad pick can't sink you. Index funds do this for you."
+    },
+    {
+     "h": "Think long-term",
+     "points": [
+      "Time smooths the bumps",
+      "Avoid hype"
+     ],
+     "say": "Prices bounce around day to day. Long time horizons and calm decisions beat chasing hype."
+    }
+   ]
+  },
+  {
+   "id": "lesson-6",
+   "title": "Earning money: jobs, paychecks and taxes",
+   "slides": [
+    {
+     "h": "Ways teens earn",
+     "points": [
+      "Allowance and chores",
+      "Informal work",
+      "Part-time jobs",
+      "Making and selling"
+     ],
+     "say": "Teens earn money in many ways, from chores and babysitting to first part-time jobs."
+    },
+    {
+     "h": "Gross vs. net",
+     "points": [
+      "Gross: before deductions",
+      "Net: what you take home"
+     ],
+     "say": "Gross pay is what you earn. Net pay is what lands in your account after taxes and deductions."
+    },
+    {
+     "h": "Where it goes",
+     "points": [
+      "Social Security 6.2%",
+      "Medicare 1.45%",
+      "Income tax withholding"
+     ],
+     "say": "Payroll taxes take 7.65 percent. Income tax withholding depends on your W-4, and low earners often owe little or none."
+    },
+    {
+     "h": "Read your pay stub",
+     "points": [
+      "Hours × rate = gross",
+      "Check the deductions",
+      "Check the net"
+     ],
+     "say": "Check hours, rate and deductions. If something looks wrong, ask your employer."
+    },
+    {
+     "h": "Budget with net",
+     "points": [
+      "Plan with take-home",
+      "Not the headline number"
+     ],
+     "say": "Always budget with your net pay. It's the only number you can actually spend."
+    }
+   ]
+  },
+  {
+   "id": "lesson-7",
+   "title": "Credit and debt: borrowing without getting stuck",
+   "slides": [
+    {
+     "h": "Borrowing costs money",
+     "points": [
+      "Interest is the price",
+      "APR is the yearly rate"
+     ],
+     "say": "When you borrow, you pay extra, called interest. APR is the yearly rate."
+    },
+    {
+     "h": "The minimum-payment trap",
+     "points": [
+      "$1,000 at 24% APR, $25 a month",
+      "About 7 years, roughly double the cost"
+     ],
+     "say": "Paying only the minimum can take years and cost nearly double the purchase price."
+    },
+    {
+     "h": "Good debt, costly debt",
+     "points": [
+      "Some debt builds your future",
+      "High-interest debt drains it"
+     ],
+     "say": "Some borrowing can help you build a future. Credit card and payday debt usually just costs."
+    },
+    {
+     "h": "Your credit score",
+     "points": [
+      "Pay on time",
+      "Keep balances low",
+      "Don't apply for everything"
+     ],
+     "say": "A credit score shows lenders how reliably you repay. On-time payments matter most."
+    },
+    {
+     "h": "Buy now, pay later",
+     "points": [
+      "Still debt",
+      "Late fees add up"
+     ],
+     "say": "Buy-now-pay-later splits a price into pieces, but it's still debt. Don't let small payments hide a big total."
+    }
+   ]
+  },
+  {
+   "id": "lesson-8",
+   "title": "Time, inflation and compounding",
+   "slides": [
+    {
+     "h": "Inflation",
+     "points": [
+      "Prices rise over time",
+      "Money buys less"
+     ],
+     "say": "Prices tend to rise over time, so the same dollar buys less in the future."
+    },
+    {
+     "h": "Compound interest",
+     "points": [
+      "Interest on your interest",
+      "Growth speeds up"
+     ],
+     "say": "Compounding means you earn interest on your interest, so growth speeds up the longer it runs."
+    },
+    {
+     "h": "The Rule of 72",
+     "points": [
+      "72 ÷ rate = years to double",
+      "At 6%, about 12 years"
+     ],
+     "say": "Divide 72 by the rate to guess how many years it takes your money to double."
+    },
+    {
+     "h": "Start early",
+     "points": [
+      "$50 a month from 16 vs. 26",
+      "Waiting costs tens of thousands"
+     ],
+     "say": "Starting ten years earlier can mean tens of thousands more, from the same monthly amount."
+    },
+    {
+     "h": "What to do",
+     "points": [
+      "Save a little now",
+      "Keep it growing"
+     ],
+     "say": "You don't need much. You need time. Start with whatever you can."
+    }
+   ]
+  },
+  {
+   "id": "lesson-9",
+   "title": "Scams and staying safe with money",
+   "slides": [
+    {
+     "h": "Scams teens meet",
+     "points": [
+      "Fake delivery texts",
+      "Overpayment",
+      "Money mule jobs",
+      "Pump-and-dump"
+     ],
+     "say": "Scammers target teens with fake packages, too-good jobs and hyped-up stocks."
+    },
+    {
+     "h": "Red flags",
+     "points": [
+      "Pressure and urgency",
+      "Unusual payment methods",
+      "Too good to be true",
+      "Secret or private"
+     ],
+     "say": "Pressure, odd payment methods and secrecy are the biggest warning signs."
+    },
+    {
+     "h": "Pause, verify, tell",
+     "points": [
+      "Slow down",
+      "Check the real source",
+      "Tell a trusted adult"
+     ],
+     "say": "When something feels off: pause, verify with the real company, and tell someone you trust."
+    },
+    {
+     "h": "Protect your accounts",
+     "points": [
+      "Long unique passwords",
+      "Two-factor sign-in",
+      "Never share one-time codes"
+     ],
+     "say": "Use strong passwords, switch on two-factor, and never share a one-time code with anyone."
+    },
+    {
+     "h": "If it happens",
+     "points": [
+      "It isn't your fault",
+      "Tell someone quickly",
+      "Contact your bank"
+     ],
+     "say": "If you get caught, it isn't your fault. Tell a trusted adult and contact your bank fast."
+    }
+   ]
+  },
+  {
+   "id": "lesson-10",
+   "title": "Your money plan: putting it all together",
+   "slides": [
+    {
+     "h": "The plan",
+     "points": [
+      "Income",
+      "Needs",
+      "Wants",
+      "Savings and goals"
+     ],
+     "say": "Your plan brings the whole course together in one page."
+    },
+    {
+     "h": "50/30/20",
+     "points": [
+      "50% needs",
+      "30% wants",
+      "20% saving"
+     ],
+     "say": "A simple starting split is 50 percent needs, 30 percent wants and 20 percent savings."
+    },
+    {
+     "h": "Make it automatic",
+     "points": [
+      "Pay yourself first",
+      "Set up transfers"
+     ],
+     "say": "Automate what you can so good habits don't depend on willpower."
+    },
+    {
+     "h": "Check in monthly",
+     "points": [
+      "What worked?",
+      "What changes?"
+     ],
+     "say": "Review once a month. Small adjustments keep your plan realistic."
+    },
+    {
+     "h": "Next: practice",
+     "points": [
+      "Run the simulation",
+      "Practice with play money"
+     ],
+     "say": "Now put it to work. Try the simulation, with play money, and see how you decide."
+    }
+   ]
+  }
+ ]
+}

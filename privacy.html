@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body legal">
+    <div class="eyebrow">Legal</div>
+    <h1>Privacy Policy</h1>
+    <p><em>Last updated: October 2026</em></p>
+    <p>Mintly teaches teenagers how to think about money, using practice money only. This page explains what we collect, why, and the choices you have. We wrote it to be read.</p>
+
+    <h2>What we collect</h2>
+    <ul>
+      <li><strong>Account details:</strong> your name, email address, role (student, parent or teacher) and a password. Passwords are stored only as a salted hash, so we can't read them. If you sign in with Google we receive your name, email address and profile picture from Google.</li>
+      <li><strong>Learning activity (students):</strong> which lessons you've started and finished, your quiz and activity answers, anything you type into lesson boxes, and your simulation decisions: the company, Buy/Sell/Wait choice, your written reasoning, your confidence and your Decision Score.</li>
+      <li><strong>Links between accounts:</strong> a parent who enters a student's code, or a student who joins a teacher's class code, creates a link. Both sides can see it.</li>
+      <li><strong>Technical data:</strong> a session cookie that keeps you signed in, and basic server logs. Your light/dark theme choice is saved in your own browser.</li>
+    </ul>
+    <p>We don't collect payment details (billing isn't live), precise location, contacts, or anything from your device beyond the above.</p>
+
+    <h2>Who can see what</h2>
+    <ul>
+      <li><strong>Parents</strong> linked by a student's code can see that student's lesson progress and simulation decisions, including the reasoning they wrote.</li>
+      <li><strong>Teachers</strong> can see the progress and simulation scores of students in classes the student joined.</li>
+      <li>Students can leave a class, and parents or teachers can remove a link, at any time.</li>
+      <li>No one else sees your learning activity. We do not sell personal information, show ads, or share data with advertisers.</li>
+    </ul>
+
+    <h2>Service providers</h2>
+    <p>We use Google only if you choose "Continue with Google", an email service to send confirmation and password-reset emails, and Alpha Vantage for stock prices (we send it a ticker symbol, never your information). Hosting providers store our data on our behalf.</p>
+
+    <h2>Young people</h2>
+    <p>Mintly is for people aged 13 and over. Students under 18 should use Mintly with a parent or guardian's permission. If you're a parent and believe a child under 13 has an account, contact us and we'll delete it.</p>
+
+    <h2>Your choices</h2>
+    <ul>
+      <li>From <a href="account.html">your account page</a> you can change your name and password, download all the data we hold about you, or delete your account. Deleting removes your profile, progress and decisions.</li>
+      <li>Parents and guardians can ask us to review or delete their child's data by contacting us.</li>
+    </ul>
+
+    <h2>How long we keep data</h2>
+    <p>We keep your data while your account exists. When you delete it, it's removed from our live systems.</p>
+
+    <h2>Security</h2>
+    <p>Passwords are hashed, sessions use secure cookies, and access to student data is limited to the student and the parents and teachers they're linked to. No system is perfectly secure; if something goes wrong that affects you, we'll tell you.</p>
+
+    <h2>Contact</h2>
+    <p>Questions or requests: <span class="contact-email"></span></p>
+  </article>
+</main>
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+<script>
+Mintly.ready.then(async () => {
+  const cfg = await Mintly.api("GET", "/api/config");
+  document.querySelectorAll(".contact-email").forEach((el) => {
+    if (cfg.contactEmail) el.innerHTML = '<a href="mailto:' + Mintly.escapeHTML(cfg.contactEmail) + '">' + Mintly.escapeHTML(cfg.contactEmail) + "</a>";
+    else el.textContent = "the Mintly team (contact address shown here once the site is live)";
+  });
+});
+</script>
+</body>
+</html>

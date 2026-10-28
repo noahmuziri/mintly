@@ -1,0 +1,84 @@
+/* Student dashboard. Uses the site's colour variables so dark mode works. */
+.sd { padding-bottom: 72px; }
+.sd h2 { font: 800 22px var(--fh); letter-spacing: -.015em; margin: 44px 0 14px; }
+.sd h2 small { font: 500 14px var(--fb); color: var(--mute); margin-left: 8px; letter-spacing: 0; }
+
+/* welcome band */
+.sd-hero { margin-top: 28px; border-radius: 28px; padding: clamp(24px, 4vw, 40px); color: #F5F5F4; position: relative; overflow: hidden;
+  background: radial-gradient(900px 300px at 100% 0, rgba(168,221,192,.35), transparent 60%), linear-gradient(135deg, #151515, #1f2f27); display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; }
+.sd-hero h1 { margin: 0; font: 800 clamp(28px, 4vw, 40px)/1.08 var(--fh); letter-spacing: -.03em; color: #fff; }
+.sd-hero p { margin: 8px 0 0; color: #c9d4cd; max-width: 460px; }
+.sd-rank { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); border-radius: 20px; padding: 16px 20px; min-width: 280px; }
+.sd-lvl { width: 56px; height: 56px; border-radius: 16px; background: var(--pmint); color: #151515; display: grid; place-items: center; font: 800 24px var(--fh); flex: none; }
+.sd-rank b { display: block; font: 700 17px var(--fh); }
+.sd-rank small { color: #c9d4cd; }
+.sd-xp { height: 8px; border-radius: 4px; background: rgba(255,255,255,.18); margin-top: 8px; overflow: hidden; }
+.sd-xp i { display: block; height: 100%; background: var(--pmint); border-radius: 4px; transition: width .9s cubic-bezier(.2,.8,.2,1); width: 0; }
+
+/* stats */
+.sd-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+.sd-stat { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 18px 20px; }
+.sd-stat .n { font: 800 30px var(--fh); letter-spacing: -.02em; display: flex; align-items: center; gap: 8px; }
+.sd-stat .l { color: var(--mute); font-size: 13px; margin-top: 2px; }
+
+/* continue + week */
+.sd-two { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-top: 16px; }
+.sd-next { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 26px; display: flex; flex-direction: column; gap: 10px; box-shadow: 8px 8px 0 var(--pmint); }
+.sd-next .eyebrow { font: 700 12px var(--fb); letter-spacing: .08em; text-transform: uppercase; color: var(--pgreen); }
+.sd-next h2 { margin: 0; font-size: clamp(20px, 2.4vw, 26px); }
+.sd-next p { margin: 0; color: var(--mute); }
+.sd-next .btn { align-self: flex-start; margin-top: 8px; text-decoration: none; display: inline-flex; align-items: center; }
+.sd-week { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 22px; }
+.sd-week h3 { margin: 0 0 14px; font: 700 16px var(--fh); }
+.sd-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+.sd-day span { display: block; font-size: 12px; color: var(--mute); margin-bottom: 6px; }
+.sd-day i { display: grid; place-items: center; height: 36px; border-radius: 12px; background: rgba(128,128,128,.14); font-style: normal; font-size: 16px; }
+.sd-day.on i { background: var(--pmint); color: #151515; }
+.sd-day.today i { outline: 2px solid var(--ink); outline-offset: 2px; }
+.sd-week p { margin: 14px 0 0; color: var(--mute); font-size: 14px; }
+
+/* course map */
+.sd-part { margin-bottom: 18px; }
+.sd-part h3 { margin: 0 0 10px; font: 700 13px var(--fb); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.sd-lessons { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.sd-lesson { position: relative; display: flex; gap: 14px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; text-decoration: none; color: inherit; transition: transform .15s, border-color .15s; }
+.sd-lesson:hover { border-color: var(--ink); transform: translateY(-2px); }
+.sd-lesson:focus-visible { outline: 2px solid var(--pgreen); outline-offset: 2px; }
+.sd-node { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 800 16px var(--fh); background: rgba(128,128,128,.16); }
+.sd-lesson.done .sd-node { background: var(--pgreen); color: #fff; }
+.sd-lesson.doing .sd-node { background: var(--pmint); color: #151515; }
+.sd-lesson.current { border-color: var(--pgreen); box-shadow: 0 0 0 3px rgba(47,125,88,.18); }
+.sd-lesson b { display: block; font: 600 15px/1.3 var(--fb); }
+.sd-lesson small { color: var(--mute); font-size: 12px; }
+.sd-lesson .bar { display: block; height: 5px; border-radius: 3px; background: rgba(128,128,128,.2); margin-top: 8px; overflow: hidden; }
+.sd-lesson .bar i { display: block; height: 100%; background: var(--pgreen); }
+
+/* badges */
+.sd-badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.sd-badge { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; text-align: center; }
+.sd-badge .ic { font-size: 30px; line-height: 1; display: block; margin-bottom: 8px; }
+.sd-badge b { display: block; font-size: 14px; }
+.sd-badge small { color: var(--mute); font-size: 12px; }
+.sd-badge.off { opacity: .5; }
+.sd-badge.off .ic { filter: grayscale(1); }
+
+/* panels */
+.sd-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.sd-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+.sd-panel h3 { margin: 0 0 12px; font: 700 17px var(--fh); }
+.sd-tip { background: var(--gainsoft); border-radius: 22px; padding: 22px 24px; display: flex; gap: 16px; align-items: flex-start; margin-top: 16px; }
+.sd-tip .ic { font-size: 28px; }
+.sd-tip b { display: block; margin-bottom: 4px; }
+.sd-tip p { margin: 0; color: var(--ink); }
+.sd-quick { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.sd-quick a { display: flex; gap: 14px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; text-decoration: none; color: inherit; }
+.sd-quick a:hover { border-color: var(--ink); }
+.sd-quick .ic { font-size: 26px; }
+.sd-quick small { display: block; color: var(--mute); font-size: 12px; }
+
+@media (max-width: 860px) {
+  .sd-hero, .sd-two, .sd-panels { grid-template-columns: 1fr; }
+  .sd-stats { grid-template-columns: repeat(2, 1fr); }
+  .sd-rank { min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .sd-xp i { transition: none; } .sd-lesson { transition: none; } }

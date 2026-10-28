@@ -22,6 +22,7 @@
       <li><a href="../index.html#simulate">Simulate</a></li>
       <li><a href="../pricing.html">Pricing</a></li>
       <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
       <li><a href="../mintly.demo.html?from=site">Demo</a></li>
     </ul>
     <div class="nav-right">
@@ -40,27 +41,29 @@
 </main>
 
 <footer class="site-footer">
-  <div class="wrap">Mintly · Financial learning for the next generation</div>
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
 </footer>
 
 <script src="../script.js"></script>
 <script>
-  Mintly.requireSubscription();
-  if (Mintly.isCourseComplete()) {
-    document.getElementById('lock-message').textContent = "You've unlocked Collectables — lessons are still being written. Check back soon.";
-    document.getElementById('lock-cta').style.display = 'none';
-    document.querySelector('.icon-big').textContent = '🃏';
-    document.querySelector('h2').textContent = 'Collectables — coming very soon';
-  } else {
-    const next = Mintly.nextLesson();
-    const nextNum = Mintly.LESSON_IDS.indexOf(next.id) + 1;
-    document.getElementById('lock-message').textContent =
-      "You've completed " + Mintly.completedCount() + " of " + Mintly.LESSON_IDS.length +
-      " Financial Literacy lessons. Finish them all to unlock this course.";
-    const cta = document.getElementById('lock-cta');
-    cta.href = next.id + '.html';
-    cta.textContent = 'Continue with lesson ' + nextNum + ': ' + next.title;
-  }
+  Mintly.ready.then(() => {
+    if (!Mintly.requireLogin()) return;
+    if (Mintly.isCourseComplete()) {
+      document.getElementById('lock-message').textContent = "You've unlocked Collectables — lessons are still being written. Check back soon.";
+      document.getElementById('lock-cta').style.display = 'none';
+      document.querySelector('.icon-big').textContent = '🃏';
+      document.querySelector('h2').textContent = 'Collectables — coming very soon';
+    } else {
+      const next = Mintly.nextLesson();
+      const nextNum = Mintly.LESSON_IDS.indexOf(next.id) + 1;
+      document.getElementById('lock-message').textContent =
+        "You've completed " + Mintly.completedCount() + " of " + Mintly.LESSON_IDS.length +
+        " Financial Literacy lessons. Finish them all to unlock this course.";
+      const cta = document.getElementById('lock-cta');
+      cta.href = next.id + '.html';
+      cta.textContent = 'Continue with lesson ' + nextNum + ': ' + next.title;
+    }
+  });
 </script>
 </body>
 </html>

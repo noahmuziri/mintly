@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent dashboard — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-header">
+    <div class="eyebrow">Parent dashboard</div>
+    <h1 id="dash-title">Your family</h1>
+    <p>See what your teen is learning and how they're doing. Everything on Mintly uses practice money.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="dash-panel" style="margin-bottom:28px;">
+      <h3>Add your teen</h3>
+      <p class="dash-muted">Ask your teen to open their Mintly dashboard and read you the six-character code under "Share with a parent".</p>
+      <form class="dash-inline" id="link-form">
+        <input id="link-code" placeholder="Their code" maxlength="8" autocomplete="off" required aria-label="Student code">
+        <button class="btn" type="submit">Add</button>
+      </form>
+      <div class="auth-error" id="link-error"></div>
+    </div>
+
+    <div id="children"></div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+<script>
+Mintly.ready.then(async () => {
+  if (!Mintly.requireLogin("parent")) return;
+  const esc = Mintly.escapeHTML;
+  $("dash-title").textContent = "Welcome, " + Mintly.currentUser().name.split(" ")[0];
+
+  const STATUS = { complete: "✓ Complete", "in-progress": "In progress", "not-started": "Not started" };
+
+  function childHTML(c) {
+    const pct = Math.round(c.completed / c.total * 100);
+    return '<section class="child-card">' +
+      '<div class="child-head"><div><h2>' + esc(c.name) + '</h2><small>' + esc(c.email) + ' · Last active ' + ago(c.lastActive) + '</small></div>' +
+      '<button class="link-btn" data-unlink="' + c.id + '">Remove</button></div>' +
+      '<div class="dash-grid">' +
+        '<div class="dash-stat"><div class="n">' + c.completed + '/' + c.total + '</div><div class="l">Lessons complete</div></div>' +
+        '<div class="dash-stat"><div class="n">' + pct + '%</div><div class="l">Financial Literacy</div></div>' +
+      '</div>' +
+      '<div class="dash-list">' + c.lessons.map((l, i) =>
+        '<div class="dash-row"><span><b>Lesson ' + (i + 1) + '</b> ' + esc(l.title) + '</span>' +
+        '<span class="status ' + l.status + '">' + STATUS[l.status] + (l.status === "in-progress" ? " · " + l.pct + "%" : "") + '</span></div>').join("") + '</div>' +
+      decisionsHTML(c.decisions) +
+      '<p class="dash-muted talk"><b>Conversation starter:</b> ' + esc(prompt(c)) + '</p>' +
+      '</section>';
+  }
+
+  function decisionsHTML(d) {
+    if (!d.count) return '<h3>Practice decisions</h3><p class="dash-muted">No simulations finished yet.</p>';
+    return '<h3>Practice decisions</h3><p class="dash-muted">' + d.count + (d.count === 1 ? " decision" : " decisions") + ", average Decision Score " + d.avgScore + "/100. Read the reasoning, not just the score.</p>" +
+      '<div class="dash-list">' + d.recent.map((x) =>
+        '<div class="dash-row"><span><b>' + esc(x.choice) + " " + esc(x.ticker) + "</b> · " + ago(x.at) +
+        '<br><small>&ldquo;' + esc(x.reasoning.slice(0, 220)) + (x.reasoning.length > 220 ? "…" : "") + '&rdquo; · confidence ' + (x.confidence ?? "?") + '%</small></span>' +
+        '<span class="status complete">' + x.score + "/100</span></div>").join("") + "</div>";
+  }
+
+  // a nudge for the next conversation, based on where the student is
+  function prompt(c) {
+    if (c.completed === c.total) return "Ask them to explain diversification in their own words.";
+    const cur = c.lessons.find((l) => l.status !== "complete");
+    return 'Ask what they learned in "' + cur.title + '" and how it could apply to their own money.';
+  }
+
+  async function load() {
+    const r = await Mintly.api("GET", "/api/parent/children");
+    if (!r.ok) return;
+    $("children").innerHTML = r.children.length
+      ? r.children.map(childHTML).join("")
+      : '<p class="dash-muted">No teens added yet. Add one above to see their progress.</p>';
+  }
+  $("children").addEventListener("click", async (e) => {
+    const id = e.target.dataset.unlink;
+    if (id && confirm("Stop following this student?")) { await Mintly.api("DELETE", "/api/parent/children/" + id); load(); }
+  });
+  $("link-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const r = await Mintly.api("POST", "/api/parent/children", { code: $("link-code").value });
+    $("link-error").textContent = r.ok ? "" : r.error;
+    if (r.ok) { $("link-code").value = ""; load(); }
+  });
+  load();
+});
+</script>
+</body>
+</html>

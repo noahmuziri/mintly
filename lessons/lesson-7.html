@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credit and debt: borrowing without getting stuck — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="explainer.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="../index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="lesson-1.html">Learn</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="../index.html#simulate">Simulate</a></li>
+      <li><a href="../pricing.html">Pricing</a></li>
+      <li><a href="../parents.html">For Parents</a></li>
+      <li><a href="../teachers.html">For Teachers</a></li>
+      <li><a href="../mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Financial Literacy · Lesson 7</div>
+    <h1>Credit and debt: borrowing without getting stuck</h1>
+    <p class="lesson-meta">About 14 minutes · 5 activities · Your answers and progress are saved to your account</p>
+
+    <p>Borrowing can help you buy a home or pay for school. It can also trap you for years in payments on something you used up long ago. The difference comes down to a few ideas you can learn right now: what interest really costs, how credit cards work, and why a number called a credit score follows you around.</p>
+
+    <div class="activity" id="warmup">
+      <div class="activity-label">Warm-up · Typing</div>
+      <h3>Is borrowing money always a bad idea?</h3>
+      <p>Think about a time someone borrowed money, or you did. Was it a good idea? Write what you think and why.</p>
+      <label class="sr-only" for="warmup-text">Is borrowing money always a bad idea?</label>
+      <textarea class="write-box" id="warmup-text" data-save="warmup" rows="3" placeholder="I think borrowing is... because..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-lock="warmup-text">Save my answer</button>
+        <span class="activity-status" id="warmup-status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <h2>Credit and debt</h2>
+    <p><strong>Credit</strong> is the ability to borrow money or buy now and pay later. <strong>Debt</strong> is the money you owe once you do. Borrowing always costs something extra: <strong>interest</strong>, the price of using someone else's money (you met it in Lesson 4, from the saver's side).</p>
+    <div class="definition-card">
+      <div class="definition-term">APR <span>(noun)</span></div>
+      <p>Annual percentage rate: the <strong>yearly cost of borrowing</strong>, as a percentage. A higher APR means a more expensive loan. Always ask for the APR before you borrow.</p>
+    </div>
+
+    <div data-explainer="debt"></div>
+
+    <h2>How a credit card works</h2>
+    <p>A credit card lets you spend the bank's money now and pay it back later. Each month you get a <strong>statement</strong> showing what you owe. Then you have a choice:</p>
+    <ul>
+      <li><strong>Pay the full statement balance</strong> by the due date, and in most cases you pay <em>no interest at all</em>.</li>
+      <li><strong>Pay less</strong> (the <strong>minimum payment</strong> is the smallest amount allowed) and the rest starts costing interest, often 20% a year or more.</li>
+    </ul>
+    <p>The minimum payment is the trap. It keeps the bank happy while your balance hangs around and interest keeps adding up. Use the calculator below to see how long.</p>
+
+    <h2>Good debt, costly debt</h2>
+    <ul>
+      <li><strong>Debt that can build your future:</strong> a student loan for a degree that raises your earnings, or a mortgage for a home. Still costs interest, so borrow carefully.</li>
+      <li><strong>Debt that costs a lot for little:</strong> carrying a credit card balance, payday loans, and borrowing for things that lose value fast.</li>
+      <li><strong>Buy now, pay later (BNPL):</strong> splitting a purchase into instalments. It can feel painless, which is exactly why people overspend. Late fees and missed payments add up, and a pile of small plans is still a pile of debt.</li>
+    </ul>
+
+    <h2>Your credit score</h2>
+    <p>A <strong>credit score</strong> is a number, in the US usually between 300 and 850, that shows lenders how reliably you repay. A higher score means lower interest rates, and it can affect renting an apartment or getting some jobs. A typical score looks at:</p>
+    <ul>
+      <li><strong>Payment history (about 35%):</strong> do you pay on time? The biggest factor.</li>
+      <li><strong>Amounts owed (about 30%):</strong> how much of your available credit you use.</li>
+      <li><strong>Length of history (about 15%):</strong> how long you've had credit.</li>
+      <li><strong>New credit (about 10%) and mix (about 10%).</strong></li>
+    </ul>
+    <p>In the US, you generally need to be 21 to open a credit card on your own, or have a parent as cosigner (or show your own income). Until then, the best preparation is habits: pay bills on time and never spend money you don't have.</p>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      A $400 gaming laptop is on a "4 easy payments" plan. What's the real price if you miss a payment and get a fee? Could you buy it with cash in three months instead, and would you still want it then?
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Calculator</div>
+      <h3>How long does a credit card balance really last?</h3>
+      <p>Try a balance, a yearly interest rate (APR) and what you pay each month. See how paying the minimum drags on, and how a bit more changes everything.</p>
+      <div class="calc-grid">
+        <label class="split-field">Balance<span class="money-input">$<input id="debt-bal" type="number" min="1" max="50000" step="10" inputmode="decimal" value="1000"></span></label>
+        <label class="split-field">APR<span class="money-input"><input id="debt-apr" type="number" min="0" max="60" step="0.5" inputmode="decimal" value="24">%</span></label>
+        <label class="split-field">Monthly payment<span class="money-input">$<input id="debt-pay" type="number" min="1" max="5000" step="5" inputmode="decimal" value="25"></span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>You borrowed</span><b id="debt-borrow">$0</b></div>
+        <div class="grow"><span>Interest you pay</span><b id="debt-interest">$0</b></div>
+        <div class="grow"><span>Time to pay off</span><b id="debt-time">0</b></div>
+      </div>
+      <p class="calc-note" id="debt-note"></p>
+      <p class="fine-print">Assumes no new purchases and a fixed APR with interest added monthly. Real card terms vary.</p>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Matching</div>
+      <h3>Connect the word to its definition</h3>
+      <p>Tap a word, then tap the definition that matches it.</p>
+      <div class="match-grid" id="match-game">
+        <div class="match-col" aria-label="Words">
+          <button class="match-item" type="button" data-term="credit">Credit</button>
+          <button class="match-item" type="button" data-term="apr">APR</button>
+          <button class="match-item" type="button" data-term="minimum">Minimum payment</button>
+          <button class="match-item" type="button" data-term="score">Credit score</button>
+          <button class="match-item" type="button" data-term="principal">Principal</button>
+          <button class="match-item" type="button" data-term="cosigner">Cosigner</button>
+        </div>
+        <div class="match-col" aria-label="Definitions">
+          <button class="match-item def" type="button" data-def="apr">The yearly cost of borrowing, as a percentage</button>
+          <button class="match-item def" type="button" data-def="credit">Being able to borrow now and pay later</button>
+          <button class="match-item def" type="button" data-def="cosigner">Someone who promises to repay if you don't</button>
+          <button class="match-item def" type="button" data-def="principal">The amount you borrowed, before interest</button>
+          <button class="match-item def" type="button" data-def="score">A number that shows lenders how reliably you repay</button>
+          <button class="match-item def" type="button" data-def="minimum">The smallest amount you must pay each month</button>
+        </div>
+      </div>
+      <div class="activity-status" id="match-status" aria-live="polite">0 of 6 matched</div>
+    </div>
+
+    <div class="activity">
+      <div class="activity-label">Activity · Typing</div>
+      <h3>Fill in the missing word</h3>
+      <p>Type the word that completes each sentence, then press Enter or Check.</p>
+      <div class="blank-list">
+        <div class="blank-row" data-answers="apr">
+          <label for="b1">The yearly cost of borrowing, as a percentage, is the <input id="b1" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="minimum">
+          <label for="b2">Paying only the <input id="b2" class="blank-input" autocomplete="off"> payment keeps you in debt longer.</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="on time|on-time|ontime">
+          <label for="b3">The biggest part of a credit score is paying <input id="b3" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+        <div class="blank-row" data-answers="principal">
+          <label for="b4">Money you borrow, before any interest, is the <input id="b4" class="blank-input" autocomplete="off"> .</label>
+          <button class="btn-small" type="button">Check</button>
+          <span class="blank-status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="activity" id="final">
+      <div class="activity-label">Wrap-up · Typing</div>
+      <h3>Explain the minimum payment trap</h3>
+      <p>Here's what you wrote at the start:</p>
+      <blockquote class="your-answer" id="warmup-echo">You haven't written a warm-up answer yet. Scroll up to try it.</blockquote>
+      <p>A classmate says, "I'll just pay the minimum on my card, it's easy." Explain what really happens, and what you'd suggest instead.</p>
+      <label class="sr-only" for="final-text">Explain the minimum payment trap</label>
+      <textarea class="write-box" id="final-text" data-save="final" rows="4" placeholder="If you only pay the minimum, then... Instead, I&#x27;d..."></textarea>
+      <div class="activity-actions">
+        <button class="btn" type="button" data-reveal="final-sample" data-needs="final-text">Compare with a sample answer</button>
+        <span class="activity-status" id="final-text-status" aria-live="polite"></span>
+      </div>
+      <div class="sample-answer" id="final-sample" hidden>
+        <strong>One strong answer:</strong> "The minimum payment barely covers the interest, so the balance stays high for years and you pay far more than the thing cost. A better plan is to pay the full statement balance every month, or at least pay much more than the minimum, and not buy things you can't pay for."
+        <span class="sample-tip">Did yours mention interest piling up and a better plan (paying in full or more than the minimum)?</span>
+      </div>
+    </div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Credit / debt</dt><dd>Ability to borrow, and the money you owe once you do.</dd></div>
+      <div><dt>APR</dt><dd>The yearly cost of borrowing as a percentage.</dd></div>
+      <div><dt>Minimum payment</dt><dd>The smallest amount you can pay without being late.</dd></div>
+      <div><dt>Statement balance</dt><dd>What you owe at the end of the billing period.</dd></div>
+      <div><dt>Credit score</dt><dd>A number showing how reliably you repay debt.</dd></div>
+      <div><dt>Cosigner</dt><dd>Someone who agrees to repay if you can't.</dd></div>
+      <div><dt>BNPL</dt><dd>Buy now, pay later: splitting a purchase into instalments.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>Debt works against you over time; the next lesson shows how time can work for you. <a href="lesson-8.html"><strong>Go to Lesson 8: Time, inflation and compounding →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+
+      <div class="quiz-question">1. You pay your credit card's full statement balance by the due date. What usually happens to interest?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">You're charged double</button>
+        <button class="quiz-option" data-correct="true">You pay no interest on those purchases</button>
+        <button class="quiz-option" data-correct="false">The bank adds a fee for paying early</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. What does a higher APR mean?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Borrowing costs more</button>
+        <button class="quiz-option" data-correct="false">Borrowing costs less</button>
+        <button class="quiz-option" data-correct="false">Nothing, it's only decoration</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. Which habit helps your credit score most?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Paying every bill on time</button>
+        <button class="quiz-option" data-correct="false">Opening as many cards as possible</button>
+        <button class="quiz-option" data-correct="false">Never using credit</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. A "4 easy payments" plan is best described as:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Free money</button>
+        <button class="quiz-option" data-correct="true">Debt that's easy to forget about and overspend on</button>
+        <button class="quiz-option" data-correct="false">A savings account</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="financial-literacy.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="lesson-6.html">← Lesson 6: Earning money</a>
+    <a class="next" href="lesson-8.html">Lesson 8: Time, inflation and compounding →</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></div>
+</footer>
+
+<script src="../script.js"></script>
+<script src="explainer.js"></script>
+<script src="lesson.js"></script>
+<script>
+function money(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+const debtBal = document.getElementById('debt-bal');
+const debtApr = document.getElementById('debt-apr');
+const debtPay = document.getElementById('debt-pay');
+function updateDebt() {
+  const bal = Math.max(0, Number(debtBal.value) || 0);
+  const r = Math.max(0, Number(debtApr.value) || 0) / 100 / 12;
+  const pay = Math.max(0, Number(debtPay.value) || 0);
+  const note = document.getElementById('debt-note');
+  document.getElementById('debt-borrow').textContent = money(bal);
+  if (!bal) { note.textContent = ''; return; }
+  if (pay <= r * bal) {
+    document.getElementById('debt-interest').textContent = 'Never ends';
+    document.getElementById('debt-time').textContent = 'Never';
+    note.textContent = 'That payment only covers the interest, so the balance never goes down. Raise the payment.';
+    return;
+  }
+  const months = r === 0 ? bal / pay : -Math.log(1 - r * bal / pay) / Math.log(1 + r);
+  const interest = months * pay - bal;
+  const years = Math.floor(months / 12), rest = Math.ceil(months - years * 12);
+  document.getElementById('debt-interest').textContent = money(interest);
+  document.getElementById('debt-time').textContent = years ? years + ' yr ' + (rest % 12) + ' mo' : Math.ceil(months) + ' months';
+  note.textContent = 'You borrowed ' + money(bal) + ' and pay back ' + money(bal + interest) + '. Try raising the monthly payment and watch the interest shrink.';
+}
+[debtBal, debtApr, debtPay].forEach((el) => el.addEventListener('input', updateDebt));
+updateDebt();
+</script>
+</body>
+</html>

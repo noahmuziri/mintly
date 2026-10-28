@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap navbar">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lessons/lesson-1.html">Learn</a></li>
+      <li><a href="lessons/explore.html">Explore</a></li>
+      <li><a href="index.html#simulate">Simulate</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
+      <li><a href="mintly.demo.html?from=site">Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-header">
+    <div class="eyebrow">Account</div>
+    <h1>Your account</h1>
+    <p id="acct-sub"></p>
+  </div>
+  <div class="wrap">
+    <div id="verify-banner" class="plan-note" hidden>
+      Your email isn't confirmed yet. <button class="link-btn" id="resend-btn" type="button">Send the confirmation email again</button>
+      <span id="resend-note"></span>
+    </div>
+    <div class="dash-panels">
+      <div class="dash-panel">
+        <h3>Name</h3>
+        <form class="dash-inline" id="name-form">
+          <input id="acct-name" maxlength="80" required aria-label="Name">
+          <button class="btn" type="submit">Save</button>
+        </form>
+        <div class="auth-error" id="name-msg"></div>
+      </div>
+      <div class="dash-panel">
+        <h3 id="pw-title">Change password</h3>
+        <form class="auth-form" id="pw-form">
+          <div class="field" id="cur-field"><label for="cur-pw">Current password</label><input type="password" id="cur-pw" autocomplete="current-password"></div>
+          <div class="field"><label for="new-pw">New password</label><input type="password" id="new-pw" autocomplete="new-password" required minlength="8"></div>
+          <div class="auth-error" id="pw-msg"></div>
+          <button class="btn" type="submit">Update password</button>
+        </form>
+      </div>
+      <div class="dash-panel">
+        <h3>Your data</h3>
+        <p class="dash-muted">Download everything Mintly holds about your account.</p>
+        <button class="btn btn-secondary" id="export-btn" type="button">Download my data</button>
+      </div>
+      <div class="dash-panel">
+        <h3>Delete account</h3>
+        <p class="dash-muted">Permanently removes your account, progress and classes. This can't be undone.</p>
+        <form class="auth-form" id="del-form">
+          <div class="field" id="del-field"><label for="del-pw">Your password</label><input type="password" id="del-pw" autocomplete="current-password"></div>
+          <div class="auth-error" id="del-msg"></div>
+          <button class="btn btn-secondary" type="submit">Delete my account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">Mintly · Financial learning for the next generation · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+</footer>
+
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+<script>
+Mintly.ready.then(async () => {
+  if (!Mintly.requireLogin()) return;
+  let user = Mintly.currentUser();
+  $("acct-sub").textContent = user.email + " · " + user.role + " account";
+  $("acct-name").value = user.name;
+  $("verify-banner").hidden = user.verified;
+  if (!user.hasPassword) {
+    $("pw-title").textContent = "Set a password";
+    $("cur-field").hidden = true;
+    $("del-field").hidden = true;
+  }
+  $("resend-btn").addEventListener("click", async () => {
+    const r = await Mintly.api("POST", "/api/auth/resend-verification", {});
+    $("resend-note").textContent = r.ok ? " Sent. Check your inbox." : " " + r.error;
+  });
+  $("name-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const r = await Mintly.api("PUT", "/api/account", { name: $("acct-name").value });
+    $("name-msg").textContent = r.ok ? "Saved." : r.error;
+  });
+  $("pw-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const r = await Mintly.api("PUT", "/api/account/password", { currentPassword: $("cur-pw").value, newPassword: $("new-pw").value });
+    $("pw-msg").textContent = r.ok ? "Password updated." : r.error;
+    if (r.ok) { $("cur-pw").value = ""; $("new-pw").value = ""; }
+  });
+  $("export-btn").addEventListener("click", async () => {
+    const r = await Mintly.api("GET", "/api/account/export");
+    if (!r.ok) return;
+    const { ok, status, ...data } = r;
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
+    a.download = "mintly-my-data.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  $("del-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!confirm("Delete your Mintly account for good?")) return;
+    const r = await Mintly.api("DELETE", "/api/account", { password: $("del-pw").value });
+    if (r.ok) location.href = "index.html";
+    else $("del-msg").textContent = r.error;
+  });
+});
+</script>
+</body>
+</html>

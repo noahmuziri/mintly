@@ -22,6 +22,7 @@
       <li><a href="index.html#simulate">Simulate</a></li>
       <li><a href="pricing.html">Pricing</a></li>
       <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
       <li><a href="mintly.demo.html?from=site">Demo</a></li>
     </ul>
     <div class="nav-right">
@@ -30,12 +31,24 @@
   </div>
 </header>
 
-<main>
+<main class="auth-split">
+  <aside class="auth-side" aria-hidden="true">
+    <div class="auth-side-in">
+      <div class="brand">mintly<span class="dot">.</span></div>
+      <h2>Practice money decisions before they cost real money.</h2>
+      <ul>
+        <li>Ten interactive lessons with animated explainers</li>
+        <li>A stock simulation with play money and a Decision Score</li>
+        <li>Dashboards for students, parents and teachers</li>
+      </ul>
+      <p>Free during early access.</p>
+    </div>
+  </aside>
   <div class="auth-wrap">
     <div class="auth-card" id="already-signed-in" style="display:none;">
       <h1>You're already signed in</h1>
       <p class="sub" id="already-signed-in-sub"></p>
-      <a class="btn" href="lessons/financial-literacy.html" style="display:block; text-align:center; margin-bottom:10px;">Go to lessons</a>
+      <a class="btn" id="already-signed-in-dash" href="dashboard.html" style="display:block; text-align:center; margin-bottom:10px;">Go to my dashboard</a>
       <button class="btn btn-secondary" id="already-signed-in-logout" style="width:100%;">Log out</button>
     </div>
 
@@ -48,12 +61,30 @@
         <button class="auth-tab" id="tab-signup" type="button">Sign up</button>
       </div>
 
+      <fieldset class="role-pick hidden" id="role-pick">
+        <legend>I am a…</legend>
+        <label class="role-card"><input type="radio" name="role" value="student" checked><span><b>Student</b>Take courses and track my progress</span></label>
+        <label class="role-card"><input type="radio" name="role" value="parent"><span><b>Parent</b>Follow my teen's learning</span></label>
+        <label class="role-card"><input type="radio" name="role" value="teacher"><span><b>Teacher</b>Run a class and see how it's going</span></label>
+      </fieldset>
+
       <div class="plan-note" id="plan-note" style="display:none;"></div>
+
+      <div class="google-block">
+        <div id="google-btn"></div>
+        <button class="btn-google" id="google-fallback" type="button">
+          <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <p class="google-note" id="google-note" hidden></p>
+        <div class="auth-error" id="google-error"></div>
+        <div class="auth-or"><span>or use email</span></div>
+      </div>
 
       <form class="auth-form" id="login-form">
         <div class="field">
           <label for="login-email">Email</label>
-          <input type="email" id="login-email" autocomplete="email" required>
+          <input type="text" id="login-email" autocomplete="username" autocapitalize="none" spellcheck="false" required>
         </div>
         <div class="field">
           <label for="login-password">Password</label>
@@ -61,12 +92,13 @@
         </div>
         <div class="auth-error" id="login-error"></div>
         <button class="btn" type="submit">Log in</button>
+        <p class="auth-foot" style="margin-top:12px"><a href="reset.html">Forgot your password?</a></p>
       </form>
 
       <form class="auth-form hidden" id="signup-form">
         <div class="field">
           <label for="signup-name">Your name</label>
-          <input type="text" id="signup-name" autocomplete="name" required>
+          <input type="text" id="signup-name" autocomplete="name" required maxlength="80">
         </div>
         <div class="field">
           <label for="signup-email">Email</label>
@@ -74,104 +106,138 @@
         </div>
         <div class="field">
           <label for="signup-password">Password</label>
-          <input type="password" id="signup-password" autocomplete="new-password" required minlength="6">
+          <input type="password" id="signup-password" autocomplete="new-password" required minlength="8">
+          <small class="field-hint">At least 8 characters.</small>
         </div>
+        <label class="check" id="age-row"><input type="checkbox" id="signup-age"> <span>I'm 13 or older</span></label>
+        <label class="check"><input type="checkbox" id="signup-agree"> <span>I agree to the <a href="terms.html" target="_blank">Terms</a> and <a href="privacy.html" target="_blank">Privacy Policy</a></span></label>
         <div class="auth-error" id="signup-error"></div>
         <button class="btn" type="submit">Create account</button>
       </form>
 
-      <p class="auth-foot">This is a demo login — accounts are stored only in this browser, not on a server.</p>
+      <p class="auth-foot">Mintly is for ages 13 and up. Students under 18 should have a parent or guardian's permission. Mintly never uses real money.</p>
     </div>
   </div>
 </main>
 
 <script src="script.js"></script>
 <script>
-  const params = new URLSearchParams(window.location.search);
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
   const planNames = { family: "Starter", premium: "Plus", pro: "Family Pro", school: "School" };
   // only a plan from the pricing page counts; anything else in the URL is ignored
   const plan = planNames.hasOwnProperty(params.get("plan")) ? params.get("plan") : null;
+  // "next" is only honoured for a plain page on this site (no scheme, no //)
+  const nextParam = params.get("next");
+  const next = nextParam && /^[a-z0-9_\-\/]+\.html$/i.test(nextParam) && !nextParam.includes("//") ? nextParam : null;
+  const roleParam = ["student", "parent", "teacher"].includes(params.get("role")) ? params.get("role") : null;
 
-  const existingUser = Mintly.currentUser();
-  if (existingUser && plan && planNames[plan]) {
-    Mintly.setPlan(plan);
-    window.location.href = "lessons/financial-literacy.html";
-  } else if (existingUser) {
-    document.getElementById("auth-forms").style.display = "none";
-    document.getElementById("already-signed-in").style.display = "block";
-    document.getElementById("already-signed-in-sub").textContent =
-      "You're logged in as " + existingUser.name + ".";
-    document.getElementById("already-signed-in-logout").addEventListener("click", () => {
-      Mintly.logOut();
-      window.location.reload();
-    });
+  const selectedRole = () => document.querySelector('input[name="role"]:checked').value;
+  // the "13 or older" box only applies to students
+  function syncRole() { $("age-row").hidden = selectedRole() !== "student"; }
+  document.querySelectorAll('input[name="role"]').forEach((r) => r.addEventListener("change", syncRole));
+  syncRole();
+
+  function afterAuth(user) {
+    // students return to the page they came from; everyone else lands on their own dashboard
+    location.href = next && user.role === "student" ? next : Mintly.dashboardHref(user.role);
   }
 
-  const tabLogin = document.getElementById("tab-login");
-  const tabSignup = document.getElementById("tab-signup");
-  const loginForm = document.getElementById("login-form");
-  const signupForm = document.getElementById("signup-form");
-  const title = document.getElementById("auth-title");
-  const sub = document.getElementById("auth-sub");
-  const planNote = document.getElementById("plan-note");
-
-  function showSignup() {
-    tabSignup.classList.add("active");
-    tabLogin.classList.remove("active");
-    signupForm.classList.remove("hidden");
-    loginForm.classList.add("hidden");
-    title.textContent = "Create your account";
-    sub.textContent = "Sign up to save your progress as you go.";
+  function show(mode) {
+    const signup = mode === "signup";
+    $("tab-signup").classList.toggle("active", signup);
+    $("tab-login").classList.toggle("active", !signup);
+    $("signup-form").classList.toggle("hidden", !signup);
+    $("login-form").classList.toggle("hidden", signup);
+    $("role-pick").classList.toggle("hidden", !signup);
+    $("auth-title").textContent = signup ? "Create your account" : "Welcome back";
+    $("auth-sub").textContent = signup ? "Free during early access. Pick your role to get started." : "Log in to pick up where you left off.";
   }
+  $("tab-login").addEventListener("click", () => show("login"));
+  $("tab-signup").addEventListener("click", () => show("signup"));
 
-  function showLogin() {
-    tabLogin.classList.add("active");
-    tabSignup.classList.remove("active");
-    loginForm.classList.remove("hidden");
-    signupForm.classList.add("hidden");
-    title.textContent = "Welcome back";
-    sub.textContent = "Log in to pick up where you left off.";
-  }
-
-  tabLogin.addEventListener("click", showLogin);
-  tabSignup.addEventListener("click", showSignup);
-
-  if (plan && planNames[plan]) {
-    showSignup();
-    planNote.style.display = "block";
-    planNote.textContent = "You selected the " + planNames[plan] + " plan — create an account to continue.";
-  }
-
-  loginForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const result = Mintly.logIn({
-      email: document.getElementById("login-email").value,
-      password: document.getElementById("login-password").value,
-    });
-    const errorEl = document.getElementById("login-error");
-    if (result.ok) {
-      // an existing account that picked a plan on the pricing page gets that plan now
-      if (plan) Mintly.setPlan(plan);
-      window.location.href = "lessons/financial-literacy.html";
-    } else {
-      errorEl.textContent = result.error;
+  Mintly.ready.then(() => {
+    const user = Mintly.currentUser();
+    if (user) {
+      $("auth-forms").style.display = "none";
+      $("already-signed-in").style.display = "block";
+      $("already-signed-in-sub").textContent = "You're logged in as " + user.name + " (" + user.role + ").";
+      $("already-signed-in-dash").href = Mintly.dashboardHref(user.role);
+      $("already-signed-in-logout").addEventListener("click", async () => { await Mintly.logOut(); location.reload(); });
+      return;
     }
+    if (roleParam) document.querySelector('input[name="role"][value="' + roleParam + '"]').checked = true;
+    if (params.get("mode") === "signup" || plan || roleParam) show("signup");
+    if (plan) {
+      $("plan-note").style.display = "block";
+      $("plan-note").textContent = "You picked the " + planNames[plan] + " plan. Billing isn't live yet, so your account is free for now and we'll save your choice.";
+    }
+    setupGoogle();
   });
 
-  signupForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const result = Mintly.signUp({
-      name: document.getElementById("signup-name").value,
-      email: document.getElementById("signup-email").value,
-      password: document.getElementById("signup-password").value,
-      plan: plan || null,
-    });
-    const errorEl = document.getElementById("signup-error");
-    if (result.ok) {
-      window.location.href = "lessons/financial-literacy.html";
-    } else {
-      errorEl.textContent = result.error;
+  // --- Continue with Google ---
+  // The server hands out the public client ID (GOOGLE_CLIENT_ID in .env) and verifies the token Google
+  // returns. Until a client ID is set the button is still shown, and explains what is missing.
+  function setupGoogle() {
+    const note = $("google-note"), err = $("google-error"), fallback = $("google-fallback");
+    function unavailable(msg) {
+      fallback.onclick = () => { note.textContent = msg; note.hidden = false; };
     }
+    Mintly.api("GET", "/api/config").then((cfg) => {
+      if (!cfg.ok) return unavailable("Can't reach the Mintly server. Start it with npm start.");
+      if (!cfg.googleClientId) return unavailable("Google sign-in isn't switched on yet: the site owner needs to add a GOOGLE_CLIENT_ID (see the README). Use email for now.");
+      const s = document.createElement("script");
+      s.src = "https://accounts.google.com/gsi/client";
+      s.async = true;
+      s.onerror = () => unavailable("Couldn't load Google. Check your connection or use email.");
+      s.onload = () => {
+        google.accounts.id.initialize({
+          client_id: cfg.googleClientId,
+          callback: async (resp) => {
+            err.textContent = "";
+            // on the Sign up tab the chosen role is used for a brand-new account
+            const signupTab = $("tab-signup").classList.contains("active");
+            const r = await Mintly.googleSignIn({
+              credential: resp.credential, role: signupTab ? selectedRole() : undefined, plan,
+              agree: signupTab && $("signup-agree").checked, age13: signupTab && $("signup-age").checked,
+            });
+            if (r.ok) return afterAuth(r.user);
+            if (r.error === "role_required") {
+              show("signup");
+              err.textContent = "No Mintly account for that Google address yet. Choose your role, tick the boxes below, then press the Google button again.";
+            } else {
+              err.textContent = r.error || "Google sign-in failed. Please try again.";
+            }
+          },
+        });
+        google.accounts.id.renderButton($("google-btn"), { theme: "outline", size: "large", width: 320, text: "continue_with" });
+        fallback.hidden = true;
+      };
+      document.head.appendChild(s);
+    });
+  }
+
+  $("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const r = await Mintly.logIn({ email: $("login-email").value, password: $("login-password").value, plan });
+    if (r.ok && r.admin) location.href = "admin.html";
+    else if (r.ok) afterAuth(r.user);
+    else $("login-error").textContent = r.error;
+  });
+
+  $("signup-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const r = await Mintly.signUp({
+      role: selectedRole(),
+      name: $("signup-name").value,
+      email: $("signup-email").value,
+      password: $("signup-password").value,
+      plan,
+      agree: $("signup-agree").checked,
+      age13: $("signup-age").checked,
+    });
+    if (r.ok) afterAuth(r.user);
+    else $("signup-error").textContent = r.error;
   });
 </script>
 </body>

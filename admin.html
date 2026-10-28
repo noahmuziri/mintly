@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+<style>
+  .ad { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+  .ad-side { border-right: 1px solid var(--line); padding: 24px 16px; display: flex; flex-direction: column; gap: 6px; position: sticky; top: 0; height: 100vh; background: var(--panel); }
+  .ad-side .brand { margin: 0 8px 18px; font-size: 24px; }
+  .ad-tag { font: 700 11px var(--fb); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); margin: 0 8px 4px; }
+  .ad-nav { all: unset; box-sizing: border-box; cursor: pointer; padding: 10px 12px; border-radius: 10px; font: 600 15px var(--fb); color: var(--ink); }
+  .ad-nav:hover { background: var(--gainsoft); }
+  .ad-nav[aria-current="true"] { background: var(--ink); color: var(--bg); }
+  .ad-nav:focus-visible { outline: 2px solid var(--pgreen); outline-offset: 2px; }
+  .ad-out { margin-top: auto; }
+  .ad-main { padding: 32px clamp(16px, 4vw, 48px) 64px; min-width: 0; }
+  .ad-main h1 { font: 800 28px var(--fh); margin: 0 0 4px; letter-spacing: -.02em; }
+  .ad-main h2 { font: 700 18px var(--fh); margin: 32px 0 12px; }
+  .ad-sub { color: var(--mute); margin: 0 0 24px; }
+  .ad-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .ad-kpi { border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; background: var(--panel); }
+  .ad-kpi .n { font: 700 28px var(--fh); }
+  .ad-kpi .l { color: var(--mute); font-size: 13px; }
+  .ad-kpi .d { font-size: 12px; color: var(--pgreen); font-weight: 600; }
+  .ad-panel { border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: var(--panel); }
+  .ad-two { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+  .ad-chart { width: 100%; height: 150px; display: block; }
+  .ad-chart rect { fill: var(--pgreen); }
+  .ad-chart text { fill: var(--mute); font: 11px var(--fb); }
+  .ad-fun { display: grid; gap: 10px; }
+  .ad-fun div { display: grid; grid-template-columns: 1fr 90px; gap: 12px; align-items: center; font-size: 14px; }
+  .ad-fun .bar { height: 8px; border-radius: 4px; background: rgba(128,128,128,.2); overflow: hidden; display: block; position: relative; margin-top: 4px; }
+  .ad-fun .bar i { position: absolute; inset: 0 auto 0 0; background: var(--pmint); opacity: .55; }
+  .ad-fun .bar b { position: absolute; inset: 0 auto 0 0; background: var(--ink); }
+  .ad-fun .v { text-align: right; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .ad-tools { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .ad-tools input, .ad-tools select { min-height: 42px; border-radius: 10px; border: 1px solid var(--line); padding: 0 12px; background: var(--panel); font: 15px var(--fb); }
+  .ad-tools input { flex: 1; min-width: 200px; }
+  .ad-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+  .ad-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .ad-table th { text-align: left; font-size: 12px; color: var(--mute); text-transform: uppercase; letter-spacing: .05em; padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .ad-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .ad-table tr:last-child td { border-bottom: 0; }
+  .ad-table tbody tr { cursor: pointer; }
+  .ad-table tbody tr:hover { background: var(--gainsoft); }
+  .pill { display: inline-block; font: 600 12px var(--fb); padding: 3px 10px; border-radius: 999px; background: var(--gainsoft); color: var(--pgreen); }
+  .pill.parent { background: #FFF2D6; color: #7a5200; }
+  .pill.teacher { background: #E5E7FF; color: #3a3fa3; }
+  .pill.no { background: var(--badsoft); color: var(--bad); }
+  .ad-detail { position: fixed; inset: 0 0 0 auto; width: min(460px, 100%); background: var(--panel); border-left: 1px solid var(--line); box-shadow: -20px 0 50px -30px rgba(0,0,0,.4); padding: 24px; overflow-y: auto; z-index: 50; }
+  .ad-detail[hidden] { display: none; }
+  .ad-detail h3 { font: 700 22px var(--fh); margin: 0; }
+  .ad-detail dl { display: grid; grid-template-columns: 110px 1fr; gap: 8px 12px; margin: 18px 0; font-size: 14px; }
+  .ad-detail dt { color: var(--mute); }
+  .ad-detail dd { margin: 0; word-break: break-word; }
+  .ad-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .ad-btn { min-height: 38px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); font: 600 14px var(--fb); cursor: pointer; color: var(--ink); }
+  .ad-btn:hover { border-color: var(--ink); }
+  .ad-btn.danger { color: var(--bad); border-color: var(--bad); }
+  .ad-lesson { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .ad-sys { display: grid; gap: 0; }
+  .ad-sys div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+  .ad-sys div:last-child { border-bottom: 0; }
+  .ad-note { color: var(--mute); font-size: 13px; margin-top: 8px; }
+  .ad-link { word-break: break-all; font: 13px ui-monospace, monospace; background: var(--gainsoft); padding: 10px; border-radius: 8px; margin: 8px 0; }
+  @media (max-width: 860px) {
+    .ad { grid-template-columns: 1fr; }
+    .ad-side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; border-right: 0; border-bottom: 1px solid var(--line); }
+    .ad-side .brand { margin: 0 12px 0 0; }
+    .ad-tag { display: none; }
+    .ad-out { margin: 0 0 0 auto; }
+    .ad-two { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="ad" id="app" hidden>
+  <aside class="ad-side">
+    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
+    <div class="ad-tag">Admin</div>
+    <button class="ad-nav" data-tab="overview" aria-current="true">Overview</button>
+    <button class="ad-nav" data-tab="users">Users</button>
+    <button class="ad-nav" data-tab="system">System</button>
+    <button class="ad-nav ad-out" id="logout">Log out</button>
+  </aside>
+
+  <main class="ad-main">
+    <section id="tab-overview">
+      <h1>Overview</h1>
+      <p class="ad-sub">How Mintly is doing right now.</p>
+      <div class="ad-kpis" id="kpis"></div>
+      <div class="ad-two" style="margin-top:16px">
+        <div class="ad-panel"><b>New accounts, last 30 days</b><svg class="ad-chart" id="signups" role="img" aria-label="New accounts per day over the last 30 days"></svg></div>
+        <div class="ad-panel"><b>Recent sign-ups</b><div id="recent" class="ad-sys"></div></div>
+      </div>
+      <h2>Where students drop off</h2>
+      <div class="ad-panel"><div class="ad-fun" id="funnel"></div><p class="ad-note">Solid bar: finished. Faded bar: started.</p></div>
+    </section>
+
+    <section id="tab-users" hidden>
+      <h1>Users</h1>
+      <p class="ad-sub" id="users-count"></p>
+      <div class="ad-tools">
+        <input id="q" type="search" placeholder="Search name or email" aria-label="Search users">
+        <select id="role" aria-label="Filter by role"><option value="">All roles</option><option value="student">Students</option><option value="parent">Parents</option><option value="teacher">Teachers</option></select>
+      </div>
+      <div class="ad-table-wrap"><table class="ad-table">
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Last active</th><th>Lessons</th></tr></thead>
+        <tbody id="user-rows"></tbody>
+      </table></div>
+    </section>
+
+    <section id="tab-system" hidden>
+      <h1>System</h1>
+      <p class="ad-sub">What is switched on, and what still needs setting up before launch.</p>
+      <div class="ad-panel ad-sys" id="sys"></div>
+    </section>
+  </main>
+</div>
+
+<aside class="ad-detail" id="detail" hidden aria-label="User details"></aside>
+
+<script src="script.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const esc = Mintly.escapeHTML;
+  const fmt = (ts) => ts ? new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "—";
+  const ago = (ts) => {
+    if (!ts) return "never";
+    const m = Math.round((Date.now() - ts) / 60000);
+    if (m < 2) return "just now";
+    if (m < 60) return m + " min ago";
+    if (m < 1440) return Math.round(m / 60) + " h ago";
+    return Math.round(m / 1440) + " d ago";
+  };
+
+  async function load() {
+    const r = await Mintly.api("GET", "/api/admin/overview");
+    if (r.status === 401) { location.replace("signin.html"); return; }
+    if (!r.ok) { document.body.textContent = r.error; return; }
+    $("app").hidden = false;
+    renderOverview(r);
+    renderSystem(r.system);
+    loadUsers();
+  }
+
+  function renderOverview(r) {
+    const t = r.totals;
+    const k = (n, l, d) => '<div class="ad-kpi"><div class="n">' + n + '</div><div class="l">' + l + '</div>' + (d ? '<div class="d">' + d + '</div>' : "") + "</div>";
+    $("kpis").innerHTML =
+      k(t.users, "Accounts", "+" + t.new7 + " this week") +
+      k(t.student, "Students") + k(t.parent, "Parents") + k(t.teacher, "Teachers") +
+      k(t.active7, "Students active (7 days)") +
+      k(t.lessonsCompleted, "Lessons completed") +
+      k(t.decisions, "Simulation decisions", t.avgScore !== null ? "avg score " + t.avgScore : "") +
+      k(t.classes, "Classes") +
+      k(t.users ? Math.round(t.verified / t.users * 100) + "%" : "—", "Emails verified");
+
+    const max = Math.max(1, ...r.signups.map((d) => d.count));
+    const w = 600, h = 120, bw = w / r.signups.length;
+    $("signups").setAttribute("viewBox", "0 0 " + w + " 150");
+    $("signups").innerHTML = r.signups.map((d, i) => {
+      const bh = Math.max(d.count ? 4 : 1, d.count / max * h);
+      return '<rect x="' + (i * bw + 2) + '" y="' + (h - bh) + '" width="' + (bw - 4) + '" height="' + bh + '" rx="2"><title>' + d.day + ": " + d.count + "</title></rect>";
+    }).join("") + '<text x="0" y="145">' + r.signups[0].day.slice(5) + '</text><text x="' + w + '" y="145" text-anchor="end">today</text>';
+
+    $("recent").innerHTML = r.recent.length ? r.recent.map((u) =>
+      "<div><span>" + esc(u.name) + ' <span class="pill ' + u.role + '">' + u.role + "</span></span><span>" + ago(u.createdAt) + "</span></div>").join("")
+      : '<p class="ad-note">Nobody has signed up yet.</p>';
+
+    const most = Math.max(1, ...r.funnel.map((f) => f.started));
+    $("funnel").innerHTML = r.funnel.map((f, i) =>
+      "<div><span>" + (i + 1) + ". " + esc(f.title) + '<span class="bar"><i style="width:' + f.started / most * 100 + '%"></i><b style="width:' + f.completed / most * 100 + '%"></b></span></span>' +
+      '<span class="v">' + f.completed + " / " + f.started + "</span></div>").join("");
+  }
+
+  function renderSystem(s) {
+    const row = (l, ok, extra) => "<div><span>" + l + '</span><span class="pill ' + (ok ? "" : "no") + '">' + (ok ? "On" : "Not set") + "</span></div>";
+    const hrs = Math.floor(s.uptimeSec / 3600), mins = Math.floor(s.uptimeSec % 3600 / 60);
+    $("sys").innerHTML =
+      row("Email sending (RESEND_API_KEY). Verification and password reset emails", s.email) +
+      row("Google sign-in (GOOGLE_CLIENT_ID)", s.google) +
+      row("Live market data (ALPHA_VANTAGE_API_KEY)", s.marketData) +
+      row("Secure cookies (COOKIE_SECURE=1, needed behind HTTPS)", s.secureCookies) +
+      "<div><span>Public address (BASE_URL)</span><span>" + esc(s.baseUrl) + "</span></div>" +
+      "<div><span>Server up for</span><span>" + hrs + " h " + mins + " min</span></div>" +
+      "<div><span>Node version</span><span>" + esc(s.node) + "</span></div>";
+  }
+
+  let timer;
+  async function loadUsers() {
+    const r = await Mintly.api("GET", "/api/admin/users?q=" + encodeURIComponent($("q").value) + "&role=" + $("role").value);
+    if (!r.ok) return;
+    $("users-count").textContent = r.total + (r.total === 1 ? " account" : " accounts") + (r.total > 200 ? " (showing the newest 200)" : "");
+    $("user-rows").innerHTML = r.users.length ? r.users.map((u) =>
+      '<tr data-id="' + u.id + '" tabindex="0"><td><b>' + esc(u.name) + "</b></td><td>" + esc(u.email) + "</td>" +
+      '<td><span class="pill ' + u.role + '">' + u.role + "</span></td><td>" + fmt(u.createdAt) + "</td><td>" + ago(u.lastActive) + "</td>" +
+      "<td>" + (u.completed === null ? "—" : u.completed) + "</td></tr>").join("")
+      : '<tr><td colspan="6" class="ad-note" style="padding:20px">No accounts match.</td></tr>';
+  }
+  $("q").addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(loadUsers, 250); });
+  $("role").addEventListener("change", loadUsers);
+
+  async function openUser(id) {
+    const u = await Mintly.api("GET", "/api/admin/users/" + id);
+    if (!u.ok) return;
+    const d = $("detail");
+    let extra = "";
+    if (u.progress) {
+      extra = "<h2 style='font-size:16px;margin:20px 0 8px'>Progress: " + u.progress.completed + " of " + u.progress.total + " lessons</h2>" +
+        u.progress.lessons.map((l) => '<div class="ad-lesson"><span>' + esc(l.title) + "</span><span>" + (l.status === "complete" ? "✓" : l.pct ? l.pct + "%" : "—") + "</span></div>").join("") +
+        "<p class='ad-note'>" + u.progress.decisions.count + " simulation decisions" + (u.progress.decisions.avgScore !== null ? ", average score " + u.progress.decisions.avgScore : "") + "</p>";
+    }
+    const list = u.classes || u.children;
+    d.innerHTML = '<button class="ad-btn" id="close">Close</button><h3 style="margin-top:16px">' + esc(u.name) + "</h3>" +
+      "<dl><dt>Email</dt><dd>" + esc(u.email) + "</dd><dt>Role</dt><dd>" + u.role + "</dd><dt>Joined</dt><dd>" + fmt(u.createdAt) + "</dd>" +
+      "<dt>Verified</dt><dd>" + (u.verified ? "Yes" : "No") + (u.google ? " (Google)" : "") + "</dd>" +
+      (u.linkCode ? "<dt>Parent code</dt><dd>" + u.linkCode + "</dd>" : "") +
+      (list && list.length ? "<dt>" + (u.children ? "Children" : "Classes") + "</dt><dd>" + list.map(esc).join(", ") + "</dd>" : "") + "</dl>" +
+      '<div class="ad-actions">' + (u.verified ? "" : '<button class="ad-btn" data-act="verify">Mark email verified</button>') +
+      '<button class="ad-btn" data-act="reset">Make password reset link</button><button class="ad-btn danger" data-act="delete">Delete account</button></div>' +
+      '<div id="act-out"></div>' + extra;
+    d.hidden = false;
+    $("close").onclick = () => { d.hidden = true; };
+    $("close").focus();
+    d.onclick = async (e) => {
+      const act = e.target.dataset.act;
+      if (!act) return;
+      if (act === "verify") { await Mintly.api("POST", "/api/admin/users/" + id + "/verify", {}); openUser(id); loadUsers(); }
+      if (act === "reset") {
+        const r = await Mintly.api("POST", "/api/admin/users/" + id + "/reset-link", {});
+        $("act-out").innerHTML = r.ok ? '<p class="ad-note">Send this to ' + esc(u.name) + ". It works for one hour.</p><div class='ad-link'>" + esc(r.link) + "</div>" : esc(r.error);
+      }
+      if (act === "delete" && confirm("Permanently delete " + u.name + " and all their progress? This cannot be undone.")) {
+        await Mintly.api("DELETE", "/api/admin/users/" + id);
+        d.hidden = true; loadUsers(); load();
+      }
+    };
+  }
+  $("user-rows").addEventListener("click", (e) => { const tr = e.target.closest("tr[data-id]"); if (tr) openUser(tr.dataset.id); });
+  $("user-rows").addEventListener("keydown", (e) => { if (e.key === "Enter") { const tr = e.target.closest("tr[data-id]"); if (tr) openUser(tr.dataset.id); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("detail").hidden = true; });
+
+  document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("[data-tab]").forEach((x) => x.setAttribute("aria-current", x === b));
+    for (const t of ["overview", "users", "system"]) $("tab-" + t).hidden = t !== b.dataset.tab;
+  }));
+  $("logout").addEventListener("click", async () => { await Mintly.api("POST", "/api/admin/logout", {}); location.href = "signin.html"; });
+
+  load();
+})();
+</script>
+</body>
+</html>

@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mintly — Learn how to make financial decisions</title>
-<meta name="description" content="Mintly turns financial learning into decisions teens can practice: research, ask Leaf, think, simulate and get scored.">
+<title>Mintly — Practice real money decisions</title>
+<meta name="description" content="Mintly is where teens practice real money decisions: 10 interactive lessons, animated explainers, a stock simulation, and dashboards for students, parents and teachers.">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="demo.css">
 <link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="home2.css">
 <script src="theme.js"></script>
 </head>
-<body class="home">
+<body class="home v2">
 
 <header class="site-header">
   <div class="wrap navbar">
@@ -25,6 +26,7 @@
       <li><a href="index.html#simulate">Simulate</a></li>
       <li><a href="pricing.html">Pricing</a></li>
       <li><a href="parents.html">For Parents</a></li>
+      <li><a href="teachers.html">For Teachers</a></li>
       <li><a href="mintly.demo.html?from=site">Demo</a></li>
     </ul>
     <div class="nav-right">
@@ -35,139 +37,156 @@
 
 <main id="site">
 
-<!-- 1. Hero: value proposition -->
-<section class="hm-hero" id="top">
-  <div class="wrap hm-hero-in">
-    <div class="hm-hero-copy">
-      <span class="pj-eye">Financial learning for the next generation</span>
-      <h1>Don't just learn about money. <span>Learn how to use it.</span></h1>
-      <p class="hm-lead">Mintly turns financial learning into decisions you can actually practice. Short lessons, a real stock to research, and Leaf to push your thinking. No real money involved.</p>
-      <div class="hm-actions">
-        <a class="btn" href="mintly.demo.html?from=site">Try the demo</a>
-        <a class="btn ghost" href="lessons/financial-literacy.html">Start learning</a>
+<section class="x-hero" id="top">
+  <div class="wrap x-in">
+    <div>
+      <span class="x-pill"><i></i>Free during early access</span>
+      <h1>Learn to
+        <span class="x-rot" aria-label="decide, budget, save, invest, spot scams"><span aria-hidden="true"><em>decide.</em><em>budget.</em><em>save.</em><em>invest.</em><em>spot scams.</em><em>decide.</em></span></span>
+        before it costs real money.</h1>
+      <p class="x-lead">Mintly is where teens practice money decisions: ten interactive lessons, animated explainers, a stock simulation with play money, and an AI partner that asks better questions instead of giving answers.</p>
+      <div class="x-cta">
+        <a class="btn" href="signin.html?mode=signup">Start free</a>
+        <a class="btn ghost" href="mintly.demo.html?from=site">Try the simulation</a>
       </div>
-      <ul class="hm-chain" aria-label="The Mintly loop">
-        <li>Learn</li><li>Research</li><li>Ask</li><li>Think</li><li>Simulate</li><li>Score</li>
-      </ul>
+      <ul class="x-trust"><li>No real money</li><li>Parent and teacher dashboards</li><li>Progress saved to your account</li></ul>
     </div>
-    <div class="hm-hero-art" aria-hidden="true">
-      <div class="pj-phone hm-phone">
-        <div class="pj-pt"><span class="pj-wm">mintly<i>.</i></span><span>Step 1</span></div>
-        <h4>What are you curious about?</h4>
-        <div class="pj-opt"><b>Sneakers</b><span>Why some pairs resell for more</span></div>
-        <div class="pj-opt on"><b>Trading cards</b><span>What makes a card valuable</span></div>
-        <div class="pj-opt"><b>Crypto</b><span>What it is and why it's risky</span></div>
-        <div class="pj-cta">Explore this one</div>
+    <div class="x-stack" aria-hidden="true">
+      <div class="x-app">
+        <div class="x-app-top"><i></i><i></i><i></i><span>mintly.</span></div>
+        <div class="x-app-hi"><div><small>Good afternoon</small><b>Maya</b></div><div class="x-lv"><span>2</span>Budgeter</div></div>
+        <div class="x-app-stats"><div><b>🔥 5</b><small>day streak</small></div><div><b>3/10</b><small>lessons</small></div><div><b>84</b><small>avg score</small></div></div>
+        <div class="x-app-next"><small>Continue</small><b>Lesson 4: How banks work</b><div class="x-meter"><i style="animation:none;width:40%"></i></div></div>
+        <div class="x-app-list"><div><span class="ok">✓</span>What is financial literacy?</div><div><span class="ok">✓</span>Needs vs. wants</div><div><span class="ok">✓</span>Saving for something you want</div></div>
       </div>
-      <div class="hm-bubble">“Should I buy crypto?”</div>
+      <div class="x-card x-c1"><small>Lesson 6 · Paychecks</small><b>$100 → $84</b></div>
+      <div class="x-card x-c2"><small>Decision score</small><b>84 / 100</b><div class="x-meter"><i></i></div></div>
+      <div class="x-card x-c3"><small class="warn">Scam check</small><b>3 red flags</b></div>
     </div>
   </div>
 </section>
 
-<!-- 2. Why Mintly -->
+<div class="x-marq" aria-hidden="true"><div>
+  <span>Budgeting</span><span>Saving</span><span>Banking</span><span>Investing</span><span>Credit</span><span>Inflation</span><span>Taxes</span><span>Scams</span><span>Compounding</span><span>Money plans</span>
+  <span>Budgeting</span><span>Saving</span><span>Banking</span><span>Investing</span><span>Credit</span><span>Inflation</span><span>Taxes</span><span>Scams</span><span>Compounding</span><span>Money plans</span>
+</div></div>
+
+<section class="hm-sec" id="who">
+  <div class="wrap">
+    <div class="hm-head">
+      <span class="pj-eye">Built for everyone in the room</span>
+      <h2>One platform. A view for each person.</h2>
+    </div>
+    <div class="x-roles">
+      <div class="x-tabs" role="tablist" aria-label="Choose your role">
+        <button class="x-tab" role="tab" id="t-student" aria-controls="p-student" aria-selected="true"><b>I'm a student</b><span>Learn, practice, level up</span></button>
+        <button class="x-tab" role="tab" id="t-parent" aria-controls="p-parent" aria-selected="false" tabindex="-1"><b>I'm a parent</b><span>Understand how my teen thinks</span></button>
+        <button class="x-tab" role="tab" id="t-teacher" aria-controls="p-teacher" aria-selected="false" tabindex="-1"><b>I'm a teacher</b><span>Run a class in minutes</span></button>
+      </div>
+      <div>
+        <div class="x-panel" role="tabpanel" id="p-student" aria-labelledby="t-student">
+          <h3>Your own dashboard, with levels, streaks and badges.</h3>
+          <ul>
+            <li><b>Pick up instantly.</b> Your next lesson is always one click away.</li>
+            <li><b>Watch, then try.</b> Animated explainers, then quizzes, matching and calculators.</li>
+            <li><b>Practice decisions.</b> Research a real company with play money and get a Decision Score.</li>
+          </ul>
+          <a class="btn" href="signin.html?mode=signup&role=student">Create a student account</a>
+        </div>
+        <div class="x-panel" role="tabpanel" id="p-parent" aria-labelledby="t-parent" hidden>
+          <h3>See the thinking, not just the score.</h3>
+          <ul>
+            <li><b>Link with a code.</b> Your teen shares a six-character code. You can follow their progress from your own dashboard.</li>
+            <li><b>Read their reasoning.</b> Every simulation decision comes with the reasons they wrote.</li>
+            <li><b>Conversation starters.</b> Built for talking about money together, not for surveillance.</li>
+          </ul>
+          <a class="btn" href="signin.html?mode=signup&role=parent">Create a parent account</a>
+        </div>
+        <div class="x-panel" role="tabpanel" id="p-teacher" aria-labelledby="t-teacher" hidden>
+          <h3>A classroom-ready course, with a class roster.</h3>
+          <ul>
+            <li><b>Class codes.</b> Create a class, hand out the code, and students join themselves.</li>
+            <li><b>See every student.</b> Lesson-by-lesson progress, simulation decisions and last activity.</li>
+            <li><b>No prep.</b> Ten lessons with built-in checks that fit a 15-minute slot.</li>
+          </ul>
+          <a class="btn" href="signin.html?mode=signup&role=teacher">Create a teacher account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="hm-sec hm-band" id="why">
   <div class="wrap">
     <div class="hm-head">
-      <span class="pj-eye">Why Mintly</span>
-      <h2>Kids meet money long before anyone teaches them about it.</h2>
-      <p class="hm-sub">Knowing the vocabulary isn't the same as knowing how to decide. Mintly lets teens practice real money decisions before real money is on the line.</p>
+      <span class="pj-eye">What's inside</span>
+      <h2>Everything a teen needs to start thinking clearly about money.</h2>
     </div>
-    <div class="hm-grid3">
-      <article class="hm-card hm-reveal">
-        <span class="hm-ico">1</span>
-        <h3>Learn the basics</h3>
-        <p>Short lessons on how money actually works, each with a quick check at the end.</p>
-      </article>
-      <article class="hm-card hm-reveal">
-        <span class="hm-ico">2</span>
-        <h3>Practice with play money</h3>
-        <p>Make decisions in a simulation, where a mistake costs nothing.</p>
-      </article>
-      <article class="hm-card hm-reveal">
-        <span class="hm-ico">3</span>
-        <h3>Think it through</h3>
-        <p>Leaf answers each question with another question, so the reasoning is your own.</p>
-      </article>
+    <div class="x-bento">
+      <div class="x-tile dark w2"><div class="x-big">10</div><h3>Interactive lessons</h3><p>From needs vs. wants to your own money plan. Saved as you go.</p></div>
+      <div class="x-tile w2"><h3>Watch it, then try it</h3><p>Animated explainers show a paycheck shrinking, a debt growing and savings compounding.</p><div class="x-minibars" aria-hidden="true"><i></i><i></i><i></i></div></div>
+      <div class="x-tile mint w2"><h3>Spot the scam</h3><p>Step through a real-looking scam text and learn the three red flags.</p><div class="x-badges" aria-hidden="true">🛡️ 🔍 ✋</div></div>
+
+      <div class="x-tile w3" id="simulate">
+        <span class="pj-eye" style="margin:0">Simulate</span>
+        <h3>Everyone's talking about this stock. Would you buy it?</h3>
+        <p>You get $1,000 of play money. Research NVIDIA, decide, and see your score.</p>
+        <div class="card hv hm-quote">
+          <div class="sc"><b>NVDA</b><span class="up" id="hm-chg">+42%</span></div>
+          <div class="price" id="hm-px">$182.40</div>
+          <div id="hm-chart"></div>
+          <div class="rng" id="hm-rng"><button type="button" data-r="1D">1D</button><button type="button" data-r="1W">1W</button><button type="button" class="on" data-r="1M">1M</button><button type="button" data-r="1Y">1Y</button></div>
+          <div class="chips hm-pick" role="group" aria-label="Your first instinct">
+            <button type="button" class="chip" data-m="What would need to be true for this to keep growing?">Buy</button>
+            <button type="button" class="chip" data-m="What information would change your mind?">Wait</button>
+            <button type="button" class="chip" data-m="What's the strongest reason not to?">Pass</button>
+          </div>
+          <p class="fb" id="hm-fb" aria-live="polite">Tap one and Leaf will push your thinking.</p>
+          <p class="hm-src" id="hm-src">Simulation. No real money. Mock data.</p>
+        </div>
+      </div>
+      <div class="x-tile w3" id="leaf">
+        <span class="pj-eye" style="margin:0">Meet Leaf</span>
+        <h3>An AI partner that never decides for you.</h3>
+        <p>Leaf answers with a question, shows its evidence, and never says buy or sell.</p>
+        <div class="x-chat" aria-hidden="true">
+          <div class="me">Why did this card lose value?</div>
+          <div class="leaf">Good question. What changed: the card, or how many people want it?</div>
+          <div class="me">Probably how many people want it.</div>
+          <div class="leaf">Right. So what would you check before buying one?</div>
+        </div>
+      </div>
+
+      <div class="x-tile w4"><h3>Levels, streaks and badges</h3><p>Every lesson earns XP. A daily streak and ten badges make coming back feel good, without any real-money pressure.</p><div class="x-badges" aria-hidden="true">🌱 🎯 🏆 🧠 ⭐ 🔥 ⚡ 🛡️ 🗺️ 🏫</div></div>
+      <div class="x-tile dark w2"><h3>Safe by design</h3><p>No real money, no trading, and a clear privacy policy. Built for 13 and up.</p></div>
     </div>
   </div>
 </section>
 
-<!-- 3. How it works (overview, not the full walkthrough) -->
 <section class="hm-sec" id="how">
   <div class="wrap">
     <div class="hm-head">
-      <span class="pj-eye">How it works</span>
-      <h2>Five steps from curiosity to a decision.</h2>
+      <span class="pj-eye">The Mintly loop</span>
+      <h2>From curiosity to a decision you can explain.</h2>
     </div>
-    <ol class="hm-steps">
-      <li class="hm-reveal"><span class="pj-n">1</span><b>Choose</b><p>Pick something you're curious about.</p></li>
-      <li class="hm-reveal"><span class="pj-n">2</span><b>Research</b><p>Read what people are saying, including the other side.</p></li>
-      <li class="hm-reveal"><span class="pj-n">3</span><b>Ask Leaf</b><p>Question the evidence before you trust it.</p></li>
-      <li class="hm-reveal"><span class="pj-n">4</span><b>Make your case</b><p>Would you buy it? Say why, and name the biggest risk.</p></li>
-      <li class="hm-reveal"><span class="pj-n">5</span><b>Simulate and reflect</b><p>See how it plays out and get your Decision Score.</p></li>
+    <ol class="x-loop">
+      <li><span>1</span><b>Choose</b><p>Pick something you're curious about.</p></li>
+      <li><span>2</span><b>Research</b><p>Read both sides.</p></li>
+      <li><span>3</span><b>Ask Leaf</b><p>Question the evidence.</p></li>
+      <li><span>4</span><b>Make your case</b><p>Decide, and say why.</p></li>
+      <li><span>5</span><b>Reflect</b><p>See how it played out.</p></li>
     </ol>
-    <p class="hm-more"><a href="mintly.demo.html?from=site">Try all five steps in the demo →</a></p>
+    <p class="hm-more" style="justify-content:center;margin-top:40px!important"><a href="mintly.demo.html?from=site">Try all five steps in the demo →</a></p>
   </div>
 </section>
 
-<!-- 4. Live stock teaser -->
-<section class="hm-sec hm-band" id="simulate">
-  <div class="wrap hm-split">
-    <div>
-      <span class="pj-eye">Simulate</span>
-      <h2>Everyone's talking about this stock. Would you buy it?</h2>
-      <p class="hm-sub">In the demo you get $1,000 of simulated money. Research NVIDIA, ask Leaf, decide whether to buy, wait or pass, then see your Decision Score.</p>
-      <div class="hm-actions"><a class="btn" href="mintly.demo.html?from=site">Start the simulation</a></div>
-    </div>
-    <div class="card hv hm-quote">
-      <div class="sc"><b>NVDA</b><span class="up" id="hm-chg">+42%</span></div>
-      <div class="price" id="hm-px">$182.40</div>
-      <div id="hm-chart"></div>
-      <div class="rng" id="hm-rng"><button type="button" data-r="1D">1D</button><button type="button" data-r="1W">1W</button><button type="button" class="on" data-r="1M">1M</button><button type="button" data-r="1Y">1Y</button></div>
-      <div class="chips hm-pick" role="group" aria-label="Your first instinct">
-        <button type="button" class="chip" data-m="What would need to be true for this to keep growing?">Buy</button>
-        <button type="button" class="chip" data-m="What information would change your mind?">Wait</button>
-        <button type="button" class="chip" data-m="What's the strongest reason not to?">Pass</button>
-      </div>
-      <p class="fb" id="hm-fb" aria-live="polite">Tap one and Leaf will push your thinking.</p>
-      <p class="hm-src" id="hm-src">Simulation. No real money. Mock data.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 5. Meet Leaf -->
-<section class="hm-sec" id="leaf">
-  <div class="wrap hm-split hm-split-rev">
-    <div>
-      <span class="pj-eye">Meet Leaf</span>
-      <h2>An AI learning partner that never decides for you.</h2>
-      <p class="hm-sub">Leaf is Mintly's research companion. It reads with you, shows its evidence and never says buy or sell.</p>
-      <div class="pj-pills hm-pills"><span>Research</span><span>Understand</span><span>Question</span><span>Decide</span></div>
-      <ul class="hm-list">
-        <li><b>Socratic tutoring.</b> Leaf answers each question with another question.</li>
-        <li><b>Your call.</b> Leaf helps students think it through and never decides for them.</li>
-      </ul>
-    </div>
-    <div class="hm-leafart" aria-hidden="true">
-      <div class="pj-phone hm-phone">
-        <div class="pj-pt"><span class="pj-wm">mintly<i>.</i></span><span>Leaf</span></div>
-        <div class="pj-me">Why did this card lose value?</div>
-        <div class="pj-lf"><i>L</i><p>Good question. What do you think changed: the card, or how many people want it?</p></div>
-        <div class="pj-me">Probably how many people want it.</div>
-        <div class="pj-in">Ask Leaf anything</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 6. Lessons and courses preview -->
 <section class="hm-sec hm-band" id="learn">
   <div class="wrap">
     <div class="hm-head hm-head-row">
       <div>
-        <span class="pj-eye">Lessons</span>
-        <h2>Start with Financial Literacy.</h2>
-        <p class="hm-sub">The essentials every teen should know: what money is, how to budget it, and how to make it grow.</p>
+        <span class="pj-eye">The course</span>
+        <h2>Financial Literacy, in ten short lessons.</h2>
+        <p class="hm-sub">Foundations first, then banking and investing, then the real-life stuff: paychecks, credit, inflation and scams.</p>
       </div>
       <a class="btn ghost" href="lessons/explore.html">Explore all courses</a>
     </div>
@@ -178,11 +197,12 @@
         <a class="lesson-row" href="lessons/lesson-3.html" data-lesson="lesson-3"><span class="num">3</span><span class="title">Saving for something you want</span><span class="go">Start →</span></a>
         <a class="lesson-row" href="lessons/lesson-4.html" data-lesson="lesson-4"><span class="num">4</span><span class="title">How banks work: accounts, debit cards and interest</span><span class="go">Start →</span></a>
         <a class="lesson-row" href="lessons/lesson-5.html" data-lesson="lesson-5"><span class="num">5</span><span class="title">Intro to investing: stocks, risk and diversification</span><span class="go">Start →</span></a>
+        <a class="lesson-row" href="lessons/financial-literacy.html"><span class="num">+5</span><span class="title">Earning, credit, compounding, scams and your money plan</span><span class="go">All 10 →</span></a>
         <p class="hm-progress" id="hm-progress"></p>
       </div>
       <div class="hm-electives">
         <span class="explore-label">Electives · Bonus lessons</span>
-        <a class="course-card" href="lessons/collectables.html"><div class="icon bg-gold">🃏</div><div><div class="title">Collectables</div><div class="desc">How trading cards, sneakers, and other collectibles hold — or lose — their value</div></div><div class="meta">🔒 Locked</div></a>
+        <a class="course-card" href="lessons/collectables.html"><div class="icon bg-gold">🃏</div><div><div class="title">Collectables</div><div class="desc">How trading cards and sneakers hold, or lose, their value</div></div><div class="meta">🔒 Locked</div></a>
         <a class="course-card" href="lessons/cryptocurrencies.html"><div class="icon bg-blue">₿</div><div><div class="title">Cryptocurrencies</div><div class="desc">What crypto actually is, and how to think about the risk</div></div><div class="meta">🔒 Locked</div></a>
         <p class="hm-note">Electives unlock after you complete the Financial Literacy course.</p>
       </div>
@@ -190,60 +210,49 @@
   </div>
 </section>
 
-<!-- 7. For Parents -->
-<section class="hm-sec" id="parents">
-  <div class="wrap">
-    <div class="hm-head">
-      <span class="pj-eye">For Parents</span>
-      <h2>No real money until you're both ready.</h2>
-      <p class="hm-sub">Everything your teen does on Mintly starts with practice money. Parents get their own login and a clear view of how their child thinks about money. It's built for understanding, not surveillance.</p>
-    </div>
-    <div class="path-track hm-reveal">
-      <div class="path-stage"><span class="path-tag">Practice money</span><h3>1. Learn</h3><p>How money and investing actually work, in short lessons.</p></div>
-      <div class="path-stage"><span class="path-tag">Practice money</span><h3>2. Simulate</h3><p>Make decisions in a simulation, where a mistake costs nothing.</p></div>
-      <div class="path-stage"><span class="path-tag">Practice money</span><h3>3. Practice</h3><p>Repeat until the skills stick and the reasoning is their own.</p></div>
-      <div class="path-stage path-stage-real"><span class="path-tag">Real money</span><h3>4. Act</h3><p>Only when parent and student are both confident in the student's skills.</p></div>
-    </div>
-    <p class="hm-more"><a href="parents.html">How Mintly works for parents →</a></p>
-  </div>
-</section>
-
-<!-- 8. Pricing teaser (figures mirror pricing.html) -->
-<section class="hm-sec hm-band" id="pricing">
-  <div class="wrap">
-    <div class="hm-head">
-      <span class="pj-eye">Pricing</span>
-      <h2>One subscription unlocks everything.</h2>
-      <p class="hm-sub">Every lesson, simulation, and course lives behind a plan. Pick the one that fits your family.</p>
-    </div>
-    <div class="hm-plans">
-      <a class="hm-plan featured" href="pricing.html"><span class="plan-badge">Most popular</span><h3>Starter</h3><div class="plan-price">$10 <span>/ month</span></div><p>For families who want the full course library and a shared view of progress.</p></a>
-      <a class="hm-plan" href="pricing.html"><h3>Plus</h3><div class="plan-price">$15 <span>/ month</span></div><p>For teens who want to go deeper, faster.</p></a>
-      <a class="hm-plan" href="pricing.html"><h3>Family Pro</h3><div class="plan-price">$20 <span>/ month</span></div><p>For bigger households with more than four learners.</p></a>
-      <a class="hm-plan" href="pricing.html"><h3>School</h3><div class="plan-price">$8 <span>/ student / month</span></div><p>A school plan for schools with 50+ students.</p></a>
-    </div>
-    <p class="hm-more"><a href="pricing.html">Compare plans →</a> <span class="hm-note">Mintly's billing isn't live yet.</span></p>
-  </div>
-</section>
-
-<!-- 9. Closing CTA -->
 <section class="hm-close">
   <div class="wrap hm-close-in">
     <div>
       <div class="pj-logo">mintly<span>.</span></div>
-      <h2>Mintly doesn't teach young people what to think about money. <span>It teaches them how to think.</span></h2>
+      <h2>We don't teach young people what to think about money. <span>We teach them how to think.</span></h2>
     </div>
     <div class="hm-actions">
-      <a class="btn hm-btn-light" href="mintly.demo.html?from=site">Try the demo</a>
-      <a class="btn ghost hm-btn-outline" href="signin.html">Join the waitlist</a>
+      <a class="btn hm-btn-light" href="signin.html?mode=signup">Create a free account</a>
+      <a class="btn ghost hm-btn-outline" href="pricing.html">See pricing</a>
     </div>
   </div>
 </section>
 
-<div class="wrap foot"><p class="disc">Disclaimer: Mintly is not a brokerage and does not trade in the stock market. Everything in the demo is simulated, uses mock data and is not financial advice.</p></div>
+<div class="wrap foot"><p class="disc"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="teachers.html">For teachers</a> · <a href="parents.html">For parents</a><br>Disclaimer: Mintly is not a brokerage and does not trade in the stock market. Everything in the simulation uses play money and is not financial advice.</p></div>
 </main>
 
 <script src="script.js"></script>
 <script src="home.js"></script>
+<script>
+// role tabs
+(function () {
+  var tabs = [].slice.call(document.querySelectorAll(".x-tab"));
+  function pick(t) {
+    tabs.forEach(function (x) {
+      var on = x === t;
+      x.setAttribute("aria-selected", on);
+      x.tabIndex = on ? 0 : -1;
+      document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { pick(t); });
+    t.addEventListener("keydown", function (e) {
+      var d = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+      if (d) { e.preventDefault(); var n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); pick(n); }
+    });
+  });
+  // reveal tiles as they scroll in
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("x-in-view"); io.unobserve(e.target); } }); }, { threshold: 0.12 });
+    document.querySelectorAll(".x-tile,.x-tab,.x-loop li").forEach(function (el, i) { el.style.transitionDelay = (i % 4) * 70 + "ms"; io.observe(el); });
+  } else document.documentElement.classList.remove("js-reveal");
+})();
+</script>
 </body>
 </html>

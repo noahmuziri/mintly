@@ -1,0 +1,54 @@
+{
+  "lessons": [
+    {
+      "id": "lesson-1",
+      "title": "What is financial literacy?",
+      "mins": 20
+    },
+    {
+      "id": "lesson-2",
+      "title": "Needs vs. wants: building a simple budget",
+      "mins": 10
+    },
+    {
+      "id": "lesson-3",
+      "title": "Saving for something you want",
+      "mins": 12
+    },
+    {
+      "id": "lesson-4",
+      "title": "How banks work: accounts, debit cards and interest",
+      "mins": 12
+    },
+    {
+      "id": "lesson-5",
+      "title": "Intro to investing: stocks, risk and diversification",
+      "mins": 15
+    },
+    {
+      "id": "lesson-6",
+      "title": "Earning money: jobs, paychecks and taxes",
+      "mins": 12
+    },
+    {
+      "id": "lesson-7",
+      "title": "Credit and debt: borrowing without getting stuck",
+      "mins": 14
+    },
+    {
+      "id": "lesson-8",
+      "title": "Time, inflation and compounding",
+      "mins": 14
+    },
+    {
+      "id": "lesson-9",
+      "title": "Scams and staying safe with money",
+      "mins": 12
+    },
+    {
+      "id": "lesson-10",
+      "title": "Your money plan: putting it all together",
+      "mins": 15
+    }
+  ]
+}

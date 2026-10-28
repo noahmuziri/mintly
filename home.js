@@ -72,6 +72,10 @@
 
   function initProgress() {
     if (typeof Mintly === "undefined") return;
+    Mintly.ready.then(showProgress);
+  }
+
+  function showProgress() {
     let done = 0;
     document.querySelectorAll("[data-lesson]").forEach((row) => {
       if (Mintly.isLessonComplete(row.dataset.lesson)) {
@@ -81,7 +85,7 @@
       }
     });
     const total = Mintly.LESSON_IDS.length;
-    $("hm-progress").textContent = done ? done + " of " + total + " lessons complete." : "Five lessons are ready now. More are on the way.";
+    $("hm-progress").textContent = done ? done + " of " + total + " lessons complete." : total + " lessons are ready now. Sign up free to save your progress.";
   }
 
   function initReveal() {
