@@ -1695,3 +1695,6 @@ html { scrollbar-color: color-mix(in srgb, var(--ink) 28%, transparent) transpar
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; font: 400 26px/1 var(--fb); color: var(--acc); transition: transform .25s; } .faq[open] summary::after { transform: rotate(45deg); }
 .faq p { margin: 0 0 18px; color: var(--muted); line-height: 1.6; }
+
+.link-btn { display: block; margin: 0 0 10px; padding: 0; border: 0; background: none; color: var(--muted); font: 500 12.5px var(--fb); text-decoration: underline; cursor: pointer; text-align: left; }
+.link-btn:hover { color: var(--bad); }
