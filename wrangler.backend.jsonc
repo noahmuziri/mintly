@@ -1,0 +1,17 @@
+{
+  // Use this config once you've created the D1 database (see BACKEND.md):
+  //   npx wrangler deploy -c wrangler.backend.jsonc
+  // The default wrangler.jsonc keeps deploying the static site only, so nothing breaks until you opt in.
+  "name": "mintly",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-27",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "mintly", "database_id": "PASTE_YOUR_D1_DATABASE_ID" }
+  ]
+}

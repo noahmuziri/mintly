@@ -1638,6 +1638,19 @@ html { scrollbar-color: color-mix(in srgb, var(--ink) 28%, transparent) transpar
 .skip { position: fixed; left: 12px; top: -60px; z-index: 200; padding: 10px 16px; border-radius: 10px; background: var(--ink); color: var(--bg); font: 600 14px var(--fb); transition: top .2s; }
 .skip:focus { top: 12px; }
 
+/* consent notice */
+.consent { position: fixed; left: 18px; bottom: 18px; z-index: 60; max-width: 420px; padding: 16px 18px; border-radius: 18px; background: var(--panel); border: 1px solid var(--border); box-shadow: 0 24px 50px -20px var(--shadow); animation: lcGrow .5s cubic-bezier(.16, 1, .3, 1) both; }
+.consent p { margin: 0 0 12px; font-size: 13.5px; line-height: 1.5; color: var(--muted); } .consent b { color: var(--ink); } .consent a { color: var(--acc); font-weight: 600; text-decoration: underline; }
+.consent div { display: flex; gap: 8px; }
+@media (max-width: 640px) { .consent { left: 10px; right: 10px; bottom: 76px; max-width: none; } }
+
+/* admin insights */
+.ins-graph { width: 100%; height: auto; display: block; background: radial-gradient(circle, color-mix(in srgb, var(--ink) 8%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px; border-radius: 14px; }
+.ins-graph circle, .ins-graph line { transition: opacity .25s; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; font-size: 12.5px; color: var(--muted); }
+.legend i, .sw2 { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.list-row { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; } .list-row:last-child { border: 0; }
+.list-row .muted { margin-left: auto; font-size: 12.5px; } .list-row .rk { width: 18px; color: var(--muted); font: italic 500 16px var(--fh); }
 /* ---------- Paywall ---------- */
 .paywall { position: relative; display: grid; grid-template-columns: 110px 1fr; gap: 26px; margin: 8px 0 56px; padding: 34px; border-radius: 26px; background: var(--panel); border: 1.5px solid var(--acc); box-shadow: 0 40px 60px -40px color-mix(in srgb, var(--acc) 55%, transparent); }
 .paywall::before { content: ""; position: absolute; left: 0; right: 0; top: -90px; height: 90px; background: linear-gradient(transparent, var(--bg)); pointer-events: none; }

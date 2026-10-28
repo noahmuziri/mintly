@@ -21,3 +21,9 @@ build/
 
 # macOS resource forks
 ._*
+
+# Local analytics data
+.data/
+
+# Wrangler local state
+.wrangler/

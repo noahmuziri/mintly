@@ -65,7 +65,7 @@ const Mintly = (() => {
         "<p>Not a brokerage. Everything is simulated, uses practice data and is not financial advice.</p></div>" +
         '<div class="foot-links"><div><b>Learn</b><a href="' + up + 'lessons/financial-literacy.html">Financial Literacy</a><a href="' + up + 'lessons/explore.html">Explore</a><a href="' + up + 'leaf.html">Leaf AI</a></div>' +
         '<div><b>For everyone</b><a href="' + up + 'dashboard.html?role=student">Student dashboard</a><a href="' + up + 'dashboard.html?role=parent">Parent dashboard</a><a href="' + up + 'dashboard.html?role=teacher">Teacher dashboard</a></div>' +
-        '<div><b>Company</b><a href="' + up + 'parents.html">For parents</a><a href="' + up + 'pricing.html">Pricing</a><a href="' + up + 'mintly.demo.html?from=site">Watch the demo</a></div></div></div>';
+        '<div><b>Company</b><a href="' + up + 'parents.html">For parents</a><a href="' + up + 'pricing.html">Pricing</a><a href="' + up + 'privacy.html">Privacy</a><a href="' + up + 'mintly.demo.html?from=site">Watch the demo</a></div></div></div>';
     }
   }
 
@@ -285,10 +285,54 @@ const Mintly = (() => {
     setTimeout(() => t.remove(), 2800);
   }
 
+  // --- Analytics (opt-in). Counts which lessons and topics get used so Mintly can improve.
+  // It never sends anything a learner types, and the id is random, not a name or email. ---
+  const CONSENT_KEY = "mintly:consent", UID_KEY = "mintly:uid";
+  const TOPIC_CAT = { sneakers: "collectibles", "trading cards": "collectibles", crypto: "crypto" };
+  const trackQueue = []; let trackTimer = 0;
+  function trackUid() {
+    let id = null;
+    try { id = localStorage.getItem(UID_KEY); if (!id) { id = Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => b.toString(16).padStart(2, "0")).join(""); localStorage.setItem(UID_KEY, id); } } catch (e) {}
+    return id || "anon" + Math.random().toString(36).slice(2, 12);
+  }
+  const consent = () => { try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } };
+  function flushTrack() {
+    if (!trackQueue.length) return;
+    const u = currentUser();
+    const body = JSON.stringify({ uid: trackUid(), role: (u && u.role) || "guest", plan: (u && u.plan) || null, events: trackQueue.splice(0, 40) });
+    try {
+      if (navigator.sendBeacon) navigator.sendBeacon("/api/events", new Blob([body], { type: "application/json" }));
+      else fetch("/api/events", { method: "POST", body, keepalive: true, headers: { "content-type": "application/json" } }).catch(() => {});
+    } catch (e) {}
+  }
+  function track(type, key, value) {
+    const au = currentUser();
+    if (consent() !== "yes" || location.protocol === "file:" || (au && au.role === "admin")) return;
+    trackQueue.push({ type, key: String(key == null ? "" : key).slice(0, 64), value: value == null ? null : +value, ts: Date.now() });
+    clearTimeout(trackTimer); trackTimer = setTimeout(flushTrack, 2500);
+  }
+  addEventListener("pagehide", flushTrack);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) flushTrack(); });
+  document.addEventListener("lf:play", (e) => { const t = e.target && e.target.dataset && e.target.dataset.film; if (t) track("film_play", t); });
+
+  function consentBanner() {
+    const cu = currentUser();
+    if (consent() || document.body.classList.contains("film") || (cu && cu.role === "admin")) return;
+    const up = location.pathname.includes("/lessons/") ? "../" : "";
+    const b = document.createElement("div");
+    b.className = "consent"; b.setAttribute("role", "dialog"); b.setAttribute("aria-label", "Privacy choice");
+    b.innerHTML = '<p><b>Help us make Mintly better?</b> With your OK, we count which lessons and topics get used. We never store what you type, and it isn\'t linked to your name. If you\'re under 13, ask a parent or guardian. <a href="' + up + 'privacy.html">Details</a></p><div><button class="btn btn-small" data-c="yes" type="button">Okay</button><button class="btn btn-secondary btn-small" data-c="no" type="button">No thanks</button></div>';
+    b.addEventListener("click", (e) => { const c = e.target.closest("[data-c]"); if (!c) return; try { localStorage.setItem(CONSENT_KEY, c.dataset.c); } catch (er) {} b.remove(); if (c.dataset.c === "yes") track("page_view", pageKey()); });
+    document.body.appendChild(b);
+  }
+  const pageKey = () => (location.pathname.replace(/^\//, "").replace(/\.html$/, "") || "index").slice(0, 60);
+
   // --- Research interest (what the user chose to learn about on Explore) ---
 
   function saveInterest(interest) {
     writeJSON(INTEREST_PREFIX + progressScope(), interest);
+    const topic = String((interest && (interest.topic || interest.interest)) || interest || "").toLowerCase();
+    if (TOPIC_CAT[topic]) track("explore_interest", TOPIC_CAT[topic]);
   }
 
   function getInterest() {
@@ -405,6 +449,7 @@ const Mintly = (() => {
       if (answered < groups.length) return;
       const right = groups.filter((g) => g.dataset.right).length;
       saveQuizResult(lessonId, right, groups.length);
+      track("quiz", lessonId, Math.round(right / groups.length * 100));
       const lastBox = groups[groups.length - 1].closest(".quiz-box");
       let el = lastBox.querySelector(".quiz-score");
       if (!el) { el = document.createElement("div"); el.className = "quiz-score"; lastBox.appendChild(el); }
@@ -439,6 +484,7 @@ const Mintly = (() => {
         return;
       }
       markLessonComplete(lessonId);
+      track("lesson_complete", lessonId);
       touchDay();
       renderComplete();
       confetti();
@@ -490,6 +536,7 @@ const Mintly = (() => {
     }
 
     const locked = !canAccess(lessonId);
+    if (!locked) track("lesson_view", lessonId);
     // the lesson film: a short animated version of the lesson, loaded on demand
     const hero = article.querySelector(".lesson-hero");
     const slot = document.createElement("div");
@@ -499,7 +546,7 @@ const Mintly = (() => {
     (intro && intro.parentNode === article ? intro : hero || h1).before(slot);
     if (locked) {
       slot.querySelector(".lf-mount").innerHTML = '<a class="lf lf-locked" href="#unlock" aria-label="Unlock this lesson\'s film"><div class="lf-art">' + (window.MintlyArt ? MintlyArt.render("shield") : "") + '</div><strong>Members watch the film</strong><span class="lf-playbtn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></a>';
-    } else loadFilm(lessonId, slot.querySelector(".lf-mount"));
+    } else { slot.querySelector(".lf-mount").dataset.film = lessonId; loadFilm(lessonId, slot.querySelector(".lf-mount")); }
 
     if (locked) {
       // keep the intro, hide the rest, and show the unlock card
@@ -575,6 +622,9 @@ const Mintly = (() => {
 
   return {
     renderChrome,
+    track,
+    pageKey,
+    consentBanner,
     landingPage,
     canAccess,
     checkoutUrl,
@@ -638,6 +688,8 @@ function setupHeaderScroll() {
 document.addEventListener("DOMContentLoaded", () => {
   setupHeaderScroll();
   setTimeout(setupReveal, 0);
+  Mintly.track("page_view", Mintly.pageKey());
+  setTimeout(Mintly.consentBanner, 1200);
   Mintly.renderNavAuth("nav-auth");
   Mintly.setupMobileNav();
   Mintly.markActiveNav();

@@ -6,3 +6,8 @@ wrangler.jsonc
 .claude
 .gitignore
 .assetsignore
+worker.js
+schema.sql
+wrangler.backend.jsonc
+BACKEND.md
+.data

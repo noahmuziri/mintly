@@ -94,6 +94,10 @@
     { id: "rich", k: ["get rich", "be rich", "millionaire", "rich quick", "quick money", "make a lot"], a: "Getting rich quickly is rare, and promises of it are a classic scam setup. Most wealth is built slowly: earning, saving consistently, avoiding high-interest debt, and letting time compound.", q: ["What would 'enough' look like for you in dollars?", "What's a slow plan that could get you part of the way?"] }
   ];
 
+  // Which interest category each topic counts toward (for the admin's interest graph).
+  const CAT = { "financial literacy": "basics", income: "earning", expense: "budgeting", budget: "budgeting", "needs wants": "budgeting", "pay yourself first": "saving", "opportunity cost": "basics", allowance: "budgeting", jobs: "earning", saving: "saving", goal: "saving", "emergency fund": "saving", impulse: "saving", subscription: "budgeting", bank: "banking", "checking savings": "banking", "debit card": "banking", fdic: "banking", "credit union": "banking", interest: "banking", "apr loan": "borrowing", debt: "borrowing", "credit card": "borrowing", "credit score": "borrowing", "student loans": "borrowing", "mortgage rent": "borrowing", compound: "investing", "rule of 72": "investing", inflation: "investing", stock: "investing", invest: "investing", "etf index": "investing", diversification: "investing", risk: "investing", "bull bear": "investing", dividend: "investing", earnings: "investing", nvidia: "investing", "tesla apple amazon": "investing", crypto: "crypto", collectibles: "collectibles", gambling: "scams", paycheck: "earning", taxes: "earning", scam: "scams", phishing: "scams", "gift card": "scams", password: "scams", identity: "scams", retirement: "planning", insurance: "planning", giving: "planning", "price compare": "budgeting", cash: "budgeting", negotiate: "earning", business: "earning", rich: "planning" };
+  const catOf = (id) => CAT[id] || null;
+
   const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // Short keys (hi, pin, apr...) must match a whole word so "hi" doesn't fire on "history".
   const compiled = ENTRIES.map((e) => ({ e, res: e.k.map((k) => { const key = k.trim().toLowerCase(); return { len: key.length, re: new RegExp("(^|[^a-z0-9])" + esc(key) + (key.length <= 3 && !["tax", "job"].includes(key) ? "($|[^a-z0-9])" : ""), "i") }; }) }));
@@ -109,5 +113,5 @@
     return best;
   }
 
-  window.LEAF_BRAIN = { ENTRIES, match, count: ENTRIES.length };
+  window.LEAF_BRAIN = { ENTRIES, match, catOf, count: ENTRIES.length };
 })();

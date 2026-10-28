@@ -7,6 +7,7 @@
 //   QUOTE_REFRESH_SECONDS    how often to call Alpha Vantage for the live price
 //                            (default 3600 on free keys, 10 on premium)
 const http = require("http");
+const os = require("os");
 const fs = require("fs");
 const path = require("path");
 
@@ -39,6 +40,7 @@ const TYPES = {
   ".css": "text/css",
   ".js": "text/javascript",
   ".json": "application/json",
+  ".mjs": "text/javascript",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -177,8 +179,36 @@ async function chart(res, symbol, range) {
   }
 }
 
+// ---- Analytics API (same logic as the Cloudflare Worker; events go to a local file for development) ----
+const DATA_DIR = path.join(ROOT, ".data");
+const EVENTS_FILE = path.join(DATA_DIR, "events.jsonl");
+const ADMIN_KEY = process.env.ADMIN_KEY || "mintly-dev-admin-key";
+const fileStore = {
+  async insert(rows) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.appendFileSync(EVENTS_FILE, rows.map((r) => JSON.stringify(r)).join("\n") + "\n");
+  },
+  async since(ts, limit) {
+    if (!fs.existsSync(EVENTS_FILE)) return [];
+    const rows = fs.readFileSync(EVENTS_FILE, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l)).filter((r) => r.ts >= ts);
+    return rows.slice(-limit);
+  },
+};
+let apiCore;
+async function api(req, res, url) {
+  apiCore = apiCore || (await import("./api-core.mjs"));
+  const chunks = [];
+  for await (const c of req) chunks.push(c);
+  const request = new Request(url.href, { method: req.method, headers: req.headers, body: ["GET", "HEAD"].includes(req.method) ? undefined : Buffer.concat(chunks) });
+  const out = await apiCore.handle(request, { store: fileStore, adminKey: ADMIN_KEY });
+  if (!out) return false;
+  res.writeHead(out.status, Object.fromEntries(out.headers));
+  res.end(Buffer.from(await out.arrayBuffer()));
+  return true;
+}
+
 http
-  .createServer((req, res) => {
+  .createServer(async (req, res) => {
     // a malformed path ("//x", "/%E0") throws here; answer 400 instead of crashing the server
     let url, pathname;
     try {
@@ -187,6 +217,9 @@ http
     } catch (e) {
       res.writeHead(400);
       return res.end("Bad request");
+    }
+    if (pathname.startsWith("/api/") && !["/api/status", "/api/quote", "/api/chart"].includes(pathname)) {
+      try { if (await api(req, res, url)) return; } catch (e) { return send(res, 500, { error: "api error" }); }
     }
     const symbol = (url.searchParams.get("symbol") || "").toUpperCase();
     // lets the page check for a key before polling, so a keyless server doesn't log errors every 10s
@@ -213,4 +246,5 @@ http
     console.log(`Mintly running at http://localhost:${PORT}`);
     console.log(`Live price refreshes from Alpha Vantage every ${QUOTE_TTL / 1000}s (${PREMIUM ? "premium" : "free"} key)`);
     if (!KEY) console.warn("Warning: ALPHA_VANTAGE_API_KEY is not set; live data will fail.");
+    console.log(`Analytics API on. Admin key for the console: ${process.env.ADMIN_KEY ? "(from ADMIN_KEY)" : ADMIN_KEY + "  (dev default; set ADMIN_KEY to change)"}`);
   });
