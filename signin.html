@@ -63,7 +63,7 @@
         </div>
         <div class="field">
           <label for="signup-password">Password</label>
-          <input type="password" id="signup-password" autocomplete="new-password" required minlength="6">
+          <input type="password" id="signup-password" autocomplete="new-password" required minlength="8"><small style="color:var(--muted);font-size:12.5px;margin-top:4px;display:block">At least 8 characters.</small>
         </div>
         <div class="field">
           <label id="role-label">I am a&hellip;</label>
@@ -104,16 +104,14 @@
 
   const existingUser = Mintly.currentUser();
   if (existingUser && plan && planNames[plan]) {
-    Mintly.setPlan(plan);
-    window.location.href = "lessons/financial-literacy.html";
+    Mintly.setPlan(plan).then(() => { window.location.href = "lessons/financial-literacy.html"; });
   } else if (existingUser) {
     document.getElementById("auth-forms").style.display = "none";
     document.getElementById("already-signed-in").style.display = "block";
     document.getElementById("already-signed-in-sub").textContent =
       "You're logged in as " + existingUser.name + ".";
     document.getElementById("already-signed-in-logout").addEventListener("click", () => {
-      Mintly.logOut();
-      window.location.reload();
+      Mintly.logOut().then(() => window.location.reload());
     });
   }
 
@@ -151,6 +149,11 @@
     document.getElementById("login-form").requestSubmit();
   });
 
+  Mintly.hasBackend().then((on) => {
+    const foot = document.querySelector(".auth-foot");
+    if (on && foot) foot.textContent = "Your progress is saved to your account, so it follows you to any device. Demo accounts above stay on this browser.";
+  });
+
   tabLogin.addEventListener("click", showLogin);
   tabSignup.addEventListener("click", showSignup);
 
@@ -160,9 +163,9 @@
     planNote.textContent = "You selected the " + planNames[plan] + " plan — create an account to continue.";
   }
 
-  loginForm.addEventListener("submit", (e) => {
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const result = Mintly.logIn({
+    const result = await Mintly.logIn({
       email: document.getElementById("login-email").value,
       password: document.getElementById("login-password").value,
     });
@@ -174,9 +177,9 @@
     }
   });
 
-  signupForm.addEventListener("submit", (e) => {
+  signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const result = Mintly.signUp({
+    const result = await Mintly.signUp({
       name: document.getElementById("signup-name").value,
       email: document.getElementById("signup-email").value,
       password: document.getElementById("signup-password").value,

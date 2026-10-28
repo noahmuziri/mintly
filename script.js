@@ -34,6 +34,92 @@ const Mintly = (() => {
     } catch (e) {}
   }
 
+
+  // --- Cloud sync: signed-in learners' progress and saved work live on the server too, so nothing is lost
+  // when they clear their browser, switch device or close the tab. Each "mintly:*" key is saved with a
+  // timestamp and the newest write wins. Device preferences (theme, consent) stay on the device. ---
+  const TOKEN_KEY = "mintly:token", SYNC_T_KEY = "mintly:_synct";
+  const LOCAL_ONLY = /^mintly:(theme|custom|consent|uid|session|users|token|_synct|seeded:|role$)|:guest(:|$)/;
+  const syncable = (k) => typeof k === "string" && k.startsWith("mintly:") && !LOCAL_ONLY.test(k);
+  const rawSet = Storage.prototype.setItem, rawRemove = Storage.prototype.removeItem;
+  let synct = {}; try { synct = JSON.parse(localStorage.getItem(SYNC_T_KEY) || "{}"); } catch (e) {}
+  let pushTimer = 0, applying = false, backend = null;
+  const token = () => { try { return localStorage.getItem(TOKEN_KEY); } catch (e) { return null; } };
+  const saveT = () => { try { rawSet.call(localStorage, SYNC_T_KEY, JSON.stringify(synct)); } catch (e) {} };
+  function touchKey(k) {
+    if (!syncable(k) || applying) return;
+    synct[k] = Date.now(); saveT();
+    if (token()) { clearTimeout(pushTimer); pushTimer = setTimeout(() => pushNow(), 1500); }
+  }
+  Storage.prototype.setItem = function (k, v) { rawSet.call(this, k, v); if (this === localStorage) touchKey(k); };
+  Storage.prototype.removeItem = function (k) { const had = this === localStorage && syncable(k) && localStorage.getItem(k) !== null; rawRemove.call(this, k); if (had) touchKey(k); };
+
+  function snapshot() {
+    const kv = {}, t = {};
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (syncable(k)) { kv[k] = localStorage.getItem(k); t[k] = synct[k] || 0; } }
+    for (const k of Object.keys(synct)) if (syncable(k) && !(k in kv)) { kv[k] = null; t[k] = synct[k]; } // removals travel too
+    return { kv, t };
+  }
+  function applyServer(srv) {
+    let changed = false; applying = true;
+    try {
+      for (const [k, v] of Object.entries((srv && srv.kv) || {})) {
+        if (!syncable(k)) continue;
+        const st = (srv.t && srv.t[k]) || 0;
+        if (st > (synct[k] || 0)) {
+          if (v === null) { if (localStorage.getItem(k) !== null) { rawRemove.call(localStorage, k); changed = true; } }
+          else if (localStorage.getItem(k) !== v) { rawSet.call(localStorage, k, v); changed = true; }
+          synct[k] = st;
+        }
+      }
+    } finally { applying = false; }
+    saveT(); return changed;
+  }
+  // Saves everything and merges back what the server has. Returns true if the server brought changes.
+  async function pushNow(beacon) {
+    const tk = token(); if (!tk) return false;
+    const body = JSON.stringify(Object.assign({ token: tk }, snapshot()));
+    try {
+      if (beacon && navigator.sendBeacon && body.length < 60000 && navigator.sendBeacon("/api/data", new Blob([body], { type: "application/json" }))) return false;
+      const r = await fetch("/api/data", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + tk }, body, keepalive: body.length < 60000 });
+      if (r.status === 401) { rawRemove.call(localStorage, TOKEN_KEY); localStorage.removeItem(SESSION_KEY); return false; } // session expired
+      if (r.ok) return applyServer(await r.json());
+    } catch (e) {}
+    return false;
+  }
+  async function syncStart() {
+    if (!token()) return;
+    const changed = await pushNow();
+    // a new device or a cleared browser: the server just restored data, so redraw once with it
+    if (changed && !sessionStorage.getItem("mintly:restored")) { try { sessionStorage.setItem("mintly:restored", "1"); } catch (e) {} location.reload(); }
+  }
+  addEventListener("pagehide", () => pushNow(true));
+  document.addEventListener("visibilitychange", () => { if (document.hidden) pushNow(true); });
+
+  async function hasBackend() {
+    if (backend !== null) return backend;
+    try { const r = await fetch("/api/health", { cache: "no-store" }); backend = r.ok && (await r.json()).accounts === true; } catch (e) { backend = false; }
+    return backend;
+  }
+  async function serverAuth(path, payload) {
+    let r; try { r = await fetch(path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) }); }
+    catch (e) { return { ok: false, error: "Couldn't reach the server. Check your connection and try again." }; }
+    const d = await r.json().catch(() => ({}));
+    return r.ok ? { ok: true, data: d } : { ok: false, error: d.error || "Something went wrong." };
+  }
+  function adoptServerUser(tk, user) {
+    const users = readJSON(USERS_KEY, {});
+    users[user.email] = { name: user.name, email: user.email, plan: user.plan, role: user.role, server: true }; // no password stored here
+    writeJSON(USERS_KEY, users);
+    localStorage.setItem(SESSION_KEY, user.email);
+    rawSet.call(localStorage, TOKEN_KEY, tk);
+  }
+  function clearSynced() {
+    const ks = []; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (syncable(k)) ks.push(k); }
+    applying = true; ks.forEach((k) => rawRemove.call(localStorage, k)); applying = false; synct = {}; saveT();
+  }
+  const isCloudAccount = () => !!token();
+
   // --- Shared chrome: every page has an empty #site-header and #site-footer, filled in here so the
   // navigation and footer are edited in one place. ---
   const NAV = [
@@ -113,10 +199,19 @@ const Mintly = (() => {
     return user ? user.email : "guest";
   }
 
-  function signUp({ name, email, password, plan, role }) {
+  async function signUp({ name, email, password, plan, role }) {
     email = (email || "").trim().toLowerCase();
     if (!name || !email || !password) {
       return { ok: false, error: "Please fill in every field." };
+    }
+    if (!email.endsWith("@mintly.demo") && (await hasBackend())) {
+      const guestDone = LESSON_IDS.filter((id) => localStorage.getItem(PROGRESS_PREFIX + "guest:" + id) === "true");
+      const r = await serverAuth("/api/auth/signup", { name, email, password, plan, role });
+      if (!r.ok) return r;
+      adoptServerUser(r.data.token, r.data.user);
+      guestDone.forEach((id) => markLessonComplete(id));
+      await pushNow();
+      return { ok: true };
     }
     const users = getUsers();
     if (users[email]) {
@@ -136,8 +231,15 @@ const Mintly = (() => {
     return { ok: true };
   }
 
-  function logIn({ email, password }) {
+  async function logIn({ email, password }) {
     email = (email || "").trim().toLowerCase();
+    if (!DEMO_USERS[email] && (await hasBackend())) {
+      const r = await serverAuth("/api/auth/login", { email, password });
+      if (!r.ok) return r;
+      adoptServerUser(r.data.token, r.data.user);
+      await pushNow(); // pulls this learner's saved progress onto this device
+      return { ok: true };
+    }
     const users = getUsers();
     const user = users[email];
     if (!user || user.password !== password) {
@@ -165,15 +267,34 @@ const Mintly = (() => {
     for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.includes(":" + email) && /^mintly:(completed|quiz|days|interest|seeded)/.test(k)) drop.push(k); }
     drop.forEach((k) => localStorage.removeItem(k));
   }
-  function logOut() {
+  async function logOut() {
+    const tk = token();
+    if (tk) {
+      await pushNow();                       // save everything before leaving
+      try { await fetch("/api/auth/logout", { method: "POST", headers: { authorization: "Bearer " + tk } }); } catch (e) {}
+      clearSynced();                         // the data now lives on the server, so the next person on this device starts clean
+      rawRemove.call(localStorage, TOKEN_KEY);
+      const em = localStorage.getItem(SESSION_KEY), us = readJSON(USERS_KEY, {});
+      if (em && us[em] && us[em].server) { delete us[em]; writeJSON(USERS_KEY, us); } // forget the cached profile too
+    }
     localStorage.removeItem(SESSION_KEY);
   }
+  async function deleteAccount() {
+    const tk = token(); if (!tk) return false;
+    try { const r = await fetch("/api/me", { method: "DELETE", headers: { authorization: "Bearer " + tk } }); if (!r.ok) return false; } catch (e) { return false; }
+    const email = localStorage.getItem(SESSION_KEY), users = readJSON(USERS_KEY, {});
+    if (email) { delete users[email]; writeJSON(USERS_KEY, users); }
+    clearSynced(); rawRemove.call(localStorage, TOKEN_KEY); localStorage.removeItem(SESSION_KEY);
+    return true;
+  }
 
-  function setPlan(plan) {
+  async function setPlan(plan) {
     const email = localStorage.getItem(SESSION_KEY);
     if (!email) return;
     const users = getUsers();
     if (!users[email]) return;
+    const tk = token();
+    if (tk) { try { const r = await fetch("/api/me", { method: "POST", headers: { "content-type": "application/json", authorization: "Bearer " + tk }, body: JSON.stringify({ plan }) }); if (!r.ok) return; } catch (e) { return; } }
     users[email].plan = plan;
     writeJSON(USERS_KEY, users);
   }
@@ -214,8 +335,9 @@ const Mintly = (() => {
       el.innerHTML =
         '<span class="nav-account-link">Hi, ' + firstName + '</span>' +
         '<button class="btn-dark" id="nav-logout-btn">Log out</button>';
-      document.getElementById("nav-logout-btn").addEventListener("click", () => {
-        logOut();
+      document.getElementById("nav-logout-btn").addEventListener("click", async (e) => {
+        e.currentTarget.disabled = true; e.currentTarget.textContent = "Saving…";
+        await logOut();
         window.location.href = rootPath("index.html");
       });
     } else {
@@ -301,8 +423,8 @@ const Mintly = (() => {
     const u = currentUser();
     const body = JSON.stringify({ uid: trackUid(), role: (u && u.role) || "guest", plan: (u && u.plan) || null, events: trackQueue.splice(0, 40) });
     try {
-      if (navigator.sendBeacon) navigator.sendBeacon("/api/events", new Blob([body], { type: "application/json" }));
-      else fetch("/api/events", { method: "POST", body, keepalive: true, headers: { "content-type": "application/json" } }).catch(() => {});
+      const sent = navigator.sendBeacon && navigator.sendBeacon("/api/events", new Blob([body], { type: "application/json" }));
+      if (!sent) fetch("/api/events", { method: "POST", body, keepalive: true, headers: { "content-type": "application/json" } }).catch(() => {});
     } catch (e) {}
   }
   function track(type, key, value) {
@@ -622,6 +744,10 @@ const Mintly = (() => {
 
   return {
     renderChrome,
+    hasBackend,
+    isCloudAccount,
+    deleteAccount,
+    syncStart,
     track,
     pageKey,
     consentBanner,
@@ -688,6 +814,7 @@ function setupHeaderScroll() {
 document.addEventListener("DOMContentLoaded", () => {
   setupHeaderScroll();
   setTimeout(setupReveal, 0);
+  Mintly.syncStart();
   Mintly.track("page_view", Mintly.pageKey());
   setTimeout(Mintly.consentBanner, 1200);
   Mintly.renderNavAuth("nav-auth");

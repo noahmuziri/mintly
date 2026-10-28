@@ -194,13 +194,32 @@ const fileStore = {
     return rows.slice(-limit);
   },
 };
+const jsonFile = (name) => ({
+  read() { try { return JSON.parse(fs.readFileSync(path.join(DATA_DIR, name), "utf8")); } catch (e) { return {}; } },
+  write(o) { fs.mkdirSync(DATA_DIR, { recursive: true }); fs.writeFileSync(path.join(DATA_DIR, name), JSON.stringify(o)); },
+});
+const F = { users: jsonFile("users.json"), sessions: jsonFile("sessions.json"), data: jsonFile("userdata.json") };
+Object.assign(fileStore, {
+  async getUser(email) { return F.users.read()[email] || null; },
+  async putUser(u) { const o = F.users.read(); o[u.email] = u; F.users.write(o); },
+  async deleteUser(email) {
+    for (const [f, filter] of [[F.users, (k) => k === email], [F.data, (k) => k === email]]) { const o = f.read(); for (const k of Object.keys(o)) if (filter(k)) delete o[k]; f.write(o); }
+    const s = F.sessions.read(); for (const k of Object.keys(s)) if (s[k].email === email) delete s[k]; F.sessions.write(s);
+  },
+  async putSession(h, email, exp) { const o = F.sessions.read(); o[h] = { email, exp }; F.sessions.write(o); },
+  async getSession(h) { return F.sessions.read()[h] || null; },
+  async delSession(h) { const o = F.sessions.read(); delete o[h]; F.sessions.write(o); },
+  async getData(email) { return F.data.read()[email] || null; },
+  async putData(email, obj) { const o = F.data.read(); o[email] = obj; F.data.write(o); },
+  async listUsers() { return Object.values(F.users.read()); },
+});
 let apiCore;
 async function api(req, res, url) {
   apiCore = apiCore || (await import("./api-core.mjs"));
   const chunks = [];
   for await (const c of req) chunks.push(c);
   const request = new Request(url.href, { method: req.method, headers: req.headers, body: ["GET", "HEAD"].includes(req.method) ? undefined : Buffer.concat(chunks) });
-  const out = await apiCore.handle(request, { store: fileStore, adminKey: ADMIN_KEY });
+  const out = await apiCore.handle(request, { store: fileStore, adminKey: ADMIN_KEY, selfPlan: process.env.PLAN_SELF_SERVICE !== "0" });
   if (!out) return false;
   res.writeHead(out.status, Object.fromEntries(out.headers));
   res.end(Buffer.from(await out.arrayBuffer()));
