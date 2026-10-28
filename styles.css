@@ -1301,3 +1301,42 @@ h1, h2, h3, .brand { font-family: var(--font-head); }
 .auth-side p { color: var(--pmint); font-weight: 600; margin: 0; }
 .auth-split .auth-wrap { display: flex; align-items: center; justify-content: center; padding: 40px 20px; min-height: 0; }
 @media (max-width: 860px) { .auth-split { grid-template-columns: 1fr; } .auth-side { display: none; } }
+
+/* ================= Site-wide polish ================= */
+html { scroll-behavior: smooth; }
+::selection { background: var(--pmint); color: #151515; }
+:focus-visible { outline: 2px solid var(--pgreen); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* buttons: a little life */
+.btn, .btn-dark, .btn-secondary { transition: transform .15s ease, box-shadow .2s ease, filter .15s ease, background .15s ease; }
+.btn:hover, .btn-dark:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -12px rgba(0,0,0,.45); filter: none; }
+.btn:active, .btn-dark:active { transform: none; box-shadow: none; }
+
+/* page headers: soft mint glow behind the title */
+.page-header { position: relative; }
+.page-header::before { content: ""; position: absolute; inset: -40px -10vw auto -10vw; height: 280px; z-index: -1; pointer-events: none;
+  background: radial-gradient(520px 200px at 18% 30%, rgba(168,221,192,.35), transparent 70%), radial-gradient(420px 160px at 80% 10%, rgba(47,125,88,.12), transparent 70%); }
+.page-header h1 { letter-spacing: -.035em; }
+
+/* lesson rows and course cards: lift on hover, clearer states */
+.lesson-row, .course-card { transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease; }
+a.lesson-row:hover, a.course-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -18px rgba(0,0,0,.35); border-color: var(--ink); }
+.lesson-row.done .num { background: var(--pgreen); color: #fff; }
+.lesson-row .go { color: var(--pgreen); }
+.progressbar, progress { accent-color: var(--pgreen); }
+
+/* lesson reading experience */
+.lesson-body { max-width: 760px; }
+.lesson-body p, .lesson-body li { line-height: 1.7; }
+.lesson-body h2 { margin-top: 2.2em; letter-spacing: -.02em; position: relative; padding-top: 14px; }
+.lesson-body h2::before { content: ""; position: absolute; top: 0; left: 0; width: 36px; height: 4px; border-radius: 2px; background: var(--pmint); }
+.lesson-meta { display: inline-block; background: var(--gainsoft); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 13px; }
+
+/* footer */
+.site-footer { padding: 36px 0; }
+.site-footer a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--pmint); }
+
+/* For Parents: readable text on the mint "Act" step */
+.path-stage-real, .path-stage-real h3, .path-stage-real p { color: #151515 !important; }
+.path-stage-real p { opacity: .85; }
