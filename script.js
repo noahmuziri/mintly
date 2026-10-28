@@ -11,6 +11,11 @@ const Mintly = (() => {
     { id: "lesson-3", title: "Saving for something you want", mins: 12 },
     { id: "lesson-4", title: "How banks work: accounts, debit cards and interest", mins: 12 },
     { id: "lesson-5", title: "Intro to investing: stocks, risk and diversification", mins: 15 },
+    { id: "lesson-6", title: "Credit, debt and borrowing", mins: 14, unit: 2 },
+    { id: "lesson-7", title: "Compound interest and the power of time", mins: 14, unit: 2 },
+    { id: "lesson-8", title: "Paychecks and taxes: why take-home is smaller", mins: 12, unit: 2 },
+    { id: "lesson-9", title: "Scams, fraud and staying safe", mins: 12, unit: 2 },
+    { id: "lesson-10", title: "Build your own money plan", mins: 16, unit: 2 },
   ];
   const LESSON_IDS = LESSONS.map((l) => l.id);
 
@@ -37,6 +42,9 @@ const Mintly = (() => {
   ];
 
   function renderChrome() {
+    const main = document.querySelector("main");
+    if (main && !main.id) main.id = "main";
+    if (main && !document.querySelector(".skip")) { const a = document.createElement("a"); a.className = "skip"; a.href = "#main"; a.textContent = "Skip to content"; document.body.prepend(a); }
     const up = location.pathname.includes("/lessons/") ? "../" : "";
     const header = document.getElementById("site-header");
     if (header) {
@@ -64,8 +72,33 @@ const Mintly = (() => {
   // --- Auth (demo only: accounts live in this browser's localStorage,
   // not a real server. Do not reuse this pattern for real passwords.) ---
 
+  // Ready-made demo accounts so nobody has to sign up to look around. These live in the page's code,
+  // so they are NOT secure and exist only for this front-end demo. Replace with real auth before launch.
+  const DEMO_PASSWORD = "mintly-demo";
+  const DEMO_USERS = {
+    "student@mintly.demo": { name: "Maya Lopez", email: "student@mintly.demo", password: DEMO_PASSWORD, plan: "premium", role: "student", demo: true },
+    "parent@mintly.demo": { name: "Dana Lopez", email: "parent@mintly.demo", password: DEMO_PASSWORD, plan: "family", role: "parent", demo: true },
+    "teacher@mintly.demo": { name: "Ms. Alvarez", email: "teacher@mintly.demo", password: DEMO_PASSWORD, plan: "school", role: "teacher", demo: true },
+    "admin@mintly.demo": { name: "Mintly Admin", email: "admin@mintly.demo", password: DEMO_PASSWORD, plan: "pro", role: "admin", demo: true },
+  };
+
   function getUsers() {
-    return readJSON(USERS_KEY, {});
+    return Object.assign({}, DEMO_USERS, readJSON(USERS_KEY, {}));
+  }
+
+  // First sign-in to the demo student gets a little progress so the dashboard isn't empty.
+  function seedDemoProgress(email) {
+    if (email !== "student@mintly.demo" || localStorage.getItem("mintly:seeded:" + email)) return;
+    try {
+      ["lesson-1", "lesson-2", "lesson-3"].forEach((id, i) => {
+        localStorage.setItem(PROGRESS_PREFIX + email + ":" + id, "true");
+        localStorage.setItem("mintly:quiz:" + email + ":" + id, JSON.stringify({ c: [5, 6, 7][i] - (i === 1 ? 1 : 0), t: [5, 7, 7][i] }));
+      });
+      const days = [], d = new Date();
+      for (let k = 0; k < 4; k++) { days.push(d.toISOString().slice(0, 10)); d.setDate(d.getDate() - 1); }
+      localStorage.setItem("mintly:days:" + email, JSON.stringify(days));
+      localStorage.setItem("mintly:seeded:" + email, "1");
+    } catch (e) {}
   }
 
   function currentUser() {
@@ -111,6 +144,7 @@ const Mintly = (() => {
       return { ok: false, error: "That email and password don't match." };
     }
     localStorage.setItem(SESSION_KEY, email);
+    seedDemoProgress(email);
     return { ok: true };
   }
 
@@ -122,6 +156,15 @@ const Mintly = (() => {
     return "dashboard.html?role=" + role;
   }
 
+  function allUsers() { return getUsers(); }
+  function removeUser(email) {
+    const users = readJSON(USERS_KEY, {}); delete users[email]; writeJSON(USERS_KEY, users);
+  }
+  function resetProgress(email) {
+    const drop = [];
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.includes(":" + email) && /^mintly:(completed|quiz|days|interest|seeded)/.test(k)) drop.push(k); }
+    drop.forEach((k) => localStorage.removeItem(k));
+  }
   function logOut() {
     localStorage.removeItem(SESSION_KEY);
   }
@@ -401,6 +444,11 @@ const Mintly = (() => {
     "lesson-2": ["A budget is a plan for your money made before you spend it.", "Needs keep you going; wants are chosen on purpose after needs and savings are covered.", "Pay yourself first: move money to savings the moment you are paid."],
     "lesson-3": ["A real goal has a price, a deadline and a weekly amount, so you can see it getting closer.", "Make saving automatic and it stops depending on willpower.", "When an impulse buy appears, waiting 24 hours usually answers the question for you."],
     "lesson-4": ["Banks keep your money safe, lend some of it out and pay you interest for the use of it.", "Checking is for spending; savings is for growing. Use each for its job.", "Watch for fees and protect your account details, and you keep what you earn."],
+    "lesson-6": ["Borrowing is renting money, and interest is the rent. Always ask what the total will be.", "Debt can be a tool or a trap. The difference is the interest rate and whether you have a plan to repay.", "Paying on time and using a small slice of your limit are the biggest drivers of a healthy credit score."],
+    "lesson-7": ["Compound interest means your earnings earn earnings, so growth speeds up over time.", "The Rule of 72 estimates doubling time: divide 72 by the yearly return.", "Time matters more than amount. Starting early beats starting big, and the same math works against you on debt."],
+    "lesson-8": ["Gross pay is before deductions; net pay is what you take home.", "Social Security and Medicare take 7.65% of most paychecks, and teens often owe little or no income tax.", "Read every pay stub, and file a tax return to recover any income tax withheld."],
+    "lesson-9": ["Scams rely on pressure, secrecy and unusual payment. Real organizations give you time.", "Never share passwords, PINs or one-time codes, and never pay with gift cards to someone you don't know.", "When in doubt: stop, check on your own, and tell a trusted adult."],
+    "lesson-10": ["A plan starts with knowing what comes in, then splitting it between needs, wants and savings.", "A goal needs a price, a date and a weekly amount, and saving should be automatic.", "Review the plan monthly and adjust. A plan you check is a plan you keep."],
     "lesson-5": ["Saving protects money; investing tries to grow it, and that always carries risk.", "A stock is a small piece of a company, and its price moves on expectations as much as results.", "Diversifying and explaining your reasoning beat chasing whatever is popular."],
   };
 
@@ -421,7 +469,7 @@ const Mintly = (() => {
     const h1 = article.querySelector("h1");
     const eyebrow = article.querySelector(".eyebrow");
     if (h1 && eyebrow && window.MintlyArt) {
-      const art = ["book", "piggy", "target", "bank", "chart"][idx] || "book";
+      const art = ["book", "piggy", "target", "bank", "chart", "card", "percent", "wallet", "alert", "plan"][idx] || "book";
       const hero = document.createElement("div");
       hero.className = "lesson-hero";
       const left = document.createElement("div");
@@ -429,6 +477,15 @@ const Mintly = (() => {
       const a = document.createElement("div"); a.className = "art"; a.dataset.art = art; hero.append(a);
       MintlyArt.mount();
     }
+
+    // the lesson film: a short animated version of the lesson, loaded on demand
+    const hero = article.querySelector(".lesson-hero");
+    const slot = document.createElement("div");
+    slot.className = "lf-slot"; slot.id = "video";
+    slot.innerHTML = '<div class="lf-cap"><span>Watch the lesson</span><span>' + (meta ? meta.mins + " min read below" : "") + '</span></div><div class="lf-mount"></div>';
+    const intro = article.querySelector("p");
+    (intro && intro.parentNode === article ? intro : hero || h1).before(slot);
+    loadFilm(lessonId, slot.querySelector(".lf-mount"));
 
     // takeaways, placed before the first quiz
     const tk = TAKEAWAYS[lessonId];
@@ -471,6 +528,18 @@ const Mintly = (() => {
     addEventListener("scroll", onScroll, { passive: true }); onScroll();
   }
 
+  function loadScript(src) {
+    return new Promise((res, rej) => { const el = document.createElement("script"); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el); });
+  }
+  function loadFilm(lessonId, mount) {
+    const up = "../";
+    Promise.all([window.MintlyFilm ? 0 : loadScript(up + "lessonfilm.js"), window.MINTLY_FILMS ? 0 : loadScript(up + "films-data.js")]).then(() => {
+      const spec = window.MINTLY_FILMS && window.MINTLY_FILMS[lessonId];
+      if (spec) { window.MintlyFilm.mount(mount, spec); if (location.hash === "#video") mount.scrollIntoView({ block: "center" }); }
+      else mount.closest(".lf-slot").remove();
+    }).catch(() => mount.closest(".lf-slot").remove());
+  }
+
   function showDonePanel() {
     const p = document.getElementById("done-panel");
     if (p) { p.classList.add("show"); p.scrollIntoView({ behavior: "smooth", block: "center" }); }
@@ -479,6 +548,10 @@ const Mintly = (() => {
   return {
     renderChrome,
     landingPage,
+    allUsers,
+    removeUser,
+    resetProgress,
+    DEMO_PASSWORD,
     stats,
     toast,
     touchDay,
@@ -509,7 +582,28 @@ const Mintly = (() => {
 })();
 
 Mintly.renderChrome();
+// Scroll reveals: tag the common blocks once, fade each in as it enters the screen.
+function setupReveal() {
+  const sel = ".section-heading, .section-eyebrow, .home-lead, .section-lead, .step, .tile, .role-card, .plan-card, .faq-item, .path-stage, .page-header > *, .lesson-row, .course-card, .takeaways, .definition-card, .activity, .quiz-box, .callout, .checks li, .chat, .cta-banner, .parents-promise .wrap > *";
+  const els = Array.from(document.querySelectorAll(sel)).filter((e) => !e.closest(".reveal") && !e.classList.contains("reveal"));
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const groups = new Map();
+  els.forEach((el) => {
+    const p = el.parentNode, n = groups.get(p) || 0; groups.set(p, n + 1);
+    el.classList.add("reveal"); el.style.setProperty("--i", Math.min(n, 5));
+  });
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12, rootMargin: "0px 0px -6% 0px" });
+  document.querySelectorAll(".reveal").forEach((e) => io.observe(e));
+}
+function setupHeaderScroll() {
+  const h = document.getElementById("site-header"); if (!h) return;
+  const f = () => h.classList.toggle("scrolled", scrollY > 8);
+  addEventListener("scroll", f, { passive: true }); f();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  setupHeaderScroll();
+  setTimeout(setupReveal, 0);
   Mintly.renderNavAuth("nav-auth");
   Mintly.setupMobileNav();
   Mintly.markActiveNav();

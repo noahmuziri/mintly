@@ -3,8 +3,9 @@
    The Customize panel is also where the demo lives: "Watch the demo" opens the self-playing film. */
 (function () {
   const KEY_THEME = "mintly:theme", KEY_CUSTOM = "mintly:custom", KEY_ROLE = "mintly:role";
-  const ROLES = ["student", "parent", "teacher"];
+  const ROLES = ["student", "parent", "teacher", "admin"];
   const root = document.documentElement;
+  root.classList.add("js");
   const read = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
   const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
@@ -62,7 +63,7 @@
     dock.innerHTML = `<button class="tgl" id="cu" type="button" aria-expanded="false" aria-controls="cp">${ICON.sliders}<span class="t">Customize</span></button><button class="tgl" id="tg" type="button" aria-label="Toggle dark mode">${ICON.moon}<span class="t"></span></button>`;
     const cp = document.createElement("div");
     cp.className = "cp"; cp.id = "cp"; cp.setAttribute("role", "dialog"); cp.setAttribute("aria-label", "Customize Mintly");
-    cp.innerHTML = `<a class="cp-demo" href="${here}mintly.demo.html?from=site" id="cp-demo"><span class="play">${ICON.play}</span><span><b>Watch the demo</b><span>A 90 second tour. Press start and sit back.</span></span></a>
+    cp.innerHTML = `<a class="cp-demo" href="${here}mintly.demo.html?from=site" id="cp-demo"><span class="play">${ICON.play}</span><span><b>Watch the demo</b><span>A one minute tour. Press start and sit back.</span></span></a>
 <h4>Accent colour</h4><div class="sw">${PAL.map((p, i) => i === 0 ? `<button type="button" class="auto" data-k="a" data-i="0" title="Follows your role" aria-label="Role colour"></button>` : `<button type="button" data-k="a" data-i="${i}" title="${p[0]}" aria-label="${p[0]}" style="background:${p[1][0]}"></button>`).join("")}</div>
 <h4>Background</h4><div class="sw">${BGS.map((p, i) => `<button type="button" class="sq" data-k="b" data-i="${i}" title="${p[0]}" aria-label="${p[0]}" style="background:${i === 0 ? "#F7F5EF" : p[1][0]}"></button>`).join("")}</div>
 <h4>Font</h4><div class="cp-chips">${FONTS.map((p, i) => `<button type="button" class="cp-chip" data-k="f" data-i="${i}" style="font-family:${i === 0 ? "'Newsreader',serif" : p[2]}">${p[0]}</button>`).join("")}</div>

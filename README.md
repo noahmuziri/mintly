@@ -24,7 +24,8 @@ to mock data and the page says so.
 | `dashboard.html`, `dashboard.js` | Student, parent and teacher dashboards (`?role=student\|parent\|teacher`) |
 | `mintly.demo.html`, `demo.js`, `demo.css` | The self-playing demo film (press Start). Open it from **Customize → Watch the demo** |
 | `simulation.html` | The hands-on simulation (the interactive demo that used to live at `mintly.demo.html`) |
-| `lessons/` | The five-lesson course plus electives. `script.js` adds the outline, takeaways, quiz score and finish panel |
+| `lessons/` | The ten-lesson course (two units) plus electives. `script.js` adds the outline, takeaways, quiz score and finish panel |
+| `lessonfilm.js`, `films-data.js` | Lesson videos: a data-driven film player. Add a lesson film by adding a scene list to `films-data.js` |
 | `styles.css` | Design system. Colours are tokens; `<html data-role>` swaps the accent per role |
 | `theme.js` | Light/dark, role, and the Customize panel |
 | `art.js` | Hand-drawn style illustrations (inline SVG that follows the role colour) |
@@ -67,3 +68,16 @@ API routes: `/api/status` (is a key set?), `/api/quote?symbol=NVDA`, `/api/chart
 - `tools/device-simulator.html` previews the site in phone frames
 
 To add a lesson, add it to `LESSONS` in `script.js` and to the list in `lessons/financial-literacy.html`.
+
+## Demo accounts
+
+Password for all: `mintly-demo`
+
+| Role | Email |
+| --- | --- |
+| Student (3 lessons done) | `student@mintly.demo` |
+| Parent | `parent@mintly.demo` |
+| Teacher | `teacher@mintly.demo` |
+| Admin | `admin@mintly.demo` |
+
+These live in `script.js` and are front-end only, so they are not secure. Replace them with real authentication before launch.

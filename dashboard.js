@@ -49,9 +49,9 @@
   const SKILLS = [["Research", 82], ["Evidence", 76], ["Risk awareness", 68], ["Reasoning", 88]];
   const TREND = [58, 64, 61, 70, 74, 72, 79, 82];
   const TREND_L = ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"];
-  const ROSTER = [["Ava Thompson", 5, 91, "Evidence"], ["Noah Okafor", 4, 84, "Risk"], ["Mia Chen", 5, 88, "Risk"], ["Liam Patel", 3, 72, "Evidence"], ["Zoe Martin", 2, 61, "Risk"], ["Ethan Brooks", 4, 79, "Reasoning"], ["Isla Rivera", 1, 48, "Research"], ["Lucas Kim", 3, 70, "Risk"], ["Sofia Nguyen", 5, 93, "Reasoning"], ["Owen Hall", 2, 55, "Evidence"], ["Chloe Adams", 4, 82, "Risk"], ["Jack Diaz", 0, 39, "Research"]].map((r) => ({ name: r[0], done: r[1], score: r[2], weak: r[3] }));
+  const ROSTER = [["Ava Thompson", 10, 91, "Evidence"], ["Noah Okafor", 8, 84, "Risk"], ["Mia Chen", 9, 88, "Risk"], ["Liam Patel", 6, 72, "Evidence"], ["Zoe Martin", 4, 61, "Risk"], ["Ethan Brooks", 8, 79, "Reasoning"], ["Isla Rivera", 2, 48, "Research"], ["Lucas Kim", 6, 70, "Risk"], ["Sofia Nguyen", 10, 93, "Reasoning"], ["Owen Hall", 4, 55, "Evidence"], ["Chloe Adams", 8, 82, "Risk"], ["Jack Diaz", 0, 39, "Research"]].map((r) => ({ name: r[0], done: r[1], score: r[2], weak: r[3] }));
   const HEAT = [["Research", [88, 82, 79, 91, 74, 86]], ["Evidence", [72, 68, 74, 80, 61, 70]], ["Risk", [54, 49, 60, 58, 46, 52]], ["Reasoning", [80, 77, 84, 86, 70, 78]]];
-  const BADGES = [["First Look", "Open a lesson", () => st.done >= 0 && (st.quizTotal > 0 || st.done > 0), "1"], ["Quick Learner", "Finish a lesson", () => st.done >= 1, "Q"], ["On a Roll", "3 day streak", () => st.streak >= 3, "3"], ["Sharp Mind", "80%+ quiz accuracy", () => (st.accuracy || 0) >= 80, "S"], ["Halfway", "Finish 3 lessons", () => st.done >= 3, "H"], ["Graduate", "Finish the course", () => st.done >= st.total, "G"], ["Risk Spotter", "Name a risk in a decision", () => false, "R"], ["Devil's Advocate", "Ask Leaf for the case against", () => false, "D"]];
+  const BADGES = [["First Look", "Open a lesson", () => st.done >= 0 && (st.quizTotal > 0 || st.done > 0), "1"], ["Quick Learner", "Finish a lesson", () => st.done >= 1, "Q"], ["On a Roll", "3 day streak", () => st.streak >= 3, "3"], ["Sharp Mind", "80%+ quiz accuracy", () => (st.accuracy || 0) >= 80, "S"], ["Halfway", "Finish 5 lessons", () => st.done >= 5, "H"], ["Graduate", "Finish the course", () => st.done >= st.total, "G"], ["Risk Spotter", "Name a risk in a decision", () => false, "R"], ["Devil's Advocate", "Ask Leaf for the case against", () => false, "D"]];
   const STARTERS = ["What would make you wait instead of buy?", "Which article disagreed with you, and what did it say?", "If this dropped 20% tomorrow, what would you do?", "How did you decide what was a need and what was a want this week?"];
 
   // ---------- views ----------
@@ -89,9 +89,7 @@
         badges() {
           return `<div class="card"><div class="card-h"><h3>Badges</h3><span class="pill">${BADGES.filter((b) => b[2]()).length} of ${BADGES.length} earned</span></div><div class="badges">${BADGES.map((b) => `<div class="badge ${b[2]() ? "" : "locked"}" title="${esc(b[1])}"><i>${b[3]}</i>${esc(b[0])}<div class="muted" style="font-weight:400;font-size:11.5px;margin-top:2px">${esc(b[1])}</div></div>`).join("")}</div></div>`;
         },
-        leaf() {
-          return `<div class="grid"><section class="card c7"><div class="card-h"><h3>Conversation starters for Leaf</h3></div><ul class="list">${["Summarize the bullish article.", "What's the strongest argument against buying?", "Are these two articles actually disagreeing?", "What haven't I checked yet?"].map((q) => `<li><div class="ic">${ICON.chat}</div><div class="tx"><b>${q}</b></div><a class="btn btn-secondary btn-small" href="leaf.html">Ask</a></li>`).join("")}</ul></section><section class="card c5"><div class="art" data-art="leaf" style="width:120px;margin:0 auto 12px"></div><p class="quote" style="text-align:center">&ldquo;Leaf never says buy or sell. It asks what you think, and why.&rdquo;</p></section></div>`;
-        }
+        leaf() { return leafChat(); }
       }
     },
 
@@ -105,7 +103,7 @@
           return `<div class="grid">
             <section class="card c12" style="padding:14px 18px"><div class="row" style="justify-content:space-between"><div class="seg" role="group" aria-label="Choose a learner">${["Maya", "Eli"].map((n, i) => `<button type="button" data-kid="${i}" aria-pressed="${i === kid}">${n}</button>`).join("")}</div><span class="pill mute">Sample data</span></div></section>
             <section class="card c4"><div class="kpi"><span class="lbl">Reasoning score</span><div class="stat-big">${K[1]}</div><span class="delta up">▲ 4 this week</span></div></section>
-            <section class="card c4"><div class="kpi"><span class="lbl">Lessons this week</span><div class="stat-big">${K[3]}</div><span class="stat-sub">of 5 in the course</span></div></section>
+            <section class="card c4"><div class="kpi"><span class="lbl">Lessons this week</span><div class="stat-big">${K[3]}</div><span class="stat-sub">of 10 in the course</span></div></section>
             <section class="card c4"><div class="kpi"><span class="lbl">Time practising</span><div class="stat-big">${kid ? "52" : "74"} min</div><span class="stat-sub">Under the 90 minute limit you set</span></div></section>
             <section class="card c7"><div class="card-h"><h3>Activity this week</h3></div><div class="week-bars" style="height:150px">${K[2].map((x) => `<i style="height:${x}%"></i>`).join("")}</div><div class="week-labels">${"MTWTFSS".split("").map((d) => `<span>${d}</span>`).join("")}</div></section>
             <section class="card c5"><div class="card-h"><h3>What they did</h3></div><ol class="timeline"><li><b>Finished: needs vs. wants</b><span>Tuesday</span></li><li><b>Read both sides on AI chips</b><span>Wednesday</span></li><li><b>Named the downside before deciding</b><span>Friday</span></li></ol></section>
@@ -128,6 +126,36 @@
       }
     },
 
+    admin: {
+      title: () => "Admin console",
+      sub: () => "Manage accounts and content for this demo. Data here is stored in this browser only.",
+      nav: [["overview", "Overview", "home"], ["accounts", "Accounts", "users"], ["content", "Content", "book"], ["tools", "Tools", "shield"]],
+      pages: {
+        overview() {
+          const users = Object.values(Mintly.allUsers()), by = (r) => users.filter((u) => u.role === r).length;
+          return `<div class="grid">
+            <section class="card c3"><div class="kpi"><span class="lbl">Accounts</span><div class="stat-big">${users.length}</div><span class="stat-sub">in this browser</span></div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Students</span><div class="stat-big">${by("student")}</div></div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Parents · Teachers</span><div class="stat-big">${by("parent")} · ${by("teacher")}</div></div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Lessons live</span><div class="stat-big">${st.total}</div><span class="stat-sub">each with a film</span></div></section>
+            <section class="card c8"><div class="card-h"><h3>Lesson completions, last 8 weeks</h3><span class="pill mute">Sample data</span></div>${line([12, 18, 26, 31, 44, 52, 61, 74], 640, 220, ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"])}</section>
+            <section class="card c4"><div class="card-h"><h3>Needs attention</h3></div><ul class="list"><li><div class="ic">${ICON.shield}</div><div class="tx"><b>Billing is not live</b><span>Plans create demo accounts only.</span></div></li><li><div class="ic">${ICON.users}</div><div class="tx"><b>Auth is browser-only</b><span>Add a backend before real students sign up.</span></div></li><li><div class="ic">${ICON.clip}</div><div class="tx"><b>Lessons need review</b><span>Have a finance educator check 6 to 10.</span></div></li></ul></section>
+          </div>`;
+        },
+        accounts() {
+          const users = Object.values(Mintly.allUsers());
+          return `<div class="card"><div class="card-h"><h3>Accounts</h3><span class="pill">${users.length} total</span></div><div class="table-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Plan</th><th></th></tr></thead><tbody>${users.map((u) => `<tr><td><div class="nm"><span class="avatar">${esc(u.name[0])}</span>${esc(u.name)}</div></td><td>${esc(u.email)}</td><td><span class="pill">${esc(u.role || "student")}</span></td><td>${esc(u.plan || "none")}</td><td style="white-space:nowrap"><button class="btn btn-secondary btn-small" data-reset="${esc(u.email)}">Reset progress</button> ${u.demo ? '<span class="pill mute">demo</span>' : `<button class="btn btn-secondary btn-small danger-btn" data-del="${esc(u.email)}">Delete</button>`}</td></tr>`).join("")}</tbody></table></div></div>`;
+        },
+        content() {
+          return `<div class="card"><div class="card-h"><h3>Lessons</h3><span class="pill">${st.total} published</span></div><ul class="list">${Mintly.LESSONS.map((l, i) => `<li><div class="ic">${i + 1}</div><div class="tx"><b>${esc(l.title)}</b><span>Unit ${l.unit || 1} · ${l.mins} min · film + quiz</span></div><a class="btn btn-secondary btn-small" href="lessons/${l.id}.html">Open</a></li>`).join("")}</ul></div>`;
+        },
+        tools() {
+          return `<div class="grid"><section class="card c6"><div class="card-h"><h3>Export</h3></div><p class="muted" style="margin:0 0 14px">Download every account stored in this browser as JSON (demo accounts excluded).</p><button class="btn" data-export>Download accounts</button></section>
+            <section class="card c6"><div class="card-h"><h3>Reset this browser</h3></div><p class="muted" style="margin:0 0 14px">Clears accounts, progress, plans and settings saved by Mintly here, then signs you out.</p><button class="btn btn-secondary danger-btn" data-wipe>Erase all Mintly data</button></section></div>`;
+        }
+      }
+    },
+
     teacher: {
       title: () => "Period 3 · Personal Finance",
       sub: () => "12 students shown. Sample class data.",
@@ -137,10 +165,10 @@
           const avg = Math.round(ROSTER.reduce((a, r) => a + r.score, 0) / ROSTER.length), behind = ROSTER.filter((r) => r.score < 60);
           return `<div class="grid">
             <section class="card c3"><div class="kpi"><span class="lbl">Class average</span><div class="stat-big">${avg}</div><span class="delta up">▲ 5 this month</span></div></section>
-            <section class="card c3"><div class="kpi"><span class="lbl">Unit complete</span><div class="stat-big">${Math.round(ROSTER.reduce((a, r) => a + r.done, 0) / (ROSTER.length * 5) * 100)}%</div>${bar(64)}</div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Unit complete</span><div class="stat-big">${Math.round(ROSTER.reduce((a, r) => a + r.done, 0) / (ROSTER.length * 10) * 100)}%</div>${bar(64)}</div></section>
             <section class="card c3"><div class="kpi"><span class="lbl">Need support</span><div class="stat-big">${behind.length}</div><span class="stat-sub">scoring under 60</span></div></section>
             <section class="card c3"><div class="kpi"><span class="lbl">Due Friday</span><div class="stat-big">Quiz 3</div><span class="stat-sub">9 of 12 submitted</span></div></section>
-            <section class="card c7"><div class="card-h"><h3>Needs a conversation</h3><button class="link" data-goto="roster">Open roster</button></div><ul class="list">${behind.map((r) => `<li><div class="ic">${esc(r.name[0])}</div><div class="tx"><b>${esc(r.name)}</b><span>${r.done} of 5 lessons &middot; weakest in ${r.weak.toLowerCase()}</span></div><span class="pill warn">${r.score}</span></li>`).join("")}</ul></section>
+            <section class="card c7"><div class="card-h"><h3>Needs a conversation</h3><button class="link" data-goto="roster">Open roster</button></div><ul class="list">${behind.map((r) => `<li><div class="ic">${esc(r.name[0])}</div><div class="tx"><b>${esc(r.name)}</b><span>${r.done} of 10 lessons &middot; weakest in ${r.weak.toLowerCase()}</span></div><span class="pill warn">${r.score}</span></li>`).join("")}</ul></section>
             <section class="card c5"><div class="card-h"><h3>Class insight</h3></div><div class="art" data-art="target" style="width:64px;margin-bottom:10px"></div><p class="quote">&ldquo;Risk awareness is the weakest skill across the class. Try a risk-first warm-up on Monday.&rdquo;</p><button class="btn btn-secondary btn-small" data-goto="assign">Assign a risk lesson</button></section>
           </div>`;
         },
@@ -159,12 +187,131 @@
     }
   };
 
+
+  // ---------- Leaf chat: a Socratic thinking partner (runs entirely in the browser, no AI service) ----------
+  const LEAF_KEY = "leaf:" + (user ? user.email : "guest");
+  const TOPICS = [
+    { re: /stock|share|nvidia|nvda|tesla|apple|invest|etf|crypto|bitcoin|market|fund/, label: "investing", qs: ["What does this company actually sell, and who pays for it?", "What would need to be true for the price to keep rising?", "If it fell 20% next month, what would you do, and why?", "Which article or source disagrees with you, and what does it say?"] },
+    { re: /save|saving|goal|afford|bike|phone|game|sneaker|laptop|car/, label: "saving", qs: ["How much does it cost, and by what date do you want it?", "How many weeks does that take at what you can really save?", "What would you give up each week to make that happen?", "If you waited 24 hours, would you still want it?"] },
+    { re: /budget|spend|allowance|needs|wants|money i get/, label: "budgeting", qs: ["Which of those would you call a need, and which a want?", "What's the cheapest version that still does the job?", "Where did your money actually go last week?", "What would you move into savings first?"] },
+    { re: /loan|debt|credit|card|borrow|interest|apr/, label: "borrowing", qs: ["What's the total you'd repay, not just the monthly payment?", "What happens if you miss a payment?", "Is there a way to buy it without borrowing?", "What would the interest cost you in plain dollars?"] },
+    { re: /scam|fraud|phish|gift card|giveaway|hack|password|code/, label: "scams", qs: ["What is the message pushing you to do quickly?", "Who could you check this with using a number you already trust?", "What are they asking for that a real company never would?"] },
+    { re: /job|paycheck|tax|earn|wage|babysit|mow/, label: "earning", qs: ["How many hours would that take, and what's your take-home after deductions?", "What would you do with the first paycheck, and why?", "What does it cost you in time to earn it?"] }
+  ];
+  const GENERIC = ["What are you actually trying to decide?", "What would a good outcome look like, in numbers if you can?", "What do you already know, and what are you guessing?", "What's one thing you haven't checked yet?"];
+  const SKILLS_CHAT = [["evidence", "Evidence", "Backs it up with a reason or a fact"], ["risk", "Risk", "Names what could go wrong"], ["other", "Other side", "Weighs a view that disagrees"], ["clarity", "Clarity", "Says it in a full thought"]];
+  const DETECT = { evidence: /because|since|data|article|source|according|percent|%|\d|report|evidence|study|earnings/i, risk: /risk|lose|loss|downside|drop|fall|worst|wrong|crash|danger|scam/i, other: /but |however|although|on the other hand|critics|bears|against|disagree|counter|then again|except/i };
+  const ADVICE = /(should i|tell me to|what should i|is it a good (buy|investment)|buy or sell|should we) /i;
+  const pick = (a, n) => a[n % a.length];
+
+  function leafLoad() { return read(LEAF_KEY, { msgs: [], hits: { evidence: 0, risk: 0, other: 0, clarity: 0 }, turns: 0, topic: null, celebrated: false }); }
+  function leafSave(s) { write(LEAF_KEY, s); }
+
+  function leafReply(text, s, intent) {
+    const t = text.toLowerCase(), words = (text.match(/\S+/g) || []).length;
+    const topic = TOPICS.find((x) => x.re.test(t));
+    if (topic) s.topic = topic.label;
+    const got = [];
+    if (DETECT.evidence.test(text)) { s.hits.evidence++; got.push("evidence"); }
+    if (DETECT.risk.test(text)) { s.hits.risk++; got.push("risk"); }
+    if (DETECT.other.test(text)) { s.hits.other++; got.push("other"); }
+    if (words >= 12) { s.hits.clarity++; got.push("clarity"); }
+    s.turns++;
+    const has = (k) => s.hits[k] > 0;
+    const t0 = TOPICS.find((x) => x.label === s.topic);
+    const lastUser = [...s.msgs].reverse().find((m) => m.who === "me");
+    const quote = lastUser ? lastUser.text.replace(/\s+/g, " ").slice(0, 70) : "";
+
+    const ack = got.includes("evidence") && got.includes("risk") ? "You gave a reason and named a risk. That's strong thinking. " : got.includes("other") ? "Good, you weighed a different view. " : got.includes("evidence") ? "That's a reason, which helps. " : got.includes("risk") ? "Naming the downside is the hard part. " : words < 5 ? "Say a bit more for me. " : "";
+    let q;
+    if (ADVICE.test(text + " ") && intent !== "chip") return "I don't tell anyone what to buy or sell, and I won't start now. That call has to be yours, or the thinking isn't yours either. Here's what I can do: " + (!has("evidence") ? "what's the strongest reason you could give for it?" : !has("risk") ? "what's the biggest way it could go wrong?" : "who would disagree with you, and why?");
+    if (intent === "challenge") return quote ? "You said: “" + quote + "”. What's the strongest argument against that?" : "Tell me the idea first, in one sentence. Then I'll push on it.";
+    if (intent === "other") return quote ? "Let's flip it. If someone smart disagreed with “" + quote + "”, what would they say?" : "Tell me what you're leaning toward first. Then we'll look at the other side.";
+    if (intent === "missing" && !lastUser) return "Start with what you're trying to decide. I'll tell you what's missing as we go.";
+    if (!has("evidence")) q = "What's the strongest reason or fact behind that, and where did you get it?";
+    else if (!has("risk")) q = "What's the biggest way this could go wrong, and how would you notice early?";
+    else if (!has("other")) q = "Who would disagree with you, and what would they say?";
+    else if (has("evidence") && has("risk") && has("other") && !s.celebrated) { s.celebrated = true; s.celebrate = true; q = "You've covered a reason, a risk and the other side. That's a well-built argument. Last one: what would change your mind?"; return q; }
+    else q = t0 ? pick(t0.qs, s.turns) : pick(GENERIC, s.turns);
+    if (intent === "missing") q = !has("evidence") ? "What's missing is evidence. What fact or source backs this up?" : !has("risk") ? "What's missing is risk. What's the worst realistic outcome?" : !has("other") ? "What's missing is the other side. What would a critic say?" : "Nothing big. Try this: what would change your mind?";
+    return ack + q;
+  }
+
+  function leafChat() {
+    return `<div class="lc" id="leafchat">
+      <section class="lc-board" aria-label="Conversation with Leaf"><div class="lc-path" id="lc-path" role="log" aria-live="polite"></div></section>
+      <aside class="lc-side">
+        <div class="lc-who"><div class="art" data-art="leaf"></div><div><b>Leaf</b><span>asks, never tells</span></div></div>
+        <h4>Your thinking</h4>
+        <div id="lc-skills">${SKILLS_CHAT.map((k) => `<div class="lc-skill" data-k="${k[0]}"><div><b>${k[1]}</b><span>${k[2]}</span></div><div class="bar thin"><i></i></div></div>`).join("")}</div>
+        <p class="lc-tip" id="lc-tip">Leaf grows a question from each thought. Reasons, risks and the other side make your plant bloom.</p>
+        <button class="btn btn-secondary btn-small" id="lc-reset" type="button">Start a fresh path</button>
+      </aside>
+      <form class="lc-pad" id="lc-form">
+        <div class="lc-chips" id="lc-chips"><button type="button" data-i="challenge">Challenge my idea</button><button type="button" data-i="other">Show me the other side</button><button type="button" data-i="missing">What am I missing?</button></div>
+        <div class="lc-note"><textarea id="lc-in" rows="2" placeholder="Write a thought. Leaf will grow a question from it." aria-label="Your thought"></textarea><button class="btn" type="submit">Plant it</button></div>
+        <p class="lc-fine">Leaf is a practice partner that runs in your browser. It asks questions to build your reasoning and never gives buy or sell advice.</p>
+      </form>
+    </div>`;
+  }
+
+  function initLeafChat(root) {
+    const box = $("#leafchat", root); if (!box) return;
+    const path = $("#lc-path", box), input = $("#lc-in", box), form = $("#lc-form", box);
+    let s = leafLoad(), busy = false;
+    const name = firstName || "there";
+    const leafArt = () => window.MintlyArt ? MintlyArt.render("leaf") : "";
+
+    function row(m, animate) {
+      const r = document.createElement("div"); r.className = "lc-row " + (m.who === "me" ? "lc-me" : "lc-leaf") + (animate ? " grow" : "");
+      r.innerHTML = m.who === "me" ? `<div class="lc-node"></div><div class="lc-card">${esc(m.text)}</div>` : `<div class="lc-card">${esc(m.text)}</div><div class="lc-node"><span class="art">${leafArt()}</span></div>`;
+      path.appendChild(r); return r;
+    }
+    function skills() {
+      $$(".lc-skill", box).forEach((e) => { const h = s.hits[e.dataset.k]; $(".bar i", e).style.width = Math.min(100, h * 45) + "%"; e.classList.toggle("on", h > 0); });
+      const missing = SKILLS_CHAT.filter((k) => !s.hits[k[0]]).map((k) => k[1].toLowerCase());
+      $("#lc-tip", box).textContent = !s.turns ? "Leaf grows a question from each thought. Reasons, risks and the other side make your plant bloom." : missing.length ? "Still to show: " + missing.join(", ") + "." : "Full bloom. You gave reasons, named a risk and weighed the other side.";
+    }
+    function scroll() { const b = path.parentNode; b.scrollTo({ top: b.scrollHeight, behavior: "smooth" }); }
+    function render() {
+      path.innerHTML = "";
+      if (!s.msgs.length) s.msgs.push({ who: "leaf", text: "Hi " + name + ". I'm Leaf. I won't hand you answers. I'll ask questions until your thinking holds up. What are you trying to decide?" });
+      s.msgs.forEach((m) => row(m)); skills(); scroll();
+    }
+    function leafSay(text, done) {
+      busy = true;
+      const r = document.createElement("div"); r.className = "lc-row lc-leaf grow"; r.innerHTML = `<div class="lc-card lc-think"><i></i><i></i><i></i></div><div class="lc-node"><span class="art">${leafArt()}</span></div>`;
+      path.appendChild(r); scroll();
+      setTimeout(() => {
+        const card = $(".lc-card", r); card.className = "lc-card"; card.textContent = "";
+        const w = text.split(" "); let i = 0;
+        const t = setInterval(() => { i++; card.textContent = w.slice(0, i).join(" "); scroll(); if (i >= w.length) { clearInterval(t); busy = false; if (done) done(); } }, 38);
+      }, 700 + Math.min(900, text.length * 6));
+    }
+    function send(text, intent) {
+      if (busy) return; text = text.trim(); if (!text && intent !== "missing" && intent !== "challenge" && intent !== "other") return;
+      const shown = text || ({ challenge: "Challenge my idea.", other: "Show me the other side.", missing: "What am I missing?" }[intent]);
+      const m = { who: "me", text: shown }; row(m, true); scroll();
+      const reply = leafReply(text || "", s, intent && !text ? intent : null);
+      s.msgs.push(m); s.msgs.push({ who: "leaf", text: reply }); skills(); leafSave(s); Mintly.touchDay();
+      leafSay(reply, () => { if (s.celebrate) { s.celebrate = false; leafSave(s); Mintly.confetti(40); Mintly.toast("Full bloom: reason, risk and the other side."); } });
+    }
+    form.addEventListener("submit", (e) => { e.preventDefault(); const v = input.value; input.value = ""; send(v); });
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
+    $("#lc-chips", box).addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) send("", b.dataset.i); });
+    $("#lc-reset", box).addEventListener("click", () => { if (busy) return; s = { msgs: [], hits: { evidence: 0, risk: 0, other: 0, clarity: 0 }, turns: 0, topic: null, celebrated: false }; leafSave(s); render(); });
+    render();
+  }
+
   // ---------- render ----------
   let role = MintlyTheme.getRole(), page = null;
+  const isAdmin = !!(user && user.role === "admin");
+  if (role === "admin" && !isAdmin) { role = "student"; MintlyTheme.setRole("student"); }
+  if (isAdmin && !new URLSearchParams(location.search).get("role")) { role = "admin"; MintlyTheme.setRole("admin"); }
 
   function renderSide() {
     const v = VIEWS[role];
-    const nm = signedIn ? user.name : { student: "Maya Lopez", parent: "The Lopez family", teacher: "Ms. Alvarez" }[role];
+    const nm = signedIn ? user.name : { student: "Maya Lopez", parent: "The Lopez family", teacher: "Ms. Alvarez", admin: "Admin" }[role];
     $("#dash-side").innerHTML = `<div class="dash-who"><div class="avatar">${esc(nm[0])}</div><div><b>${esc(nm)}</b><span>${role[0].toUpperCase() + role.slice(1)}${signedIn ? "" : " · guest"}</span></div></div>
       <div class="side-sec">Menu</div>${v.nav.map((n) => `<button class="side-link" data-page="${n[0]}" aria-current="${n[0] === page}">${ICON[n[2]]}${n[1]}</button>`).join("")}
       <div class="side-foot"><b>${signedIn ? "You're signed in" : "Save your progress"}</b>${signedIn ? "Progress is saved to this browser." : "<a href='signin.html' style='color:var(--acc);font-weight:600'>Create a free account →</a>"}</div>`;
@@ -175,7 +322,7 @@
     if (!page || !v.pages[page]) page = v.nav[0][0];
     renderSide();
     const main = $("#dash-main");
-    main.innerHTML = `<div class="dash-top"><div><h1>${v.title()}</h1><p>${v.sub()}</p></div><div class="dash-actions"><div class="seg" role="group" aria-label="View as">${["student", "parent", "teacher"].map((r) => `<button type="button" data-role="${r}" aria-pressed="${r === role}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</div></div></div><div id="view" class="tabs-p on">${v.pages[page]()}</div>`;
+    main.innerHTML = `<div class="dash-top"><div><h1>${v.title()}</h1><p>${v.sub()}</p></div><div class="dash-actions"><div class="seg" role="group" aria-label="View as">${(isAdmin ? ["admin", "student", "parent", "teacher"] : ["student", "parent", "teacher"]).map((r) => `<button type="button" data-role="${r}" aria-pressed="${r === role}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</div></div></div><div id="view" class="tabs-p on">${v.pages[page]()}</div>`;
     document.title = (v.nav.find((n) => n[0] === page) || [0, "Dashboard"])[1] + " · Mintly";
     MintlyArt.mount(); animate(main); wire(main);
     if (!first) main.focus({ preventScroll: true });
@@ -187,6 +334,11 @@
     $$("[data-copy]", main).forEach((b) => b.addEventListener("click", () => { (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.copy) : Promise.reject()).catch(() => {}); Mintly.toast("Copied. Try it at dinner."); }));
     $$("[data-goto]", main).forEach((b) => b.addEventListener("click", () => { page = b.dataset.goto; render(); }));
     $$("[data-s]", main).forEach((c) => c.addEventListener("change", () => { const s = read("safety", { digest: true, limit: "90", quiet: false }); s[c.dataset.s] = c.type === "checkbox" ? c.checked : c.value; write("safety", s); Mintly.toast("Setting saved"); }));
+    $$("[data-reset]", main).forEach((b) => b.addEventListener("click", () => { Mintly.resetProgress(b.dataset.reset); Mintly.toast("Progress reset for " + b.dataset.reset); }));
+    $$("[data-del]", main).forEach((b) => b.addEventListener("click", () => { if (confirm("Delete " + b.dataset.del + "?")) { Mintly.removeUser(b.dataset.del); render(); } }));
+    $$("[data-export]", main).forEach((b) => b.addEventListener("click", () => { const out = Object.values(Mintly.allUsers()).filter((u) => !u.demo).map((u) => ({ name: u.name, email: u.email, role: u.role, plan: u.plan })); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" })); a.download = "mintly-accounts.json"; a.click(); }));
+    $$("[data-wipe]", main).forEach((b) => b.addEventListener("click", () => { if (confirm("Erase all Mintly data in this browser?")) { Object.keys(localStorage).filter((k) => k.startsWith("mintly:")).forEach((k) => localStorage.removeItem(k)); location.href = "index.html"; } }));
+    initLeafChat(main);
     const form = $("#aform", main);
     if (form) form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -200,7 +352,7 @@
       let key = "score", dir = -1, filter = "all", q = "";
       const paint = () => {
         const rows = ROSTER.filter((r) => (filter === "all" || r.score < 60) && r.name.toLowerCase().includes(q)).sort((a, b) => (typeof a[key] === "string" ? a[key].localeCompare(b[key]) : a[key] - b[key]) * dir);
-        $("tbody", table).innerHTML = rows.map((r) => `<tr><td><div class="nm"><span class="avatar">${esc(r.name[0])}</span>${esc(r.name)}</div></td><td>${r.done}/5</td><td><div style="display:flex;gap:10px;align-items:center"><div class="bar"><i style="width:${r.score}%"></i></div><b>${r.score}</b></div></td><td><span class="pill ${r.score < 60 ? "warn" : ""}">${r.weak}</span></td></tr>`).join("") || `<tr><td colspan="4" class="muted">No students match.</td></tr>`;
+        $("tbody", table).innerHTML = rows.map((r) => `<tr><td><div class="nm"><span class="avatar">${esc(r.name[0])}</span>${esc(r.name)}</div></td><td>${r.done}/10</td><td><div style="display:flex;gap:10px;align-items:center"><div class="bar"><i style="width:${r.score}%"></i></div><b>${r.score}</b></div></td><td><span class="pill ${r.score < 60 ? "warn" : ""}">${r.weak}</span></td></tr>`).join("") || `<tr><td colspan="4" class="muted">No students match.</td></tr>`;
         $$("th", table).forEach((th) => { if (th.dataset.c === key) th.setAttribute("aria-sort", dir > 0 ? "ascending" : "descending"); else th.removeAttribute("aria-sort"); });
       };
       $$("th", table).forEach((th) => th.addEventListener("click", () => { dir = key === th.dataset.c ? -dir : 1; key = th.dataset.c; paint(); }));

@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Collectables — Mintly">
+<meta name="theme-color" content="#1B5E40">
+<meta property="og:site_name" content="Mintly">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
 <title>Collectables — Mintly</title>
 <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +21,7 @@
 
 <main>
   <div class="wrap empty-state">
-    <div class="icon-big">🔒</div>
+    <div class="icon-big"><span class="art" data-art="shield" style="width:64px;display:block;margin:0 auto"></span></div>
     <h2>Collectables is locked</h2>
     <p id="lock-message">Finish every Financial Literacy lesson to unlock this course.</p>
     <a class="btn" href="financial-literacy.html" id="lock-cta">Go to Financial Literacy</a>
@@ -32,7 +37,7 @@
   if (Mintly.isCourseComplete()) {
     document.getElementById('lock-message').textContent = "You've unlocked Collectables — lessons are still being written. Check back soon.";
     document.getElementById('lock-cta').style.display = 'none';
-    document.querySelector('.icon-big').textContent = '🃏';
+    document.querySelector('.icon-big').innerHTML = '<span class="art" data-art="trophy" style="width:64px;display:block;margin:0 auto"></span>'; if (window.MintlyArt) MintlyArt.mount();
     document.querySelector('h2').textContent = 'Collectables — coming very soon';
   } else {
     const next = Mintly.nextLesson();

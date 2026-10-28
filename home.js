@@ -97,7 +97,7 @@
 
   // ---- Lesson tiles with the viewer's real progress ----
   function initLessons() {
-    const icons = ["book", "piggy", "target", "bank", "chart"];
+    const icons = ["book", "piggy", "target", "bank", "chart", "card", "percent", "wallet", "alert", "plan"];
     const tiles = $("lesson-tiles");
     tiles.innerHTML = Mintly.LESSONS.map((l, i) => {
       const done = Mintly.isLessonComplete(l.id);
@@ -105,7 +105,7 @@
     }).join("");
     MintlyArt.mount();
     const st = Mintly.stats();
-    $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Five lessons are ready now. More are on the way.";
+    $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Ten lessons are ready now, each with a short video, practice and a quiz.";
   }
 
   // ---- Leaf's looping conversation ----
@@ -128,7 +128,31 @@
     io.observe(log);
   }
 
+  // ---- Topic ticker, counting stats, and a live sample film ----
+  function initTicker() {
+    const words = ["Budgeting", "Saving", "Compound interest", "Credit", "Paychecks", "Scams", "Investing", "Risk", "Diversifying", "Leaf", "Decision Score", "Your money plan"];
+    const html = words.map((w, i) => `<span>${w}</span><i>${i % 2 ? "\u2766" : "\u2022"}</i>`).join("");
+    $("ticker").innerHTML = html + html;
+  }
+  function initCounts() {
+    const els = document.querySelectorAll("[data-count]");
+    const run = (el) => {
+      const to = +el.dataset.count, pre = el.dataset.pre || "";
+      if (reduce || !to) { el.textContent = pre + to; return; }
+      const t0 = performance.now();
+      (function f(t) { const p = Math.min(1, (t - t0) / 1200); el.textContent = pre + Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(f); })(t0);
+    };
+    if (!("IntersectionObserver" in window)) return els.forEach(run);
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } }), { threshold: .6 });
+    els.forEach((e) => io.observe(e));
+  }
+  function initFilm() {
+    const host = $("home-film");
+    if (host && window.MintlyFilm && window.MINTLY_FILMS) MintlyFilm.mount(host, MINTLY_FILMS["lesson-7"]);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    initTicker(); initCounts(); initFilm();
     gaugeLen = 100;
     initRoles(); buildParent(); buildTeacher(); initLessons(); initChat();
     if (reduce) { score.cur = 82; tickScore(0); } else requestAnimationFrame(tickScore);
