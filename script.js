@@ -42,6 +42,9 @@ const Mintly = (() => {
   ];
 
   function renderChrome() {
+    const main = document.querySelector("main");
+    if (main && !main.id) main.id = "main";
+    if (main && !document.querySelector(".skip")) { const a = document.createElement("a"); a.className = "skip"; a.href = "#main"; a.textContent = "Skip to content"; document.body.prepend(a); }
     const up = location.pathname.includes("/lessons/") ? "../" : "";
     const header = document.getElementById("site-header");
     if (header) {

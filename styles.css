@@ -1542,8 +1542,8 @@ a.course-card:hover { transform: translateX(4px); border-color: var(--acc); }
    Polish pass: texture, motion, rhythm
    ===================================================================== */
 @view-transition { navigation: auto; }
-::view-transition-old(root) { animation: .22s ease-out both vtOut; }
-::view-transition-new(root) { animation: .38s cubic-bezier(.16, 1, .3, 1) both vtIn; }
+::view-transition-old(root) { animation: .14s ease-out both vtOut; }
+::view-transition-new(root) { animation: .26s cubic-bezier(.16, 1, .3, 1) both vtIn; }
 @keyframes vtOut { to { opacity: 0; } }
 @keyframes vtIn { from { opacity: 0; transform: translateY(10px); } }
 
@@ -1634,3 +1634,6 @@ html { scrollbar-color: color-mix(in srgb, var(--ink) 28%, transparent) transpar
 .site-footer .wrap { position: relative; z-index: 1; padding-bottom: clamp(60px, 10vw, 130px); }
 .foot-links a { transition: color .15s, transform .15s; display: block; } .foot-links a:hover { transform: translateX(3px); color: var(--acc); }
 ::selection { background: color-mix(in srgb, var(--acc) 30%, transparent); }
+
+.skip { position: fixed; left: 12px; top: -60px; z-index: 200; padding: 10px 16px; border-radius: 10px; background: var(--ink); color: var(--bg); font: 600 14px var(--fb); transition: top .2s; }
+.skip:focus { top: 12px; }
