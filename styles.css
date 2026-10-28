@@ -775,12 +775,6 @@
   --acc2: light-dark(#D77A33, #DE8A55);
   --sun: light-dark(#F2B84B, #E6AE45);
 }
-:root[data-role=admin] {
-  --acc: light-dark(#5B3AA8, #B7A1F5);
-  --accsoft: light-dark(#E9E3F8, #261C4A);
-  --onacc: light-dark(#FFFFFF, #130B30);
-  --acc2: light-dark(#7C5CCB, #8E75DB);
-}
 :root[data-role=teacher] {
   --acc: light-dark(#2B4AA3, #92AAF6);
   --accsoft: light-dark(#E0E6F8, #1B2549);

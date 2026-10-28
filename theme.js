@@ -25,7 +25,7 @@
   const params = new URLSearchParams(location.search);
   let role = params.get("role");
   if (!ROLES.includes(role)) role = read(KEY_ROLE, "student");
-  if (!ROLES.includes(role)) role = "student";
+  if (!ROLES.includes(role) || (role === "admin" && !params.get("role"))) role = "student"; // admin is never remembered as the site colour
   root.dataset.role = role;
   if (params.get("role") && ROLES.includes(params.get("role"))) write(KEY_ROLE, role);
 
@@ -33,7 +33,7 @@
 
   function setRole(r) {
     if (!ROLES.includes(r)) return;
-    role = r; root.dataset.role = r; write(KEY_ROLE, r);
+    role = r; root.dataset.role = r; if (r !== "admin") write(KEY_ROLE, r);
     document.dispatchEvent(new CustomEvent("mintly:role", { detail: r }));
   }
 
