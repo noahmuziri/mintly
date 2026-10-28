@@ -81,8 +81,10 @@ body.film { overflow: hidden; background: var(--bg); }
 
 .article { padding: 1em 1.1em; border-radius: 14px; border: 1px solid var(--border); background: var(--bg); margin-bottom: .8em; }
 .article p { margin: .35em 0 0; line-height: 1.45; }
-.hl-mark { background: linear-gradient(color-mix(in srgb, var(--sun) 60%, transparent), color-mix(in srgb, var(--sun) 60%, transparent)) no-repeat left 88% / 0% 55%; transition: background-size .8s var(--ease); }
-.hl-mark.go { background-size: 100% 55%; }
+.hl-mark { --hl: color-mix(in srgb, var(--sun) 34%, transparent); background: linear-gradient(var(--hl), var(--hl)) no-repeat left 100% / 0% 42%; border-radius: 3px; transition: background-size .8s var(--ease); }
+:root[data-theme="dark"] .hl-mark, .s-dark .hl-mark { --hl: color-mix(in srgb, var(--sun) 26%, transparent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hl-mark { --hl: color-mix(in srgb, var(--sun) 26%, transparent); } }
+.hl-mark.go { background-size: 100% 42%; }
 .spark { width: 100%; height: auto; display: block; overflow: visible; }
 .spark path { fill: none; stroke: var(--gain); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 
