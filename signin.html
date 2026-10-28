@@ -6,36 +6,20 @@
 <title>Sign in — Mintly</title>
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Fraunces:wght@600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <script src="theme.js"></script>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="wrap navbar">
-    <a class="brand" href="index.html">mintly<span class="dot">.</span></a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="lessons/lesson-1.html">Learn</a></li>
-      <li><a href="lessons/explore.html">Explore</a></li>
-      <li><a href="leaf.html">Leaf AI</a></li>
-      <li><a href="pricing.html">Pricing</a></li>
-      <li><a href="parents.html">For Parents</a></li>
-      <li><a href="mintly.demo.html?from=site">Demo</a></li>
-    </ul>
-    <div class="nav-right">
-      <div class="nav-auth" id="nav-auth"></div>
-    </div>
-  </div>
-</header>
+<header id="site-header" class="site-header"></header>
 
 <main>
   <div class="auth-wrap">
     <div class="auth-card" id="already-signed-in" style="display:none;">
       <h1>You're already signed in</h1>
       <p class="sub" id="already-signed-in-sub"></p>
-      <a class="btn" href="lessons/financial-literacy.html" style="display:block; text-align:center; margin-bottom:10px;">Go to lessons</a>
+      <a class="btn" href="dashboard.html" style="display:flex; margin-bottom:10px;">Go to my dashboard</a>
       <button class="btn btn-secondary" id="already-signed-in-logout" style="width:100%;">Log out</button>
     </div>
 
@@ -76,6 +60,14 @@
           <label for="signup-password">Password</label>
           <input type="password" id="signup-password" autocomplete="new-password" required minlength="6">
         </div>
+        <div class="field">
+          <label id="role-label">I am a&hellip;</label>
+          <div class="role-pick" role="radiogroup" aria-labelledby="role-label">
+            <label><input type="radio" name="signup-role" value="student" checked><span>Student</span></label>
+            <label><input type="radio" name="signup-role" value="parent"><span>Parent</span></label>
+            <label><input type="radio" name="signup-role" value="teacher"><span>Teacher</span></label>
+          </div>
+        </div>
         <div class="auth-error" id="signup-error"></div>
         <button class="btn" type="submit">Create account</button>
       </form>
@@ -85,7 +77,10 @@
   </div>
 </main>
 
+<footer id="site-footer" class="site-footer"></footer>
+
 <script src="script.js"></script>
+<script src="art.js"></script>
 <script>
   const params = new URLSearchParams(window.location.search);
   const plan = params.get("plan");
@@ -149,7 +144,7 @@
     });
     const errorEl = document.getElementById("login-error");
     if (result.ok) {
-      window.location.href = "lessons/financial-literacy.html";
+      window.location.href = Mintly.landingPage();
     } else {
       errorEl.textContent = result.error;
     }
@@ -162,10 +157,11 @@
       email: document.getElementById("signup-email").value,
       password: document.getElementById("signup-password").value,
       plan: plan || null,
+      role: (document.querySelector('input[name="signup-role"]:checked') || {}).value,
     });
     const errorEl = document.getElementById("signup-error");
     if (result.ok) {
-      window.location.href = "lessons/financial-literacy.html";
+      window.location.href = Mintly.landingPage();
     } else {
       errorEl.textContent = result.error;
     }

@@ -1,4 +1,9 @@
-<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mintly leaf logo">
-  <path d="M14 25c-6 0-10-4.5-10-10.5C4 8 8.5 3 14 3s10 5 10 11.5C24 20.5 20 25 14 25z" fill="#2E8B6F"/>
-  <path d="M14 25c0-8 2-14 8-19" stroke="#1F5F4D" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mintly">
+  <path d="M32 3.6C48.4 3.2 60.6 15.8 60.3 32.4C60 48.6 47.2 60.8 31.4 60.4C15.4 60 3.4 47.2 3.8 31.4C4.2 15.8 16.4 4 32 3.6Z" fill="#1B5E40"/>
+  <path d="M32.2 8.4C45.6 8 55.6 18.4 55.4 32C55.2 45.4 44.8 55.6 31.8 55.4" stroke="#2F8558" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+  <path d="M32 47.4C31.6 40.6 31.8 34 33.2 25.6" stroke="#EAF7EF" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M33.4 27C33 16.8 40 11.4 49.4 11.8C49.6 21.6 43.8 28.6 33.4 27Z" fill="#BFE8CF" stroke="#EAF7EF" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M32.6 37C32 30 26.8 26.4 19.6 26.8C19.6 33.8 24.2 38.8 32.6 37Z" fill="#8FD4AE" stroke="#EAF7EF" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M36 24.6C39.4 21 43 17.6 46.4 15" stroke="#1B5E40" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M22.6 48C28 49.6 37 49.6 42.4 48" stroke="#EAF7EF" stroke-width="3.2" stroke-linecap="round"/>
 </svg>

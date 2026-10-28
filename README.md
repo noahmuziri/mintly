@@ -15,6 +15,24 @@ npm start            # serves the site at http://localhost:8000
 Open http://localhost:8000. Every page works without a key; the stock price and chart fall back
 to mock data and the page says so.
 
+
+## What's where
+
+| Path | What it is |
+| --- | --- |
+| `index.html`, `home.js` | Home page: role switch (student / parent / teacher), live Decision Score, lesson tiles, Leaf chat |
+| `dashboard.html`, `dashboard.js` | Student, parent and teacher dashboards (`?role=student\|parent\|teacher`) |
+| `mintly.demo.html`, `demo.js`, `demo.css` | The self-playing demo film (press Start). Open it from **Customize → Watch the demo** |
+| `simulation.html` | The hands-on simulation (the interactive demo that used to live at `mintly.demo.html`) |
+| `lessons/` | The five-lesson course plus electives. `script.js` adds the outline, takeaways, quiz score and finish panel |
+| `styles.css` | Design system. Colours are tokens; `<html data-role>` swaps the accent per role |
+| `theme.js` | Light/dark, role, and the Customize panel |
+| `art.js` | Hand-drawn style illustrations (inline SVG that follows the role colour) |
+| `assets/logo.svg` | The Mintly mark |
+
+Student numbers on the dashboard (lessons, XP, streak, quiz accuracy) are the viewer's real progress.
+Parent and teacher views use sample data until real accounts are linked.
+
 ## Live NVDA prices (Alpha Vantage)
 
 `server.js` proxies quotes and charts from [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
