@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build your own money plan · Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Financial Literacy · Lesson 10</div>
+    <h1>Build your own money plan</h1>
+    <p class="lesson-meta">About 16 minutes · 2 activities · Your answers are saved in this browser</p>
+
+    <p>You now know how to budget, save, use a bank, borrow carefully, let time grow money, read a paycheck and dodge scams. This final lesson puts it all together into one thing you can actually use: <strong>your own money plan</strong>.</p>
+    <p>A plan isn't a rulebook that stops you having fun. It's a way to decide ahead of time, so the choices you make in the moment line up with what you really want.</p>
+
+    <h2>Five moves</h2>
+    <ul>
+      <li><strong>1. Know what comes in.</strong> Count your monthly income: allowance, a job, gifts.</li>
+      <li><strong>2. Split it.</strong> A simple starting point is 50% needs, 30% wants and 20% savings. Adjust it to fit your life.</li>
+      <li><strong>3. Pick a goal.</strong> Something specific, with a price and a date.</li>
+      <li><strong>4. Automate saving.</strong> Move the savings amount the day you're paid.</li>
+      <li><strong>5. Review monthly.</strong> Compare the plan with what really happened, then adjust.</li>
+    </ul>
+
+    <h2>Build your plan</h2>
+    <div class="activity">
+      <div class="activity-label">Plan builder</div>
+      <h3>Your monthly money plan</h3>
+      <p>Enter your monthly income and your goal. Move the sliders to split your money. Your plan saves in this browser.</p>
+      <div class="calc-grid" style="grid-template-columns:repeat(2,1fr)">
+        <label class="split-field">Monthly income<span class="money-input">$<input id="pl-inc" type="number" min="0" max="100000" step="10" inputmode="numeric" value="200"></span></label>
+        <label class="split-field">My goal<span class="money-input"><input id="pl-goal" type="text" maxlength="40" value="New bike"></span></label>
+        <label class="split-field">Goal price<span class="money-input">$<input id="pl-price" type="number" min="1" max="100000" step="5" inputmode="numeric" value="300"></span></label>
+        <label class="split-field">Already saved<span class="money-input">$<input id="pl-have" type="number" min="0" max="100000" step="5" inputmode="numeric" value="0"></span></label>
+      </div>
+      <div style="display:grid;gap:14px;margin:18px 0">
+        <label class="split-field">Needs: <b id="pl-n-v">50%</b><input id="pl-n" type="range" min="0" max="100" value="50" style="accent-color:var(--acc)"></label>
+        <label class="split-field">Wants: <b id="pl-w-v">30%</b><input id="pl-w" type="range" min="0" max="100" value="30" style="accent-color:var(--acc)"></label>
+        <p class="calc-note" style="margin:0">Savings gets the rest: <b id="pl-s-v">20%</b></p>
+      </div>
+      <div class="calc-results">
+        <div><span>Needs · Wants · Savings</span><b id="pl-amts" style="font-size:22px">$0 · $0 · $0</b></div>
+        <div class="grow"><span>Time to reach your goal</span><b id="pl-when">0 months</b></div>
+      </div>
+      <p class="calc-note" id="pl-note"></p>
+      <div class="activity-actions"><button class="btn btn-small" id="pl-save" type="button">Save my plan</button><span class="activity-status" id="pl-status"></span></div>
+    </div>
+
+    <h2>Protect the plan</h2>
+    <ul>
+      <li><strong>Build an emergency fund first.</strong> A small cushion keeps a surprise from derailing everything.</li>
+      <li><strong>Avoid high-interest debt.</strong> It works against every other goal.</li>
+      <li><strong>Watch for scams.</strong> One bad decision can erase months of saving.</li>
+      <li><strong>Use the 24-hour rule</strong> for anything unplanned.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      Look at your split. If something unexpected cost you $40 next month, which category would you take it from, and what would you give up? Naming that now makes the decision easier later.
+    </div>
+
+    <h2>From plan to decision</h2>
+    <p>A plan tells you how much you can set aside. Then comes the harder question: <em>what do you do with it?</em> That's where Mintly's simulation comes in. You can research a company, ask Leaf to challenge your thinking, and make a Buy, Sell or Wait decision with practice money, and get scored on your reasoning, not just on whether the price went up.</p>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Income</dt><dd>Money that comes in.</dd></div>
+      <div><dt>Budget</dt><dd>A plan for your money before you spend it.</dd></div>
+      <div><dt>Emergency fund</dt><dd>Savings set aside for surprises.</dd></div>
+      <div><dt>Goal</dt><dd>A specific thing you save for, with a price and a date.</dd></div>
+      <div><dt>Automate</dt><dd>Set money to move on its own so you do not have to remember.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>You've finished the course. Time to practice what you've learned. <a href="../simulation.html"><strong>Try the simulation →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Final check</h2>
+      <div class="quiz-question">1. What should come first when building a money plan?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Buying a few wants</button>
+        <button class="quiz-option" data-correct="true">Knowing your income</button>
+        <button class="quiz-option" data-correct="false">Investing everything</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. A common starting split is:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">90% wants, 10% needs</button>
+        <button class="quiz-option" data-correct="true">50% needs, 30% wants, 20% savings</button>
+        <button class="quiz-option" data-correct="false">100% savings</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. You earn $200 a month and save 20%. How much goes to savings?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">$20</button>
+        <button class="quiz-option" data-correct="true">$40</button>
+        <button class="quiz-option" data-correct="false">$60</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Why automate saving?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">It makes saving depend less on willpower</button>
+        <button class="quiz-option" data-correct="false">Banks require it</button>
+        <button class="quiz-option" data-correct="false">It removes the need for a plan</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">5. Which action best protects your plan from surprise costs?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Building an emergency fund</button>
+        <button class="quiz-option" data-correct="false">Spending the savings first</button>
+        <button class="quiz-option" data-correct="false">Ignoring the plan</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">6. You get a message asking for a one-time code to 'unlock a prize'. What do you do?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Send it quickly</button>
+        <button class="quiz-option" data-correct="true">Stop, check, and tell a trusted adult</button>
+        <button class="quiz-option" data-correct="false">Reply asking for more details</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+    </div>
+  </section>
+
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="financial-literacy.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="lesson-9.html">← Lesson 9: Scams, fraud and staying safe</a>
+    <a class="next" href="../simulation.html">Try the simulation →</a>
+  </nav>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="../script.js"></script>
+<script src="../art.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => "$" + Math.round(n).toLocaleString("en-US");
+  const KEY = "mintly:plan";
+  function load() { try { const p = JSON.parse(localStorage.getItem(KEY)); if (p) { Object.keys(p).forEach((k) => { if ($(k)) $(k).value = p[k]; }); } } catch (e) {} }
+  function plan() {
+    const inc = +$("pl-inc").value || 0, price = +$("pl-price").value || 0, have = +$("pl-have").value || 0;
+    let n = +$("pl-n").value, w = +$("pl-w").value;
+    if (n + w > 100) { w = 100 - n; $("pl-w").value = w; }
+    const s = 100 - n - w;
+    $("pl-n-v").textContent = n + "%"; $("pl-w-v").textContent = w + "%"; $("pl-s-v").textContent = s + "%";
+    const sv = inc * s / 100;
+    $("pl-amts").textContent = money(inc * n / 100) + " · " + money(inc * w / 100) + " · " + money(sv);
+    const left = Math.max(0, price - have), months = sv > 0 ? Math.ceil(left / sv) : Infinity;
+    $("pl-when").textContent = left === 0 ? "You're there!" : sv > 0 ? months + (months === 1 ? " month" : " months") : "Add some savings";
+    $("pl-note").textContent = left === 0 ? "You've already saved enough for " + ($("pl-goal").value || "your goal") + "." : sv > 0 ? "Saving " + money(sv) + " a month gets you " + ($("pl-goal").value || "your goal") + " in about " + months + (months === 1 ? " month" : " months") + ". Move 5% from wants to savings and see how much sooner." : "Move the sliders so savings gets something. Every plan needs a savings line.";
+  }
+  ["pl-inc", "pl-goal", "pl-price", "pl-have", "pl-n", "pl-w"].forEach((id) => $(id).addEventListener("input", plan));
+  $("pl-save").addEventListener("click", () => {
+    const o = {}; ["pl-inc", "pl-goal", "pl-price", "pl-have", "pl-n", "pl-w"].forEach((id) => (o[id] = $(id).value));
+    try { localStorage.setItem(KEY, JSON.stringify(o)); $("pl-status").textContent = "Saved."; } catch (e) { $("pl-status").textContent = "Couldn't save in this browser."; }
+  });
+  load(); plan();
+  Mintly.initLessonQuiz('lesson-10');
+</script>
+</body>
+</html>
