@@ -178,6 +178,17 @@ const Mintly = (() => {
     writeJSON(USERS_KEY, users);
   }
 
+  // ---- Paywall: Lesson 1 is the free taste; everything else needs a plan. ----
+  // NOTE: this gate lives in the browser, so it is a product experience, not security. Real enforcement needs a server.
+  const FREE_LESSONS = ["lesson-1"];
+  const FREE_LEAF_QUESTIONS = 3;
+  const PLAN_NAMES = { family: "Starter", premium: "Plus", pro: "Family Pro", school: "School" };
+  // When you create Stripe Payment Links, paste them here. A signed-up customer is sent to their plan's link.
+  const PAYMENT_LINKS = { family: "", premium: "", pro: "", school: "" };
+  function canAccess(lessonId) { return FREE_LESSONS.includes(lessonId) || hasActivePlan(); }
+  function checkoutUrl(plan) { return PAYMENT_LINKS[plan] || ""; }
+  function planName() { const u = currentUser(); return u && u.plan ? PLAN_NAMES[u.plan] || u.plan : null; }
+
   function hasActivePlan() {
     const user = currentUser();
     return !!(user && user.plan);
@@ -522,6 +533,8 @@ const Mintly = (() => {
       MintlyArt.mount();
     }
 
+    const locked = !canAccess(lessonId);
+    if (!locked) track("lesson_view", lessonId);
     // the lesson film: a short animated version of the lesson, loaded on demand
     const hero = article.querySelector(".lesson-hero");
     const slot = document.createElement("div");
@@ -529,12 +542,26 @@ const Mintly = (() => {
     slot.innerHTML = '<div class="lf-cap"><span>Watch the lesson</span><span>' + (meta ? meta.mins + " min read below" : "") + '</span></div><div class="lf-mount"></div>';
     const intro = article.querySelector("p");
     (intro && intro.parentNode === article ? intro : hero || h1).before(slot);
-    loadFilm(lessonId, slot.querySelector(".lf-mount"));
+    if (locked) {
+      slot.querySelector(".lf-mount").innerHTML = '<a class="lf lf-locked" href="#unlock" aria-label="Unlock this lesson\'s film"><div class="lf-art">' + (window.MintlyArt ? MintlyArt.render("shield") : "") + '</div><strong>Members watch the film</strong><span class="lf-playbtn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></a>';
+    } else { slot.querySelector(".lf-mount").dataset.film = lessonId; loadFilm(lessonId, slot.querySelector(".lf-mount")); }
+
+    if (locked) {
+      // keep the intro, hide the rest, and show the unlock card
+      const kids = Array.from(article.children), keepTo = kids.findIndex((k) => k.tagName === "H2");
+      kids.forEach((k, i) => { if (keepTo > -1 && i >= keepTo) k.style.display = "none"; });
+      main.querySelectorAll(".quiz, .done-panel").forEach((q) => (q.style.display = "none"));
+      const unlock = document.createElement("section");
+      unlock.className = "paywall"; unlock.id = "unlock";
+      const n = idx + 1;
+      unlock.innerHTML = '<div class="pw-art">' + (window.MintlyArt ? MintlyArt.render("shield") : "") + '</div><div><p class="pw-k">Lesson ' + n + ' is for members</p><h2>Want the rest of this one?</h2><p>You\'ve read the opening. Members get the full lesson, its film, the practice and the quiz, plus all ten lessons, Leaf, and the dashboards.</p><ul><li>10 lessons, each with a short film</li><li>Leaf, your question-asking study partner</li><li>Student, parent and teacher dashboards</li></ul><div class="pw-actions"><a class="btn btn-lg" href="../pricing.html?from=' + lessonId + '">See plans, from $8 a month</a><a class="btn btn-secondary btn-lg" href="../signin.html">I have an account</a></div><p class="pw-fine">Lesson 1 is always free. <a href="lesson-1.html">Start there &rarr;</a></p></div>';
+      article.appendChild(unlock);
+    }
 
     // takeaways, placed before the first quiz
     const tk = TAKEAWAYS[lessonId];
     const firstQuiz = main.querySelector(".quiz");
-    if (tk && firstQuiz) {
+    if (tk && firstQuiz && !locked) {
       const box = document.createElement("section");
       box.className = "lesson-body takeaways-wrap";
       box.style.paddingTop = "0";
@@ -544,6 +571,7 @@ const Mintly = (() => {
 
     // finish panel above the nav buttons
     const nav = main.querySelector(".lesson-nav");
+    if (locked && nav) { nav.style.display = "none"; const pg = main.querySelector(".lesson-pager"); if (pg) pg.style.display = "none"; }
     const next = LESSONS[idx + 1];
     const panel = document.createElement("div");
     panel.className = "done-panel"; panel.id = "done-panel";
@@ -561,6 +589,7 @@ const Mintly = (() => {
     toc.innerHTML = "<b>In this lesson</b>" + heads.map((h) => '<a href="#' + h.id + '">' + h.textContent + "</a>").join("") +
       '<div class="meta"><span>' + (meta ? meta.mins + " min read" : "") + "</span><span>Lesson " + (idx + 1) + " of " + LESSON_IDS.length + "</span></div>";
     shell.append(toc, content); main.appendChild(shell);
+    if (locked) { toc.style.display = "none"; shell.style.gridTemplateColumns = "minmax(0, 720px)"; return; }
 
     const links = Array.from(toc.querySelectorAll("a"));
     function onScroll() {
@@ -595,6 +624,12 @@ const Mintly = (() => {
     pageKey,
     consentBanner,
     landingPage,
+    canAccess,
+    checkoutUrl,
+    planName,
+    FREE_LESSONS,
+    FREE_LEAF_QUESTIONS,
+    PLAN_NAMES,
     allUsers,
     removeUser,
     resetProgress,
