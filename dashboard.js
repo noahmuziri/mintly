@@ -320,7 +320,7 @@
 
 
   // ---------- Admin insights: what learners are into, drawn as a graph ----------
-  const CAT_COLORS = { basics: "#6B7280", budgeting: "#1C6847", saving: "#0F8A4E", banking: "#2B4AA3", borrowing: "#A94A18", investing: "#7C3AA8", crypto: "#C0124F", collectibles: "#B8860B", earning: "#0B6E8A", scams: "#B3261E", planning: "#5D5F6B" };
+  const CAT_COLORS = { basics: "#6B7280", budgeting: "#1C6847", saving: "#0F8A4E", banking: "#2B4AA3", borrowing: "#A94A18", investing: "#8B5E34", crypto: "#C0124F", collectibles: "#B8860B", earning: "#0B6E8A", scams: "#B3261E", planning: "#5D5F6B" };
   const catName = (c) => c[0].toUpperCase() + c.slice(1);
   const ago = (ts) => { const m = Math.max(1, Math.round((Date.now() - ts) / 60000)); return m < 60 ? m + " min ago" : m < 1440 ? Math.round(m / 60) + " h ago" : Math.round(m / 1440) + " d ago"; };
   const hash = (s) => { let h = 2166136261; for (const c of s) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return (h >>> 0) / 4294967296; };

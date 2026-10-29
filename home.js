@@ -85,7 +85,7 @@
   }
 
   function initRoles() {
-    const start = MintlyTheme.getRole();
+    const start = ["student", "parent", "teacher"].includes(MintlyTheme.getRole()) ? MintlyTheme.getRole() : "student";
     showRole(start, true);
     $("role-switch").addEventListener("click", (e) => {
       const b = e.target.closest("button[data-role]"); if (!b) return;
