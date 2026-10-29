@@ -1941,3 +1941,39 @@ main { animation: pagein .5s var(--ease) both; }
 
 /* plan cards: equal height with the button pinned to the bottom */
 .plans, .price-grid { align-items: stretch; }
+
+/* ---- elements, perfected ---- */
+/* money fields: one box, not a box inside a box */
+.money-input { border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); padding: 0 14px; transition: border-color .15s, box-shadow .15s; color: var(--muted); }
+.money-input input, .money-input input:focus { border: 0; box-shadow: none; outline: none; background: none; border-radius: 0; padding: 12px 0; color: var(--ink); }
+.money-input:focus-within { border-color: var(--acc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc) 16%, transparent); }
+.money-input input::-webkit-inner-spin-button { opacity: .4; }
+
+/* missions read as checks, not switches */
+.toggle.check { width: 26px; height: 26px; }
+.toggle.check i { background: none; border: 2px solid color-mix(in srgb, var(--muted) 55%, transparent); transition: background .2s, border-color .2s, transform .2s var(--ease); }
+.toggle.check i::after { content: ""; top: 6px; left: 9px; width: 5px; height: 10px; border-radius: 0; background: none; box-shadow: none; border: solid #fff; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) scale(0); transition: transform .2s var(--ease); }
+.toggle.check input:checked + i { background: var(--acc); border-color: var(--acc); }
+.toggle.check input:checked + i::after { transform: rotate(45deg) scale(1); }
+.toggle.check input:checked + i { transform: scale(1.06); }
+.toggle.check input:disabled { cursor: default; }
+
+/* inputs, selects and text areas share one look everywhere */
+input[type=text], input[type=email], input[type=password], input[type=number], input[type=search], select, textarea { accent-color: var(--acc); }
+input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--muted) 75%, transparent); }
+code { white-space: nowrap; }
+.demo-box code, .demo-accts code { white-space: nowrap; }
+
+/* chips and pills respond to touch */
+.pill, .chip { transition: transform .2s var(--ease), background .2s, color .2s; }
+button.chip:hover, button.pill:hover { transform: translateY(-1px); }
+
+/* custom scrollbars that match the theme */
+* { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--muted) 45%, transparent) transparent; }
+
+/* dashboard cards: content sits at the top, numbers get room, empty space reads as intent */
+.card .big-num, .card .metric { font-variant-numeric: tabular-nums; }
+body { font-variant-numeric: lining-nums; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+
+/* radios and checkboxes inside lessons: consistent tick when chosen */
+.opt:has(input:checked), .quiz-opt:has(input:checked) { border-color: var(--acc); background: color-mix(in srgb, var(--acc) 10%, var(--bg)); }
