@@ -1857,3 +1857,6 @@ a.more-card:hover { transform: translateY(-4px); border-color: var(--acc); box-s
   .consent p { font-size: 12.5px; line-height: 1.4; margin-bottom: 8px; }
   .consent div { gap: 6px; } .consent .btn-small { padding: 7px 12px; font-size: 12.5px; }
 }
+
+.inline-form { display: flex; gap: 8px; } .inline-form input { flex: 1; min-width: 0; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg); font-size: 15px; } .inline-form input:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc) 16%, transparent); }
+.code-big { font: 600 clamp(34px, 5vw, 48px)/1 var(--fb); letter-spacing: .14em; color: var(--acc); font-variant-numeric: tabular-nums; margin: 4px 0 12px; }

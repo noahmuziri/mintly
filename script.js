@@ -124,6 +124,14 @@ const Mintly = (() => {
     applying = true; ks.forEach((k) => rawRemove.call(localStorage, k)); applying = false; synct = {}; saveT();
   }
   const isCloudAccount = () => !!token();
+  async function authFetch(path, method, body) {
+    const tk = token();
+    if (!tk) return { ok: false, status: 0, data: { error: "Please sign in with an account first." } };
+    try {
+      const r = await fetch(path, { method: method || "GET", headers: { authorization: "Bearer " + tk, "content-type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+      return { ok: r.ok, status: r.status, data: await r.json().catch(() => ({})) };
+    } catch (e) { return { ok: false, status: 0, data: { error: "Couldn't reach the server." } }; }
+  }
 
   // --- Shared chrome: every page has an empty #site-header and #site-footer, filled in here so the
   // navigation and footer are edited in one place. ---
@@ -782,6 +790,7 @@ const Mintly = (() => {
 
   return {
     renderChrome,
+    authFetch,
     activeDays,
     gameData,
     recordGame,

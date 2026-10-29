@@ -33,3 +33,12 @@ CREATE TABLE IF NOT EXISTS userdata (
   json    TEXT NOT NULL,           -- the learner's own saved progress and work; never shown in admin Insights
   updated INTEGER
 );
+
+-- Classes and family links. Students opt in by entering a code; teachers and parents see summary numbers only.
+CREATE TABLE IF NOT EXISTS classes (code TEXT PRIMARY KEY, name TEXT NOT NULL, teacher TEXT NOT NULL, created INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_classes_teacher ON classes(teacher);
+CREATE TABLE IF NOT EXISTS class_members (code TEXT NOT NULL, student TEXT NOT NULL, joined INTEGER NOT NULL, PRIMARY KEY (code, student));
+CREATE INDEX IF NOT EXISTS idx_members_student ON class_members(student);
+CREATE TABLE IF NOT EXISTS parent_codes (student TEXT PRIMARY KEY, code TEXT UNIQUE NOT NULL);
+CREATE TABLE IF NOT EXISTS parent_links (parent TEXT NOT NULL, student TEXT NOT NULL, linked INTEGER NOT NULL, PRIMARY KEY (parent, student));
+CREATE INDEX IF NOT EXISTS idx_links_student ON parent_links(student);

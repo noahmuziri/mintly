@@ -121,7 +121,7 @@
     student: {
       title: () => { const a = MintlyTheme.getAge(); return a === "explorer" ? (firstName ? `Hey ${esc(firstName)}! Ready to level up?` : "Ready to level up?") : a === "pro" ? "Overview" : (firstName ? `Good to see you, ${esc(firstName)}.` : "Your learning dashboard"); },
       sub: () => { const a = MintlyTheme.getAge(); return a === "pro" ? `${signedIn ? esc(user.name) : "Guest"} · Level ${st.level} · ${st.xp} XP` : signedIn ? (a === "explorer" ? "Finish quests, play games, earn XP." : "Here is where you stand today.") : "You're browsing as a guest. Your progress here is saved on this device. Sign in to keep it."; },
-      nav: [["overview", "Overview", "home"], ["lessons", "Lessons", "book"], ["arcade", "Arcade", "grid"], ["badges", "Badges", "award"], ["leaf", "Ask Leaf", "chat"]],
+      nav: [["overview", "Overview", "home"], ["lessons", "Lessons", "book"], ["arcade", "Arcade", "grid"], ["badges", "Badges", "award"], ["leaf", "Ask Leaf", "chat"], ["sharing", "Sharing", "users"]],
       pages: {
         overview() { const a = MintlyTheme.getAge(); return a === "explorer" ? ovExplorer() : a === "pro" ? ovPro() : ovBuilder(); },
         lessons() {
@@ -139,7 +139,8 @@
         badges() {
           return `<div class="card"><div class="card-h"><h3>Badges</h3><span class="pill">${BADGES.filter((b) => b[2]()).length} of ${BADGES.length} earned</span></div><div class="badges">${BADGES.map((b) => `<div class="badge ${b[2]() ? "" : "locked"}" title="${esc(b[1])}"><i>${b[3]}</i>${esc(b[0])}<div class="muted" style="font-weight:400;font-size:11.5px;margin-top:2px">${esc(b[1])}</div></div>`).join("")}</div></div>`;
         },
-        leaf() { return leafChat(); }
+        leaf() { return leafChat(); },
+        sharing() { return `<div id="sharing-root"><p class="muted">Loading…</p></div>`; }
       }
     },
 
@@ -453,6 +454,80 @@
     renderInsights(root, data, { live, note });
   }
 
+
+  // ---------- Real classes and family links (server accounts only) ----------
+  const cloud = Mintly.isCloudAccount();
+  const realTeacher = cloud && user && user.role === "teacher", realParent = cloud && user && user.role === "parent";
+  const viewFor = (r) => (r === "teacher" && realTeacher ? VIEWS.teacherReal : r === "parent" && realParent ? VIEWS.parentReal : VIEWS[r]);
+  const dayAgo = (iso) => { if (!iso) return "never"; const n = Math.round((Date.now() - new Date(iso + "T12:00:00Z").getTime()) / 864e5); return n <= 0 ? "today" : n === 1 ? "yesterday" : n + " days ago"; };
+  const errMsg = (r) => (r.data && r.data.error) || "Something went wrong.";
+  const formRow = (id, ph, btn, len) => `<form class="inline-form" id="${id}"><input name="v" placeholder="${ph}" maxlength="${len || 40}" autocomplete="off" aria-label="${ph}"><button class="btn" type="submit">${btn}</button></form>`;
+
+  VIEWS.teacherReal = {
+    title: () => "Your classes",
+    sub: () => "Real students who joined with your class code. They choose to share, and you see progress numbers only.",
+    nav: [["class", "Class", "home"], ["roster", "Roster", "users"], ["classes", "Classes", "clip"]],
+    pages: { class: () => `<div id="treal" data-p="class"></div>`, roster: () => `<div id="treal" data-p="roster"></div>`, classes: () => `<div id="treal" data-p="classes"></div>` }
+  };
+  VIEWS.parentReal = {
+    title: () => (firstName ? `${esc(firstName)}'s family` : "Your family"),
+    sub: () => "Your teen chooses to share their progress with you. You see lessons, scores and streaks, never their chats.",
+    nav: [["family", "Family", "home"], ["talk", "Conversations", "chat"], ["safety", "Settings", "shield"]],
+    pages: { family: () => `<div id="preal"></div>`, talk: VIEWS.parent.pages.talk, safety: VIEWS.parent.pages.safety }
+  };
+
+  async function loadSharing(main) {
+    const root = $("#sharing-root", main); if (!root) return;
+    if (!Mintly.isCloudAccount()) { root.innerHTML = `<div class="card"><div class="card-h"><h3>Sharing</h3></div><p class="muted" style="margin:0 0 14px">Create an account to share your progress with a teacher or parent. You choose who sees it.</p><a class="btn" href="signin.html">Create an account</a></div>`; return; }
+    const [cl, pl] = await Promise.all([Mintly.authFetch("/api/my/classes"), Mintly.authFetch("/api/links")]);
+    const classes = (cl.data && cl.data.classes) || [], parents = (pl.data && pl.data.parents) || [];
+    root.innerHTML = `<div class="grid">
+      <section class="card c12"><div class="card-h"><h3>You're in control</h3></div><p class="muted" style="margin:0">A teacher or parent only sees your <b style="color:var(--ink)">name, lessons finished, quiz accuracy, XP, streak and last active day</b>, and only after you give them a code. They never see your Leaf chats or anything you type. You can stop sharing at any time.</p></section>
+      <section class="card c6"><div class="card-h"><h3>Join a class</h3></div><p class="muted" style="margin:0 0 12px;font-size:14px">Your teacher gives you a code like <b>NX9P55</b>.</p>${formRow("join-class", "Class code", "Join", 8)}<p class="gm-fb" id="jc-fb"></p><ul class="list">${classes.map((c) => `<li><div class="tx"><b>${esc(c.name)}</b><span>${esc(c.teacher)} can see your progress</span></div><button class="btn btn-secondary btn-small" data-leave="${esc(c.code)}">Leave</button></li>`).join("") || '<li><div class="tx"><span>You haven\'t joined a class.</span></div></li>'}</ul></section>
+      <section class="card c6"><div class="card-h"><h3>Share with a parent</h3></div><p class="muted" style="margin:0 0 12px;font-size:14px">Make a code and give it to your parent. They enter it on their own account.</p><div id="pc-box"><button class="btn" id="pc-make" type="button">Show my parent code</button></div><ul class="list" style="margin-top:12px">${parents.map((p) => `<li><div class="tx"><b>${esc(p.name)}</b><span>Can see your progress</span></div><button class="btn btn-secondary btn-small" data-unlink="${esc(p.id)}">Stop sharing</button></li>`).join("") || '<li><div class="tx"><span>No parent linked yet.</span></div></li>'}</ul></section></div>`;
+    $("#join-class", root).addEventListener("submit", async (e) => { e.preventDefault(); const r = await Mintly.authFetch("/api/classes/join", "POST", { code: e.target.v.value }); if (r.ok) { Mintly.toast("Joined " + r.data.name); loadSharing(main); } else { const f = $("#jc-fb", root); f.className = "gm-fb no"; f.textContent = errMsg(r); } });
+    $$("[data-leave]", root).forEach((b) => b.addEventListener("click", async () => { await Mintly.authFetch("/api/classes/leave", "POST", { code: b.dataset.leave }); loadSharing(main); }));
+    $$("[data-unlink]", root).forEach((b) => b.addEventListener("click", async () => { await Mintly.authFetch("/api/links/unlink", "POST", { id: b.dataset.unlink }); loadSharing(main); }));
+    $("#pc-make", root).addEventListener("click", async () => { const r = await Mintly.authFetch("/api/links/code", "POST", {}); if (r.ok) $("#pc-box", root).innerHTML = `<div class="code-big">${esc(r.data.code)}</div><button class="btn btn-secondary btn-small" id="pc-new" type="button">Make a new one</button>`, $("#pc-new", root).addEventListener("click", async () => { const n = await Mintly.authFetch("/api/links/code", "POST", { fresh: true }); if (n.ok) $(".code-big", root).textContent = n.data.code; }); });
+  }
+
+  async function loadTeacherReal(main) {
+    const root = $("#treal", main); if (!root) return;
+    const r = await Mintly.authFetch("/api/classes"); const classes = (r.data && r.data.classes) || [], pg = root.dataset.p;
+    const create = `<section class="card"><div class="card-h"><h3>Create a class</h3></div><p class="muted" style="margin:0 0 12px;font-size:14px">You get a code. Students enter it under <b>Sharing</b> on their dashboard.</p>${formRow("new-class", "Class name, e.g. Period 3 Finance", "Create class", 60)}<p class="gm-fb" id="nc-fb"></p></section>`;
+    const bindCreate = () => { const f = $("#new-class", root); if (f) f.addEventListener("submit", async (e) => { e.preventDefault(); const x = await Mintly.authFetch("/api/classes", "POST", { name: e.target.v.value }); if (x.ok) { write("tclass", x.data.code); loadTeacherReal(main); } else { const m = $("#nc-fb", root); m.className = "gm-fb no"; m.textContent = errMsg(x); } }); };
+    if (!classes.length) { root.innerHTML = create; bindCreate(); return; }
+    let cur = classes.find((c) => c.code === read("tclass", "")) || classes[0];
+    const sel = classes.length > 1 ? `<div class="seg" role="group" aria-label="Class">${classes.map((c) => `<button type="button" data-cls="${esc(c.code)}" aria-pressed="${c.code === cur.code}">${esc(c.name)}</button>`).join("")}</div>` : "";
+    const S = cur.students, avg = (k) => { const v = S.map((s) => s[k]).filter((x) => x != null); return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null; };
+    const week = (iso) => iso && Date.now() - new Date(iso + "T12:00:00Z").getTime() < 7 * 864e5;
+    if (pg === "class") {
+      const attn = S.filter((s) => !s.lessonsDone || !week(s.lastActive));
+      root.innerHTML = `${sel}<div class="grid" style="margin-top:${sel ? 14 : 0}px">
+        <section class="card hl c5"><div class="stat-sub" style="text-transform:uppercase;letter-spacing:.1em;font-weight:700">Class code</div><div class="code-big" style="color:inherit;margin:8px 0">${esc(cur.code)}</div><p class="muted" style="margin:0 0 14px">Give this to students. They enter it under Sharing.</p><button class="btn" id="copy-code" type="button">Copy code</button></section>
+        <section class="card c7"><div class="row" style="gap:30px"><div class="kpi"><span class="lbl">Students</span><div class="stat-big">${S.length}</div></div><div class="kpi"><span class="lbl">Avg lessons done</span><div class="stat-big">${avg("lessonsDone") ?? "–"}</div></div><div class="kpi"><span class="lbl">Avg quiz accuracy</span><div class="stat-big">${avg("quizAccuracy") == null ? "–" : avg("quizAccuracy") + "%"}</div></div><div class="kpi"><span class="lbl">Active this week</span><div class="stat-big">${S.filter((s) => week(s.lastActive)).length}</div></div></div></section>
+        <section class="card c12"><div class="card-h"><h3>Needs a nudge</h3><span class="pill ${attn.length ? "warn" : "good"}">${attn.length}</span></div><ul class="list">${attn.map((s) => `<li><div class="ic">${esc(s.name[0])}</div><div class="tx"><b>${esc(s.name)}</b><span>${s.lessonsDone} lessons done · last active ${dayAgo(s.lastActive)}</span></div></li>`).join("") || `<li><div class="tx"><span>${S.length ? "Everyone has been active this week." : "No students yet. Share the class code."}</span></div></li>`}</ul></section></div>`;
+    } else if (pg === "roster") {
+      root.innerHTML = `${sel}<div class="card" style="margin-top:${sel ? 14 : 0}px"><div class="card-h"><h3>${esc(cur.name)}</h3><span class="pill">${S.length} students</span></div><div class="table-wrap"><table class="tbl" id="rr"><thead><tr><th data-c="name">Student</th><th data-c="lessonsDone">Lessons</th><th data-c="quizAccuracy">Quiz</th><th data-c="xp">XP</th><th data-c="streak">Streak</th><th data-c="lastActive">Last active</th></tr></thead><tbody></tbody></table></div></div>`;
+      let key = "lastActive", dir = -1;
+      const paint = () => { const rows = S.slice().sort((a, b) => { const x = a[key] ?? "", y = b[key] ?? ""; return (typeof x === "string" ? x.localeCompare(y) : x - y) * dir; }); $("tbody", root).innerHTML = rows.map((s) => `<tr><td><div class="nm"><span class="avatar">${esc(s.name[0])}</span>${esc(s.name)}</div></td><td>${s.lessonsDone}/${s.lessonsTotal}</td><td>${s.quizAccuracy == null ? "–" : s.quizAccuracy + "%"}</td><td>${s.xp}</td><td>${s.streak}</td><td>${dayAgo(s.lastActive)}</td></tr>`).join("") || '<tr><td colspan="6" class="muted">No students have joined yet.</td></tr>'; $$("th", root).forEach((th) => { if (th.dataset.c === key) th.setAttribute("aria-sort", dir > 0 ? "ascending" : "descending"); else th.removeAttribute("aria-sort"); }); };
+      $$("th", root).forEach((th) => th.addEventListener("click", () => { dir = key === th.dataset.c ? -dir : 1; key = th.dataset.c; paint(); })); paint();
+    } else {
+      root.innerHTML = `<div class="grid"><section class="card c7"><div class="card-h"><h3>Your classes</h3></div><ul class="list">${classes.map((c) => `<li><div class="ic">${esc(c.name[0])}</div><div class="tx"><b>${esc(c.name)}</b><span>${c.students.length} students · code <b>${esc(c.code)}</b></span></div></li>`).join("")}</ul></section><div class="c5">${create}</div></div>`; bindCreate();
+    }
+    $$("[data-cls]", root).forEach((b) => b.addEventListener("click", () => { write("tclass", b.dataset.cls); loadTeacherReal(main); }));
+    const cp = $("#copy-code", root); if (cp) cp.addEventListener("click", () => { (navigator.clipboard ? navigator.clipboard.writeText(cur.code) : Promise.reject()).catch(() => {}); Mintly.toast("Code copied"); });
+  }
+
+  async function loadParentReal(main) {
+    const root = $("#preal", main); if (!root) return;
+    const r = await Mintly.authFetch("/api/links"); const kids = (r.data && r.data.children) || [];
+    const linkForm = `<section class="card"><div class="card-h"><h3>${kids.length ? "Link another teen" : "Link your teen"}</h3></div><p class="muted" style="margin:0 0 12px;font-size:14px">Ask your teen to open <b>Sharing</b> on their dashboard and show you their parent code. They can stop sharing any time.</p>${formRow("link-kid", "Parent code", "Link", 10)}<p class="gm-fb" id="lk-fb"></p></section>`;
+    root.innerHTML = `<div class="grid">${kids.map((k) => `<section class="card c6"><div class="card-h"><h3>${esc(k.name)}</h3><span class="pill">Level ${k.level}</span></div><div class="row" style="gap:26px;margin-bottom:12px"><div class="kpi"><span class="lbl">Lessons</span><div class="stat-big">${k.lessonsDone}<small style="font-size:16px;color:var(--muted)">/${k.lessonsTotal}</small></div></div><div class="kpi"><span class="lbl">Quiz accuracy</span><div class="stat-big">${k.quizAccuracy == null ? "–" : k.quizAccuracy + "%"}</div></div><div class="kpi"><span class="lbl">Streak</span><div class="stat-big">${k.streak}d</div></div></div>${bar(Math.round(k.lessonsDone / k.lessonsTotal * 100))}<p class="stat-sub" style="margin:10px 0 12px">Last active ${dayAgo(k.lastActive)} · ${k.xp} XP</p><div class="cal">${Array.from({ length: 14 }, (_, i) => dayISO(13 - i)).map((x) => `<i class="${(k.days || []).includes(x) ? "on" : ""}" title="${x}"></i>`).join("")}</div><p style="margin:14px 0 0"><button class="btn btn-secondary btn-small" data-unlink="${esc(k.id)}">Unlink</button></p></section>`).join("")}<div class="${kids.length ? "c6" : "c8"}">${linkForm}</div></div>`;
+    $("#link-kid", root).addEventListener("submit", async (e) => { e.preventDefault(); const x = await Mintly.authFetch("/api/links/join", "POST", { code: e.target.v.value }); if (x.ok) { Mintly.toast("Linked to " + x.data.name); loadParentReal(main); } else { const f = $("#lk-fb", root); f.className = "gm-fb no"; f.textContent = errMsg(x); } });
+    $$("[data-unlink]", root).forEach((b) => b.addEventListener("click", async () => { await Mintly.authFetch("/api/links/unlink", "POST", { id: b.dataset.unlink }); loadParentReal(main); }));
+  }
+
   // ---------- render ----------
   let role = MintlyTheme.getRole(), page = null;
   const isAdmin = !!(user && user.role === "admin");
@@ -460,7 +535,7 @@
   if (isAdmin && !new URLSearchParams(location.search).get("role")) { role = "admin"; MintlyTheme.setRole("admin"); }
 
   function renderSide() {
-    const v = VIEWS[role];
+    const v = viewFor(role);
     const nm = signedIn ? user.name : { student: "Maya Lopez", parent: "The Lopez family", teacher: "Ms. Alvarez", admin: "Admin" }[role];
     $("#dash-side").innerHTML = `<div class="dash-who"><div class="avatar">${esc(nm[0])}</div><div><b>${esc(nm)}</b><span>${role[0].toUpperCase() + role.slice(1)}${signedIn ? "" : " · guest"}</span></div></div>
       <div class="side-sec">Menu</div>${v.nav.map((n) => `<button class="side-link" data-page="${n[0]}" aria-current="${n[0] === page}">${ICON[n[2]]}${n[1]}</button>`).join("")}
@@ -468,7 +543,7 @@
   }
 
   function render(first) {
-    const v = VIEWS[role];
+    const v = viewFor(role);
     if (!page || !v.pages[page]) page = v.nav[0][0];
     renderSide();
     const main = $("#dash-main");
@@ -496,6 +571,9 @@
     const srv = $("#srv-accounts", main);
     if (srv) { const k = sessionStorage.getItem("mintly:adminkey"); if (k) fetch("/api/admin/users", { headers: { Authorization: "Bearer " + k } }).then((r) => r.ok ? r.json() : null).then((j) => { if (j) srv.innerHTML = `<div class="card-h"><h3>Server accounts</h3><span class="pill">${j.users.length} total</span></div><div class="table-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Plan</th><th>Joined</th></tr></thead><tbody>${j.users.map((u) => `<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td><span class="pill">${esc(u.role)}</span></td><td>${esc(u.plan || "none")}</td><td>${new Date(u.created).toLocaleDateString()}</td></tr>`).join("") || '<tr><td colspan="5" class="muted">No accounts yet.</td></tr>'}</tbody></table></div>`; }); else srv.innerHTML = '<p class="muted" style="margin:0">Connect your admin key on the Insights tab to list real accounts stored on the server.</p>'; }
     if ($("#insroot", main)) loadInsights(main);
+    if ($("#sharing-root", main)) loadSharing(main);
+    if ($("#treal", main)) loadTeacherReal(main);
+    if ($("#preal", main)) loadParentReal(main);
     const form = $("#aform", main);
     if (form) form.addEventListener("submit", (e) => {
       e.preventDefault();
