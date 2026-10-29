@@ -23,10 +23,10 @@
   <div class="wrap page-header">
     <div class="eyebrow">Course</div>
     <h1>Financial Literacy</h1>
-    <p>Ten lessons in two units: the foundations every teen should know, then the real-world money you'll meet first. Each lesson has a short video, hands-on practice and a quiz. Best taken in order.</p>
+    <p>Fifteen lessons in three units: the foundations every teen should know, the real-world money you'll meet first, then the bigger decisions ahead. Each lesson has a short video, hands-on practice and a quiz. Best taken in order.</p>
     <div class="course-progress">
-      <div class="progress-track" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="course-bar"><div class="progress-fill" id="course-fill" style="width:0%"></div></div>
-      <div class="label" id="course-label">0 of 10 lessons complete</div>
+      <div class="progress-track" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0" id="course-bar"><div class="progress-fill" id="course-fill" style="width:0%"></div></div>
+      <div class="label" id="course-label">0 of 15 lessons complete</div>
     </div>
     <a class="btn" href="lesson-1.html" id="continue-btn">Start lesson 1 →</a>
   </div>
@@ -39,7 +39,7 @@
 <script src="../script.js"></script>
 <script src="../art.js"></script>
 <script>
-  const UNITS = [[1, "Unit 1 · Foundations", "Budgeting, saving, banking and your first look at investing."], [2, "Unit 2 · Real-world money", "Borrowing, compound interest, paychecks, scams and your own plan."]];
+  const UNITS = [[1, "Unit 1 · Foundations", "Budgeting, saving, banking and your first look at investing."], [2, "Unit 2 · Real-world money", "Borrowing, compound interest, paychecks, scams and your own plan."], [3, "Unit 3 · Going further", "Inflation, side hustles, insurance, spotting hype and paying for college."]];
   const list = document.getElementById("lesson-list");
   const total = Mintly.LESSON_IDS.length;
   const done = Mintly.completedCount();
@@ -53,7 +53,7 @@
     }).join("");
     return `<div class="explore-label" style="margin:${u === 1 ? 0 : 28}px 0 4px">${title}</div><p class="muted" style="margin:0 0 8px;font-size:14px">${sub}</p>${rows}`;
   }).join("") + `<div class="next-course"><div class="icon">🔒</div><div><div class="title">Collectables</div><div class="desc">Unlocks after you complete every lesson above</div></div><div class="progress" id="course-progress">${done} of ${total} complete</div></div>`;
-  if (!Mintly.hasActivePlan()) list.insertAdjacentHTML("afterbegin", '<div class="unlock-banner"><div><b>Lesson 1 is free.</b> Unlock all ten lessons, their films, Leaf and the dashboards.</div><a class="btn" href="../pricing.html">See plans</a></div>');
+  if (!Mintly.hasActivePlan()) list.insertAdjacentHTML("afterbegin", '<div class="unlock-banner"><div><b>Lesson 1 is free.</b> Unlock all fifteen lessons, their films, Leaf and the dashboards.</div><a class="btn" href="../pricing.html">See plans</a></div>');
   const nextNum = Mintly.LESSON_IDS.indexOf(next.id) + 1;
   const cont = document.getElementById("continue-btn");
   cont.href = next.id + ".html";

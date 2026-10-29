@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Videos · Mintly">
+<meta name="theme-color" content="#1B5E40">
+<meta property="og:site_name" content="Mintly">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<title>Videos · Mintly</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="theme.js"></script>
+</head>
+<body>
+
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <div class="wrap page-header">
+    <div class="eyebrow">Videos</div>
+    <h1>Money, explained in motion.</h1>
+    <p>A film for every lesson, plus thirty-second quick takes on the words you keep hearing. Press play, or go fullscreen.</p>
+    <div class="chip-filter" id="vf" role="group" aria-label="Filter videos"><button type="button" class="on" data-f="all">All</button><button type="button" data-f="lesson">Lessons</button><button type="button" data-f="quick">Quick takes</button></div>
+  </div>
+  <div class="wrap vlib" id="vlib"></div>
+</main>
+
+<div class="vmodal" id="vmodal" hidden role="dialog" aria-modal="true" aria-label="Video player"><div class="vm-box"><button class="vm-x" id="vm-x" type="button" aria-label="Close">&times;</button><div id="vm-host"></div><div class="vm-foot" id="vm-foot"></div></div></div>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="script.js"></script>
+<script src="art.js"></script>
+<script src="lessonfilm.js"></script>
+<script src="films-data.js"></script>
+<script>
+  (function () {
+    const F = window.MINTLY_FILMS, FREE = ["lesson-1", "quick-debit-credit", "quick-503020"];
+    const lib = document.getElementById("vlib"), modal = document.getElementById("vmodal"), host = document.getElementById("vm-host");
+    const member = Mintly.hasActivePlan();
+    const items = Object.entries(F).map(([id, f]) => { const m = /^lesson-(\d+)$/.exec(id); return { id, f, kind: m ? "lesson" : "quick", n: m ? +m[1] : 0, dur: MintlyFilm.duration(f) }; });
+    items.sort((a, b) => (a.kind === b.kind ? a.n - b.n : a.kind === "lesson" ? -1 : 1));
+    const mmss = (s) => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    function render(filter) {
+      lib.innerHTML = items.filter((x) => filter === "all" || x.kind === filter).map((x) => {
+        const open = member || FREE.includes(x.id);
+        return `<button class="vcard${open ? "" : " lockedv"}" data-id="${x.id}" type="button"><div class="art" data-art="${x.f.art || "book"}"></div><span class="vk">${x.kind === "lesson" ? "Lesson " + x.n : "Quick take"}</span><b>${x.f.title}</b><span class="vm">${open ? "▶ " + mmss(x.dur) : "🔒 Members · " + mmss(x.dur)}</span></button>`;
+      }).join("");
+      MintlyArt.mount();
+    }
+    function openVideo(id) {
+      const x = items.find((i) => i.id === id), open = member || FREE.includes(id);
+      if (!open) { location.href = "pricing.html?from=videos"; return; }
+      host.innerHTML = ""; const el = document.createElement("div"); el.dataset.film = id; host.appendChild(el);
+      const api = MintlyFilm.mount(el, x.f);
+      document.getElementById("vm-foot").innerHTML = x.kind === "lesson" ? `<a class="btn btn-secondary btn-small" href="lessons/${id}.html">Read the lesson →</a>` : `<span class="muted">Quick take · about 30 seconds</span>`;
+      modal.hidden = false; document.body.style.overflow = "hidden"; api.play();
+    }
+    function close() { modal.hidden = true; host.innerHTML = ""; document.body.style.overflow = ""; }
+    lib.addEventListener("click", (e) => { const c = e.target.closest(".vcard"); if (c) openVideo(c.dataset.id); });
+    document.getElementById("vm-x").addEventListener("click", close);
+    modal.addEventListener("click", (e) => { if (e.target === modal) close(); });
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) close(); });
+    document.getElementById("vf").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; document.querySelectorAll("#vf button").forEach((x) => x.classList.toggle("on", x === b)); render(b.dataset.f); });
+    render("all");
+    const want = new URLSearchParams(location.search).get("v"); if (want && F[want]) openVideo(want);
+  })();
+</script>
+</body>
+</html>

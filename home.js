@@ -8,9 +8,9 @@
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   const COPY = {
-    student: { h: "The money class <em>school skipped.</em>", lead: "Ten short lessons, practice with pretend money, and Leaf, who never lets you off easy. By the end you'll know what an APR is, why your first paycheck is smaller than you expected, and how to spot a scam in about four seconds.", cta: ["Try Lesson 1 free", "lessons/lesson-1.html"], cta2: ["Watch the demo", "mintly.demo.html?from=site"] },
+    student: { h: "The money class <em>school skipped.</em>", lead: "Fifteen short lessons, practice with pretend money, and Leaf, who never lets you off easy. By the end you'll know what an APR is, why your first paycheck is smaller than you expected, and how to spot a scam in about four seconds.", cta: ["Try Lesson 1 free", "lessons/lesson-1.html"], cta2: ["Watch the demo", "mintly.demo.html?from=site"] },
     parent: { h: "Raise a kid who's <em>good with money.</em>", lead: "Your teen practises real decisions with pretend money, and you get a weekly look at how they think. Plus a better dinner-table question than \"how was school?\"", cta: ["See the parent view", "dashboard.html?role=parent"], cta2: ["How it keeps them safe", "parents.html"] },
-    teacher: { h: "A personal finance unit <em>that runs itself.</em>", lead: "Ten lessons with films and quizzes, plus a class dashboard that shows you who's stuck before the test does. Assign it Monday and watch it work.", cta: ["See the class view", "dashboard.html?role=teacher"], cta2: ["School pricing", "pricing.html"] }
+    teacher: { h: "A personal finance unit <em>that runs itself.</em>", lead: "Fifteen lessons with films and quizzes, plus a class dashboard that shows you who's stuck before the test does. Assign it Monday and watch it work.", cta: ["See the class view", "dashboard.html?role=teacher"], cta2: ["School pricing", "pricing.html"] }
   };
 
   // ---- Decision Score: a gently drifting random walk. The number, arc and bars all read the same value. ----
@@ -105,7 +105,7 @@
     }).join("");
     MintlyArt.mount();
     const st = Mintly.stats();
-    $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Ten lessons, each with a film, something to do and a quiz. The first one is free.";
+    $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Fifteen lessons, each with a film, something to do and a quiz. The first one is free.";
   }
 
   // ---- Leaf's looping conversation ----

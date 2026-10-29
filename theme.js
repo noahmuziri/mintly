@@ -29,6 +29,17 @@
   root.dataset.role = role;
   if (params.get("role") && ROLES.includes(params.get("role"))) write(KEY_ROLE, role);
 
+  // Age style: three looks for three age groups. Explorer 13-14, Builder 15-16, Pro 17-18.
+  const KEY_AGE = "mintly:age", AGES = ["explorer", "builder", "pro"];
+  let age = params.get("age"); if (!AGES.includes(age)) age = read(KEY_AGE, "builder"); if (!AGES.includes(age)) age = "builder";
+  root.dataset.age = age;
+  function setAge(a) {
+    if (!AGES.includes(a)) return;
+    age = a; root.dataset.age = a; write(KEY_AGE, a);
+    document.querySelectorAll("#cp [data-age]").forEach((e) => e.classList.toggle("on", e.dataset.age === a));
+    document.dispatchEvent(new CustomEvent("mintly:age", { detail: a }));
+  }
+
   const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
 
   function setRole(r) {
@@ -64,6 +75,7 @@
     const cp = document.createElement("div");
     cp.className = "cp"; cp.id = "cp"; cp.setAttribute("role", "dialog"); cp.setAttribute("aria-label", "Customize Mintly");
     cp.innerHTML = `<a class="cp-demo" href="${here}mintly.demo.html?from=site" id="cp-demo"><span class="play">${ICON.play}</span><span><b>Watch the demo</b><span>A one minute tour. Press start and sit back.</span></span></a>
+<h4>Style for your age</h4><div class="cp-chips">${[["explorer", "13–14 Explorer"], ["builder", "15–16 Builder"], ["pro", "17–18 Pro"]].map((a) => `<button type="button" class="cp-chip${a[0] === age ? " on" : ""}" data-age="${a[0]}">${a[1]}</button>`).join("")}</div>
 <h4>Accent colour</h4><div class="sw">${PAL.map((p, i) => i === 0 ? `<button type="button" class="auto" data-k="a" data-i="0" title="Follows your role" aria-label="Role colour"></button>` : `<button type="button" data-k="a" data-i="${i}" title="${p[0]}" aria-label="${p[0]}" style="background:${p[1][0]}"></button>`).join("")}</div>
 <h4>Background</h4><div class="sw">${BGS.map((p, i) => `<button type="button" class="sq" data-k="b" data-i="${i}" title="${p[0]}" aria-label="${p[0]}" style="background:${i === 0 ? "#F7F5EF" : p[1][0]}"></button>`).join("")}</div>
 <h4>Font</h4><div class="cp-chips">${FONTS.map((p, i) => `<button type="button" class="cp-chip" data-k="f" data-i="${i}" style="font-family:${i === 0 ? "'Newsreader',serif" : p[2]}">${p[0]}</button>`).join("")}</div>
@@ -77,6 +89,7 @@
       write(KEY_THEME, root.dataset.theme); apply();
     };
     cp.addEventListener("click", (e) => {
+      const ab = e.target.closest("[data-age]"); if (ab) { setAge(ab.dataset.age); return; }
       const b = e.target.closest("[data-k]");
       if (b) { C[b.dataset.k] = +b.dataset.i; write(KEY_CUSTOM, C); apply(); }
     });
@@ -95,5 +108,5 @@
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build); else build();
 
-  window.MintlyTheme = { setRole, getRole: () => role, ROLES, isDark };
+  window.MintlyTheme = { setRole, getRole: () => role, setAge, getAge: () => age, AGES, ROLES, isDark };
 })();

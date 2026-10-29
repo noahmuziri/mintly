@@ -24,11 +24,13 @@ to mock data and the page says so.
 | `dashboard.html`, `dashboard.js` | Student, parent and teacher dashboards (`?role=student\|parent\|teacher`) |
 | `mintly.demo.html`, `demo.js`, `demo.css` | The self-playing demo film (press Start). Open it from **Customize → Watch the demo** |
 | `simulation.html` | The hands-on simulation (the interactive demo that used to live at `mintly.demo.html`) |
-| `lessons/` | The ten-lesson course (two units) plus electives. `script.js` adds the outline, takeaways, quiz score and finish panel |
+| `lessons/` | The fifteen-lesson course (three units) plus electives. `script.js` adds the outline, takeaways, quiz score and finish panel |
 | `leaf-brain.js` | Leaf's knowledge: topics with keywords, a short answer and questions to ask back. Add an entry to teach Leaf something new (no AI service needed) |
+| `games.html`, `games.js` | The Arcade: Fact or Hype, Budget Blitz, Scam Spotter, Money Month, plus a daily challenge. Difficulty follows the age style |
+| `videos.html` | Video library: 15 lesson films and 8 thirty-second quick takes (data in `films-data.js`) |
 | `lessonfilm.js`, `films-data.js` | Lesson videos: a data-driven film player. Add a lesson film by adding a scene list to `films-data.js` |
 | `styles.css` | Design system. Colours are tokens; `<html data-role>` swaps the accent per role |
-| `theme.js` | Light/dark, role, and the Customize panel |
+| `theme.js` | Light/dark, role, **age style** (Explorer 13-14, Builder 15-16, Pro 17-18) and the Customize panel |
 | `art.js` | Hand-drawn style illustrations (inline SVG that follows the role colour) |
 | `assets/logo.svg` | The Mintly mark |
 

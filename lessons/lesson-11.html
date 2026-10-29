@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inflation: why the same money buys less · Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Financial Literacy · Lesson 11</div>
+    <h1>Inflation: why the same money buys less</h1>
+    <p class="lesson-meta">About 12 minutes · 2 calculators · Your answers are saved in this browser</p>
+
+    <div class="hook"><span>Quick story</span><p>Ask a parent or grandparent what your favorite snack cost when they were your age. It was almost certainly less. Same snack, higher price. That's inflation, and it's quietly shrinking every dollar you save.</p></div>
+
+    <p><strong>Inflation</strong> is the general rise in prices over time. When prices go up, each dollar buys a little less than it used to. It's slow enough that you rarely notice it day to day, but over years it adds up to a lot.</p>
+
+    <h2>Why prices rise</h2>
+    <ul>
+      <li><strong>Costs go up.</strong> If wages, ingredients, shipping or rent cost a business more, it usually passes some of that on.</li>
+      <li><strong>Demand outruns supply.</strong> When lots of people want something and there isn't enough of it, sellers can charge more.</li>
+      <li><strong>More money chasing the same goods.</strong> When a lot of new money enters the economy faster than the amount of stuff to buy, prices tend to climb.</li>
+    </ul>
+    <p>In the United States, prices have often risen around 2% to 3% a year over long stretches, but some years have been much higher or lower. Check a current source for today's number.</p>
+
+    <h2>Try it: the price time machine</h2>
+    <div class="activity">
+      <div class="activity-label">Calculator</div>
+      <h3>What will it cost later?</h3>
+      <p>Type a price today, a yearly inflation rate and a number of years.</p>
+      <div class="calc-grid">
+        <label class="split-field">Price today<span class="money-input">$<input id="in-price" type="number" min="1" max="1000000" step="1" inputmode="numeric" value="60"></span></label>
+        <label class="split-field">Inflation (% a year)<span class="money-input"><input id="in-rate" type="number" min="0" max="30" step="0.5" inputmode="decimal" value="3"></span></label>
+        <label class="split-field">Years from now<span class="money-input"><input id="in-years" type="number" min="1" max="60" step="1" inputmode="numeric" value="20"></span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>Same item costs</span><b id="in-future">$0</b></div>
+        <div class="grow"><span>$100 will then buy</span><b id="in-power">$0 worth</b></div>
+      </div>
+      <p class="calc-note" id="in-note"></p>
+    </div>
+
+    <h2>What it does to savings</h2>
+    <p>If your savings earn less than inflation, you're losing buying power even though the number in your account goes up. What matters is the <strong>real return</strong>: the interest you earn minus inflation.</p>
+    <div class="activity">
+      <div class="activity-label">Calculator</div>
+      <h3>Is your money really growing?</h3>
+      <div class="calc-grid" style="grid-template-columns:repeat(2,1fr)">
+        <label class="split-field">Interest you earn (%)<span class="money-input"><input id="rr-int" type="number" min="0" max="30" step="0.25" inputmode="decimal" value="4"></span></label>
+        <label class="split-field">Inflation (%)<span class="money-input"><input id="rr-inf" type="number" min="0" max="30" step="0.25" inputmode="decimal" value="3"></span></label>
+      </div>
+      <div class="calc-results">
+        <div class="grow"><span>Your real return</span><b id="rr-real">0%</b></div>
+        <div><span>After a year, $1,000 buys</span><b id="rr-buy">$0</b></div>
+      </div>
+      <p class="calc-note" id="rr-note"></p>
+    </div>
+
+    <h2>What you can do about it</h2>
+    <ul>
+      <li><strong>Don't let big, long-term money sit idle.</strong> Money you won't need for many years usually needs to grow faster than inflation, which means taking on some risk (Lesson 5).</li>
+      <li><strong>Keep emergency money safe and accessible.</strong> It's fine for it to just hold its value, because its job is to be there.</li>
+      <li><strong>Grow your income.</strong> Skills and raises that beat inflation make you better off.</li>
+      <li><strong>Notice it.</strong> Compare prices over time and ask whether a "deal" is still a deal.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      If you earn 4% on savings and inflation is 3%, are you rich? What if inflation jumped to 6%? Try both in the calculator.
+    </div>
+
+
+    <div class="challenge"><div><b>Challenge</b><p>Hype loves to ignore things like inflation. Beat 70 points in Fact or Hype.</p></div><a class="btn" href="../games.html?game=hype">Play now</a></div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Inflation</dt><dd>The general rise in prices over time.</dd></div>
+      <div><dt>Buying power</dt><dd>How much a dollar can buy.</dd></div>
+      <div><dt>Real return</dt><dd>Your interest rate minus inflation.</dd></div>
+      <div><dt>Nominal</dt><dd>The number before adjusting for inflation.</dd></div>
+      <div><dt>Cost of living</dt><dd>What it costs to afford the basics where you live.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>You now know why money loses value just by sitting still. Next, learn how to earn your own. <a href="lesson-12.html"><strong>Go to Lesson 12 →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+      <div class="quiz-question">1. What is inflation?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Prices rising over time</button>
+        <button class="quiz-option" data-correct="false">A bank fee</button>
+        <button class="quiz-option" data-correct="false">Interest on a loan</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. Your savings earn 2% while inflation is 4%. Your real return is about:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">+2%</button>
+        <button class="quiz-option" data-correct="true">-2%</button>
+        <button class="quiz-option" data-correct="false">6%</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. An item costs $50 today. At 3% inflation, roughly what will it cost in 10 years?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">$54</button>
+        <button class="quiz-option" data-correct="true">$67</button>
+        <button class="quiz-option" data-correct="false">$150</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Which money most needs to beat inflation?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Money you need next week</button>
+        <button class="quiz-option" data-correct="true">Money you won't touch for 20 years</button>
+        <button class="quiz-option" data-correct="false">Your lunch money</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">5. Why can inflation hurt people who save only in cash?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Cash gets deleted</button>
+        <button class="quiz-option" data-correct="true">Prices rise while the cash stays the same, so it buys less</button>
+        <button class="quiz-option" data-correct="false">Banks charge more</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+    </div>
+  </section>
+
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="financial-literacy.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="lesson-10.html">← Lesson 10: Build your own money plan</a>
+    <a class="next" href="lesson-12.html">Lesson 12: Side hustles: revenue, costs and profit →</a>
+  </nav>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="../script.js"></script>
+<script src="../art.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => "$" + n.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  function tm() {
+    const p = +$("in-price").value || 0, r = (+$("in-rate").value || 0) / 100, y = Math.max(1, Math.round(+$("in-years").value || 1));
+    const f = p * Math.pow(1 + r, y), power = 100 / Math.pow(1 + r, y);
+    $("in-future").textContent = money(Math.round(f * 100) / 100);
+    $("in-power").textContent = "$" + power.toFixed(0) + " worth";
+    $("in-note").textContent = p ? "In " + y + " years something that costs " + money(p) + " today could cost " + money(Math.round(f)) + ". Your $100 would buy only about $" + power.toFixed(0) + " of today's stuff." : "";
+  }
+  function rr() {
+    const i = +$("rr-int").value || 0, f = +$("rr-inf").value || 0, real = ((1 + i / 100) / (1 + f / 100) - 1) * 100;
+    $("rr-real").textContent = (real >= 0 ? "+" : "") + real.toFixed(2) + "%";
+    $("rr-buy").textContent = "$" + Math.round(1000 * (1 + i / 100) / (1 + f / 100)).toLocaleString("en-US") + " of today's stuff";
+    $("rr-note").textContent = real > 0 ? "Your buying power is growing a little." : real < 0 ? "Your account grows, but your buying power shrinks." : "You're running just to stay in place.";
+  }
+  ["in-price", "in-rate", "in-years"].forEach((id) => $(id).addEventListener("input", tm));
+  ["rr-int", "rr-inf"].forEach((id) => $(id).addEventListener("input", rr));
+  tm(); rr();
+  Mintly.initLessonQuiz('lesson-11');
+</script>
+</body>
+</html>

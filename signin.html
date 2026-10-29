@@ -73,6 +73,11 @@
             <label><input type="radio" name="signup-role" value="teacher"><span>Teacher</span></label>
           </div>
         </div>
+        <div class="field" id="age-field">
+          <label for="signup-age">My age group</label>
+          <select id="signup-age"><option value="explorer">13 to 14</option><option value="builder" selected>15 to 16</option><option value="pro">17 to 18</option></select>
+          <small style="color:var(--muted);font-size:12.5px;margin-top:4px;display:block">Sets how Mintly looks and how hard the games are. You can change it any time.</small>
+        </div>
         <div class="auth-error" id="signup-error"></div>
         <button class="btn" type="submit">Create account</button>
       </form>
@@ -179,6 +184,8 @@
 
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const ageSel = document.getElementById("signup-age"), roleSel = (document.querySelector('input[name="signup-role"]:checked') || {}).value;
+    if (ageSel && window.MintlyTheme) MintlyTheme.setAge(roleSel === "student" || !roleSel ? ageSel.value : "builder");
     const result = await Mintly.signUp({
       name: document.getElementById("signup-name").value,
       email: document.getElementById("signup-email").value,

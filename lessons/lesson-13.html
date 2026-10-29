@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insurance: paying a little to dodge a big loss · Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Financial Literacy · Lesson 13</div>
+    <h1>Insurance: paying a little to dodge a big loss</h1>
+    <p class="lesson-meta">About 12 minutes · a calculator · Your answers are saved in this browser</p>
+
+    <div class="hook"><span>Quick story</span><p>A new phone costs $800. The protection plan is $9 a month. If you drop it, they fix it for a $50 fee. Do you pay the $9 every month? How would you decide? That decision is the whole idea of insurance.</p></div>
+
+    <p><strong>Insurance</strong> is a deal: you pay a small amount regularly, and in return the insurance company covers a big loss if it happens. Lots of people pay in, a few have a loss, and the money from everyone covers those few. It spreads risk around.</p>
+
+    <h2>The words you'll hear</h2>
+    <ul>
+      <li><strong>Premium:</strong> what you pay (monthly or yearly) to have the coverage.</li>
+      <li><strong>Deductible:</strong> what you pay first before insurance pays the rest.</li>
+      <li><strong>Claim:</strong> a request for the insurance company to pay for a covered loss.</li>
+      <li><strong>Coverage:</strong> what the policy will and won't pay for. Always read what's excluded.</li>
+    </ul>
+
+    <h2>Common kinds</h2>
+    <ul>
+      <li><strong>Health:</strong> protects you from huge medical bills.</li>
+      <li><strong>Auto:</strong> required by law almost everywhere if you drive.</li>
+      <li><strong>Renters or home:</strong> covers your stuff and some accidents.</li>
+      <li><strong>Phone and gadgets:</strong> optional, and often poor value.</li>
+    </ul>
+
+    <h2>When insurance is worth it</h2>
+    <p>The best insurance is for losses that are <strong>big, unlikely, and too expensive to cover yourself</strong>: a hospital stay, a car accident, a house fire. It's usually a poor deal for small losses you could afford, like a $60 pair of headphones.</p>
+
+    <h2>Try it: should you insure it?</h2>
+    <div class="activity">
+      <div class="activity-label">Calculator</div>
+      <h3>Compare the costs</h3>
+      <p>Guess how likely a loss is in a year. The tool shows what you'd expect to pay with and without insurance.</p>
+      <div class="calc-grid" style="grid-template-columns:repeat(2,1fr)">
+        <label class="split-field">Cost if it's lost or broken<span class="money-input">$<input id="ins-cost" type="number" min="1" max="1000000" step="10" inputmode="numeric" value="800"></span></label>
+        <label class="split-field">Chance it happens this year (%)<span class="money-input"><input id="ins-p" type="number" min="0" max="100" step="1" inputmode="numeric" value="15"></span></label>
+        <label class="split-field">Insurance cost per year<span class="money-input">$<input id="ins-prem" type="number" min="0" max="100000" step="1" inputmode="numeric" value="108"></span></label>
+        <label class="split-field">Deductible (your share)<span class="money-input">$<input id="ins-ded" type="number" min="0" max="100000" step="1" inputmode="numeric" value="50"></span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>Expected cost, no insurance</span><b id="ins-no">$0</b></div>
+        <div class="grow"><span>Expected cost, insured</span><b id="ins-yes">$0</b></div>
+      </div>
+      <p class="calc-note" id="ins-note"></p>
+    </div>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      The math says insurance costs more on average, or the insurer wouldn't make money. So why do people buy it anyway? When is "peace of mind" worth paying for, and when isn't it?
+    </div>
+
+    <h2>Smart habits</h2>
+    <ul>
+      <li>Insure the <strong>catastrophes</strong>, and save for the small stuff (your emergency fund from Lesson 3 does this job).</li>
+      <li>A higher deductible usually means a lower premium. Pick one you could actually pay.</li>
+      <li>Compare quotes. The same coverage can cost very different amounts.</li>
+      <li>Read the exclusions. "Covered" doesn't mean covered for everything.</li>
+    </ul>
+
+
+    <div class="challenge"><div><b>Challenge</b><p>Insurance fraud and fake offers are real. Spot 6 of 8 scams in Scam Spotter.</p></div><a class="btn" href="../games.html?game=scam">Play now</a></div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Insurance</dt><dd>Paying a small amount to be protected from a big loss.</dd></div>
+      <div><dt>Premium</dt><dd>What you pay for coverage.</dd></div>
+      <div><dt>Deductible</dt><dd>What you pay before insurance helps.</dd></div>
+      <div><dt>Claim</dt><dd>A request for the insurer to pay.</dd></div>
+      <div><dt>Coverage</dt><dd>What a policy will pay for.</dd></div>
+      <div><dt>Risk</dt><dd>The chance of a loss.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>You know how to weigh risk against cost. Next, learn to tell real money advice from hype. <a href="lesson-14.html"><strong>Go to Lesson 14 →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+      <div class="quiz-question">1. What is a premium?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">What you pay for coverage</button>
+        <button class="quiz-option" data-correct="false">The amount insurance pays out</button>
+        <button class="quiz-option" data-correct="false">A type of claim</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. Insurance makes the most sense for losses that are:</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Small and common</button>
+        <button class="quiz-option" data-correct="true">Big, unlikely and hard to afford</button>
+        <button class="quiz-option" data-correct="false">Impossible</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. What does a higher deductible usually do?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Raises your premium</button>
+        <button class="quiz-option" data-correct="true">Lowers your premium</button>
+        <button class="quiz-option" data-correct="false">Cancels coverage</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Which is usually the poorest value?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Health insurance</button>
+        <button class="quiz-option" data-correct="false">Car insurance for a driver</button>
+        <button class="quiz-option" data-correct="true">Insuring a $40 pair of earbuds</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">5. What should you check before buying a policy?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">The exclusions: what it won't cover</button>
+        <button class="quiz-option" data-correct="false">The color of the logo</button>
+        <button class="quiz-option" data-correct="false">Nothing</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+    </div>
+  </section>
+
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="financial-literacy.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="lesson-12.html">← Lesson 12: Side hustles: revenue, costs and profit</a>
+    <a class="next" href="lesson-14.html">Lesson 14: Fact or hype: reading money news without getting played →</a>
+  </nav>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="../script.js"></script>
+<script src="../art.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => "$" + Math.round(n).toLocaleString("en-US");
+  function ins() {
+    const cost = +$("ins-cost").value || 0, p = Math.min(100, +$("ins-p").value || 0) / 100, prem = +$("ins-prem").value || 0, ded = +$("ins-ded").value || 0;
+    const no = p * cost, yes = prem + p * Math.min(ded, cost);
+    $("ins-no").textContent = money(no); $("ins-yes").textContent = money(yes);
+    $("ins-note").textContent = yes < no ? "On average the insurance saves you about " + money(no - yes) + " a year." : "On average you'd pay about " + money(yes - no) + " more a year with insurance. It buys protection from a bad year, not savings. Ask whether you could afford the full loss.";
+  }
+  ["ins-cost", "ins-p", "ins-prem", "ins-ded"].forEach((id) => $(id).addEventListener("input", ins));
+  ins();
+  Mintly.initLessonQuiz('lesson-13');
+</script>
+</body>
+</html>

@@ -16,6 +16,11 @@ const Mintly = (() => {
     { id: "lesson-8", title: "Paychecks and taxes: why take-home is smaller", mins: 12, unit: 2 },
     { id: "lesson-9", title: "Scams, fraud and staying safe", mins: 12, unit: 2 },
     { id: "lesson-10", title: "Build your own money plan", mins: 16, unit: 2 },
+    { id: "lesson-11", title: "Inflation: why the same money buys less", mins: 12, unit: 3 },
+    { id: "lesson-12", title: "Side hustles: revenue, costs and profit", mins: 14, unit: 3 },
+    { id: "lesson-13", title: "Insurance: paying a little to dodge a big loss", mins: 12, unit: 3 },
+    { id: "lesson-14", title: "Fact or hype: reading money news without getting played", mins: 12, unit: 3 },
+    { id: "lesson-15", title: "Paying for college and what student loans really cost", mins: 14, unit: 3 },
   ];
   const LESSON_IDS = LESSONS.map((l) => l.id);
 
@@ -123,8 +128,8 @@ const Mintly = (() => {
   // --- Shared chrome: every page has an empty #site-header and #site-footer, filled in here so the
   // navigation and footer are edited in one place. ---
   const NAV = [
-    ["Home", "index.html"], ["Learn", "lessons/lesson-1.html"], ["Explore", "lessons/explore.html"],
-    ["Leaf AI", "leaf.html"], ["Dashboard", "dashboard.html"], ["For Parents", "parents.html"], ["Pricing", "pricing.html"],
+    ["Home", "index.html"], ["Learn", "lessons/financial-literacy.html"], ["Videos", "videos.html"], ["Arcade", "games.html"],
+    ["Leaf AI", "leaf.html"], ["Dashboard", "dashboard.html"], ["Pricing", "pricing.html"],
   ];
 
   function renderChrome() {
@@ -149,9 +154,9 @@ const Mintly = (() => {
         '<a class="brand" href="' + up + 'index.html"><img src="' + up + 'assets/logo.svg" alt="" width="34" height="34"><span class="brand-name">mintly</span></a>' +
         "<p>Mintly doesn't teach young people what to think about money. It teaches them how to think when making financial decisions.</p>" +
         "<p>Not a brokerage. Everything is simulated, uses practice data and is not financial advice.</p></div>" +
-        '<div class="foot-links"><div><b>Learn</b><a href="' + up + 'lessons/financial-literacy.html">Financial Literacy</a><a href="' + up + 'lessons/explore.html">Explore</a><a href="' + up + 'leaf.html">Leaf AI</a></div>' +
+        '<div class="foot-links"><div><b>Learn</b><a href="' + up + 'lessons/financial-literacy.html">All lessons</a><a href="' + up + 'videos.html">Videos</a><a href="' + up + 'games.html">Arcade</a><a href="' + up + 'lessons/explore.html">Explore</a><a href="' + up + 'leaf.html">Leaf AI</a></div>' +
         '<div><b>For everyone</b><a href="' + up + 'dashboard.html?role=student">Student dashboard</a><a href="' + up + 'dashboard.html?role=parent">Parent dashboard</a><a href="' + up + 'dashboard.html?role=teacher">Teacher dashboard</a></div>' +
-        '<div><b>Company</b><a href="' + up + 'parents.html">For parents</a><a href="' + up + 'pricing.html">Pricing</a><a href="' + up + 'privacy.html">Privacy</a><a href="' + up + 'mintly.demo.html?from=site">Watch the demo</a></div></div></div>';
+        '<div><b>Company</b><a href="' + up + 'parents.html">For parents</a><a href="' + up + 'parents.html">For parents</a><a href="' + up + 'pricing.html">Pricing</a><a href="' + up + 'privacy.html">Privacy</a><a href="' + up + 'mintly.demo.html?from=site">Watch the demo</a></div></div></div>';
     }
   }
 
@@ -381,6 +386,8 @@ const Mintly = (() => {
     if (!days.includes(today)) { days.push(today); writeJSON(k, days.slice(-120)); }
   }
 
+  function activeDays() { return readJSON(DAYS_PREFIX + progressScope(), []); }
+
   function streak() {
     const days = new Set(readJSON(DAYS_PREFIX + progressScope(), []));
     let n = 0; const d = new Date();
@@ -396,8 +403,33 @@ const Mintly = (() => {
     const done = completedCount(), total = LESSON_IDS.length;
     let qc = 0, qt = 0;
     LESSON_IDS.forEach((id) => { const r = quizResult(id); if (r) { qc += r.c; qt += r.t; } });
-    const xp = done * 100 + qc * 10;
+    const xp = done * 100 + qc * 10 + bonusXP();
     return { done, total, xp, level: Math.floor(xp / 150) + 1, intoLevel: xp % 150, streak: streak(), quizCorrect: qc, quizTotal: qt, accuracy: qt ? Math.round(qc / qt * 100) : null };
+  }
+
+  // --- Arcade: bonus XP, personal bests and the daily challenge ---
+  const GAMES_PREFIX = "mintly:games:", BONUS_PREFIX = "mintly:bonusxp:", DAILY_PREFIX = "mintly:daily:";
+  const DAILY_LIST = [["hype", 70, "Score 70 or more in Fact or Hype"], ["blitz", 80, "Score 80 or more in Budget Blitz"], ["scam", 60, "Score 60 or more in Scam Spotter"], ["month", 70, "Finish Money Month with 70 or more"]];
+  function bonusXP() { return +localStorage.getItem(BONUS_PREFIX + progressScope()) || 0; }
+  function addBonusXP(n) { try { localStorage.setItem(BONUS_PREFIX + progressScope(), String(bonusXP() + Math.max(0, Math.round(n)))); } catch (e) {} }
+  function gameData() { return readJSON(GAMES_PREFIX + progressScope(), { best: {}, plays: {} }); }
+  function recordGame(id, score, xp) {
+    const d = gameData(); d.plays[id] = (d.plays[id] || 0) + 1;
+    const isBest = score > (d.best[id] || 0); if (isBest) d.best[id] = score;
+    writeJSON(GAMES_PREFIX + progressScope(), d); addBonusXP(xp); touchDay();
+    track("game", id, score);
+    return { isBest, best: d.best[id] };
+  }
+  function dailyChallenge() {
+    const d = new Date(), key = dayKey(d), pick = DAILY_LIST[Math.floor(d.getTime() / 864e5) % DAILY_LIST.length];
+    const st = readJSON(DAILY_PREFIX + progressScope(), {});
+    return { date: key, game: pick[0], target: pick[1], text: pick[2], done: st.date === key && !!st.done, xp: 50 };
+  }
+  function checkDaily(game, score) {
+    const c = dailyChallenge();
+    if (c.done || c.game !== game || score < c.target) return false;
+    writeJSON(DAILY_PREFIX + progressScope(), { date: c.date, done: true }); addBonusXP(c.xp);
+    return true;
   }
 
   function toast(msg) {
@@ -501,8 +533,9 @@ const Mintly = (() => {
       if (href.includes("#")) return;
       const file = href.split("?")[0].split("/").pop();
       const match =
-        (section === "learn" && /^lesson-\d+\.html$/.test(file)) ||
+        (section === "learn" && file === "financial-literacy.html") ||
         (section === "explore" && file === "explore.html") ||
+        (here === "financial-literacy.html" && file === "financial-literacy.html") ||
         (!inLessons && file === here);
       if (match) a.setAttribute("aria-current", "page");
     });
@@ -628,6 +661,11 @@ const Mintly = (() => {
     "lesson-8": ["Gross pay is before deductions; net pay is what you take home.", "Social Security and Medicare take 7.65% of most paychecks, and teens often owe little or no income tax.", "Read every pay stub, and file a tax return to recover any income tax withheld."],
     "lesson-9": ["Scams rely on pressure, secrecy and unusual payment. Real organizations give you time.", "Never share passwords, PINs or one-time codes, and never pay with gift cards to someone you don't know.", "When in doubt: stop, check on your own, and tell a trusted adult."],
     "lesson-10": ["A plan starts with knowing what comes in, then splitting it between needs, wants and savings.", "A goal needs a price, a date and a weekly amount, and saving should be automatic.", "Review the plan monthly and adjust. A plan you check is a plan you keep."],
+    "lesson-11": ["Inflation is prices rising over time, so each dollar buys a little less every year.", "Your real return is the interest you earn minus inflation. If it's below zero, you're losing buying power.", "Money you won't need for years has to grow faster than inflation, which means accepting some risk."],
+    "lesson-12": ["Revenue is what comes in; profit is what you keep after costs.", "Know your break-even: the number of sales you need before you make any money.", "Keep records, check the tax rules and involve a parent so a hustle stays safe and legal."],
+    "lesson-13": ["Insurance swaps a small regular payment for protection from a big, unlikely loss.", "Insure the catastrophes and save for the small stuff. A higher deductible lowers the premium.", "Always read what's excluded, and compare quotes for the same coverage."],
+    "lesson-14": ["Hype works by making you feel something (fear of missing out, urgency) so you act before you check.", "Ask how the person gets paid. Affiliate links and sponsorships change what people say.", "Real advice names the risk, gives a source and never promises fast, guaranteed results."],
+    "lesson-15": ["Compare net price, not sticker price. Grants and scholarships are free; loans cost interest.", "Federal loans usually have better protections than private loans.", "Know your monthly payment before you sign, and don't borrow more than you expect to earn in your first year."],
     "lesson-5": ["Saving protects money; investing tries to grow it, and that always carries risk.", "A stock is a small piece of a company, and its price moves on expectations as much as results.", "Diversifying and explaining your reasoning beat chasing whatever is popular."],
   };
 
@@ -648,7 +686,7 @@ const Mintly = (() => {
     const h1 = article.querySelector("h1");
     const eyebrow = article.querySelector(".eyebrow");
     if (h1 && eyebrow && window.MintlyArt) {
-      const art = ["book", "piggy", "target", "bank", "chart", "card", "percent", "wallet", "alert", "plan"][idx] || "book";
+      const art = ["book", "piggy", "target", "bank", "chart", "card", "percent", "wallet", "alert", "plan", "clock", "store", "umbrella", "megaphone", "cap"][idx] || "book";
       const hero = document.createElement("div");
       hero.className = "lesson-hero";
       const left = document.createElement("div");
@@ -678,7 +716,7 @@ const Mintly = (() => {
       const unlock = document.createElement("section");
       unlock.className = "paywall"; unlock.id = "unlock";
       const n = idx + 1;
-      unlock.innerHTML = '<div class="pw-art">' + (window.MintlyArt ? MintlyArt.render("shield") : "") + '</div><div><p class="pw-k">Lesson ' + n + ' is for members</p><h2>Want the rest of this one?</h2><p>You\'ve read the opening. Members get the full lesson, its film, the practice and the quiz, plus all ten lessons, Leaf, and the dashboards.</p><ul><li>10 lessons, each with a short film</li><li>Leaf, your question-asking study partner</li><li>Student, parent and teacher dashboards</li></ul><div class="pw-actions"><a class="btn btn-lg" href="../pricing.html?from=' + lessonId + '">See plans, from $8 a month</a><a class="btn btn-secondary btn-lg" href="../signin.html">I have an account</a></div><p class="pw-fine">Lesson 1 is always free. <a href="lesson-1.html">Start there &rarr;</a></p></div>';
+      unlock.innerHTML = '<div class="pw-art">' + (window.MintlyArt ? MintlyArt.render("shield") : "") + '</div><div><p class="pw-k">Lesson ' + n + ' is for members</p><h2>Want the rest of this one?</h2><p>You\'ve read the opening. Members get the full lesson, its film, the practice and the quiz, plus all fifteen lessons, Leaf, and the dashboards.</p><ul><li>15 lessons, each with a short film, plus the Arcade</li><li>Leaf, your question-asking study partner</li><li>Student, parent and teacher dashboards</li></ul><div class="pw-actions"><a class="btn btn-lg" href="../pricing.html?from=' + lessonId + '">See plans, from $8 a month</a><a class="btn btn-secondary btn-lg" href="../signin.html">I have an account</a></div><p class="pw-fine">Lesson 1 is always free. <a href="lesson-1.html">Start there &rarr;</a></p></div>';
       article.appendChild(unlock);
     }
 
@@ -744,6 +782,12 @@ const Mintly = (() => {
 
   return {
     renderChrome,
+    activeDays,
+    gameData,
+    recordGame,
+    dailyChallenge,
+    checkDaily,
+    addBonusXP,
     hasBackend,
     isCloudAccount,
     deleteAccount,

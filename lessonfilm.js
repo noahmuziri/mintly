@@ -114,5 +114,7 @@
     return api;
   }
 
-  window.MintlyFilm = { mount, TYPES: Object.keys(R) };
+  // total running time in seconds, for library cards
+  function duration(spec) { return Math.round(spec.scenes.reduce((a, s) => a + R[s.type](s).dur, 0) / SPEED / 1000); }
+  window.MintlyFilm = { mount, duration, TYPES: Object.keys(R) };
 })();
