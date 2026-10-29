@@ -51,6 +51,23 @@
         <div class="vgrid">${T.map((t, i) => `<div class="vtile" style="--d:${500 + i * 110}ms"><div class="art">${art(t[0])}</div><b>${t[1]}</b><span class="vplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4.500v15l12-7.500Z"/></svg></span></div>`).join("")}</div></div>`);
     } },
 
+    { id: "arcade", label: "The Arcade", dur: 5000, cls: "s-dark center", role: "student", build(c) {
+      const G = [["megaphone", "Fact or Hype"], ["wallet", "Budget Blitz"], ["alert", "Scam Spotter"], ["calendar", "Money Month"]];
+      c.html(`<div style="width:min(960px,100%)"><p class="kick">The Arcade</p><h2 class="mid">${words("Learn it like a game.", 100, 120)}</h2>
+        <div class="vgrid" style="grid-template-columns:repeat(4,1fr)">${G.map((g, i) => `<div class="vtile" style="--d:${500 + i * 160}ms"><div class="art">${art(g[0])}</div><b>${g[1]}</b></div>`).join("")}</div>
+        <div class="arc-score pop" style="animation-delay:1.6s"><b id="as">0</b><span>Fact or Hype · streak ×5 · <i>+42 XP</i></span></div></div>`);
+      let last = -1; c.frame((st) => { const v = Math.round(85 * ease(clamp((st - 1900) / 1500, 0, 1))); if (v !== last) { last = v; c.$("#as").textContent = v; } });
+      c.at(3600, () => burst(24));
+    } },
+
+    { id: "ages", label: "Built for your age", dur: 5200, cls: "center", role: "student", build(c) {
+      c.html(`<div style="width:min(980px,100%)"><p class="kick">Built for your age</p><h2 class="mid">${words("Three looks. Same money skills.", 100, 110)}</h2>
+        <div class="age-trio"><div class="at at-x pop" style="animation-delay:.8s"><span>13–14</span><b>Explorer</b><div class="at-bar"><i></i></div><p>Quests, XP and a big friendly map.</p></div>
+        <div class="at at-b pop" style="animation-delay:1.2s"><span>15–16</span><b>Builder</b><div class="at-bar"><i></i></div><p>Missions, streaks and your skills.</p></div>
+        <div class="at at-p pop" style="animation-delay:1.6s"><span>17–18</span><b>Pro</b><div class="at-bar"><i></i></div><p>Numbers, trends and tables.</p></div></div></div>`);
+      c.at(1800, () => c.$$(".at-bar i").forEach((e, i) => (e.style.transform = "scaleX(" + [.45, .7, .88][i] + ")")));
+    } },
+
     { id: "research", label: "Research", dur: 6600, cls: "split2", role: "student", build(c) {
       c.html(`<div class="copy"><p class="kick">02 · Research</p><h2 class="big">${words("Read both sides.", 100, 200)}</h2><p class="sub">Bulls and bears, side by side.</p></div>
         <div class="ui pop" style="animation-delay:.3s"><div style="display:flex;justify-content:space-between;align-items:baseline"><h4 style="margin:0">NVIDIA · NVDA</h4><span class="cap">Practice data</span></div>

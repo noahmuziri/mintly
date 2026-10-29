@@ -146,13 +146,19 @@
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } }), { threshold: .6 });
     els.forEach((e) => io.observe(e));
   }
+  function initAgeTry() {
+    const box = $("age-try"); if (!box) return;
+    const mark = () => box.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.age === MintlyTheme.getAge()));
+    box.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { MintlyTheme.setAge(b.dataset.age); mark(); } });
+    document.addEventListener("mintly:age", mark); mark();
+  }
   function initFilm() {
     const host = $("home-film");
     if (host && window.MintlyFilm && window.MINTLY_FILMS) MintlyFilm.mount(host, MINTLY_FILMS["lesson-7"]);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    initTicker(); initCounts(); initFilm();
+    initTicker(); initCounts(); initFilm(); initAgeTry();
     gaugeLen = 100;
     initRoles(); buildParent(); buildTeacher(); initLessons(); initChat();
     if (reduce) { score.cur = 82; tickScore(0); } else requestAnimationFrame(tickScore);
