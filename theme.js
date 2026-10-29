@@ -110,3 +110,15 @@
 
   window.MintlyTheme = { setRole, getRole: () => role, setAge, getAge: () => age, AGES, ROLES, isDark };
 })();
+
+/* thin reading-progress bar along the top of long pages */
+(function () {
+  function init() {
+    if (document.querySelector(".read-bar") || document.documentElement.scrollHeight < innerHeight * 1.8) return;
+    const bar = document.createElement("div"); bar.className = "read-bar"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar);
+    let raf = 0;
+    const set = () => { raf = 0; const h = document.documentElement.scrollHeight - innerHeight; bar.style.transform = "scaleX(" + (h > 0 ? Math.min(1, scrollY / h) : 0) + ")"; };
+    addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(set); }, { passive: true }); set();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => setTimeout(init, 300)); else setTimeout(init, 300);
+})();
