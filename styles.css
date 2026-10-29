@@ -1865,3 +1865,45 @@ a.more-card:hover { transform: translateY(-4px); border-color: var(--acc); box-s
 [data-music-toggle] .slash { opacity: 0; transition: opacity .15s; }
 [data-music-toggle].is-off .slash { opacity: 1; }
 [data-music-toggle].is-off { color: var(--muted); }
+
+/* ---- polish layer: depth, light and motion ---- */
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+::selection { background: color-mix(in srgb, var(--acc) 38%, transparent); }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; border-radius: 8px; }
+
+/* a fine grain keeps big dark/light areas from looking like flat plastic */
+body::after { content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: .045; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* reading progress */
+.read-bar { position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 120; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--acc), var(--sun)); pointer-events: none; }
+
+/* cards: a lit top edge, a soft lift and a glow that follows the accent */
+.card, .tile, .step, .role-card, .price, .pcard { position: relative; transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s; }
+.card::before, .tile::before, .step::before, .role-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--acc) 55%, #fff 0%), transparent); opacity: .35; transition: opacity .35s; }
+.tile:hover, .step:hover, .role-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--acc) 55%, var(--border)); box-shadow: 0 30px 50px -28px var(--shadow), 0 0 0 1px color-mix(in srgb, var(--acc) 22%, transparent), 0 18px 60px -30px color-mix(in srgb, var(--acc) 55%, transparent); }
+.tile:hover::before, .step:hover::before, .role-card:hover::before { opacity: 1; }
+.tile .art, .step .art { transition: transform .45s var(--ease); }
+.tile:hover .art, .step:hover .art { transform: translateY(-3px) rotate(-3deg) scale(1.05); }
+.tile .go { transition: transform .3s var(--ease); } .tile:hover .go { transform: translateX(4px); }
+
+/* buttons: a quick sheen on hover and a press */
+.btn { position: relative; overflow: hidden; }
+.btn:not(.btn-secondary):not(.btn-ghost)::after { content: ""; position: absolute; inset: 0; transform: translateX(-120%) skewX(-18deg); background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35), transparent); transition: transform .7s var(--ease); pointer-events: none; }
+.btn:not(.btn-secondary):not(.btn-ghost):hover::after { transform: translateX(120%) skewX(-18deg); }
+.btn:active { transform: translateY(1px) scale(.985); }
+
+/* stat numbers: accent gradient */
+.stat-c b { background: linear-gradient(180deg, var(--acc), color-mix(in srgb, var(--acc) 55%, var(--sun))); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* header glass */
+.site-header { backdrop-filter: saturate(1.5) blur(14px); -webkit-backdrop-filter: saturate(1.5) blur(14px); }
+
+/* the hero art and the score card no longer fight for the same corner */
+.hero-visual { min-height: 620px; }
+.hero-scene .art { max-width: 450px; }
+.fc-main { bottom: -6px; }
+.fc-small { bottom: 60px; left: 0; }
+@media (max-width: 960px) { .hero-visual { min-height: 560px; } .hero-scene .art { max-width: 400px; } }

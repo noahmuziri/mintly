@@ -97,7 +97,7 @@
 
   // ---- Lesson tiles with the viewer's real progress ----
   function initLessons() {
-    const icons = ["book", "piggy", "target", "bank", "chart", "card", "percent", "wallet", "alert", "plan"];
+    const icons = ["book", "piggy", "target", "bank", "chart", "card", "percent", "wallet", "alert", "plan", "tag", "store", "umbrella", "megaphone", "cap"];
     const tiles = $("lesson-tiles");
     tiles.innerHTML = Mintly.LESSONS.map((l, i) => {
       const done = Mintly.isLessonComplete(l.id);
@@ -105,7 +105,7 @@
     }).join("");
     MintlyArt.mount();
     const st = Mintly.stats();
-    $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Fifteen lessons, each with a film, something to do and a quiz. The first one is free.";
+    $("hm-progress").textContent = st.done ? `${st.done} of ${st.total} lessons complete. Keep going.` : "Each one has a film, something to do and a quiz. The first one is free.";
   }
 
   // ---- Leaf's looping conversation ----
