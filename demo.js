@@ -47,7 +47,7 @@
 
     { id: "films", label: "Lesson films", dur: 6000, cls: "center", role: "student", build(c) {
       const T = [["book", "What is financial literacy?"], ["piggy", "Needs vs. wants"], ["target", "Saving for a goal"], ["bank", "How banks work"], ["chart", "Intro to investing"], ["card", "Credit and debt"], ["percent", "Compound interest"], ["wallet", "Paychecks and taxes"], ["alert", "Scams and safety"], ["plan", "Your money plan"]];
-      c.html(`<div style="width:min(1060px,100%)"><p class="kick">Ten lessons</p><h2 class="mid">${words("Every lesson has a film.", 100, 110)}</h2>
+      c.html(`<div style="width:min(1060px,100%)"><p class="kick">Fifteen lessons</p><h2 class="mid">${words("Every lesson has a film.", 100, 110)}</h2>
         <div class="vgrid">${T.map((t, i) => `<div class="vtile" style="--d:${500 + i * 110}ms"><div class="art">${art(t[0])}</div><b>${t[1]}</b><span class="vplay"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4.500v15l12-7.500Z"/></svg></span></div>`).join("")}</div></div>`);
     } },
 

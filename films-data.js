@@ -101,5 +101,114 @@ window.MINTLY_FILMS = {
     { type: "title", kicker: "The habit", big: "Check it once a month.", sub: "Compare plan and reality, then adjust." },
     { type: "quiz", q: "What should come first in your plan?", opts: ["Knowing your income", "Buying wants", "Investing everything"], a: 0, why: "You can't plan money you haven't counted." },
     { type: "outro", tone: "dark", big: "You've got this.", sub: "Make a plan, then make a decision." }
+  ] },
+
+  "lesson-11": { title: "Inflation", art: "clock", scenes: [
+    { type: "title", tone: "dark", kicker: "Lesson 11", big: "Same snack. Higher price.", sub: "That quiet creep is inflation." },
+    { type: "calc", kicker: "The price time machine", big: "A $60 item, 20 years later.", tokens: [{ t: "$60", c: "Today" }, { t: "×" }, { t: "1.03²⁰", c: "3% a year" }, { t: "=" }, { t: "≈ $108", c: "In 20 years", hl: true }], note: "Illustrative: real inflation varies year to year." },
+    { type: "points", kicker: "Why prices rise", big: "Three common causes.", items: [{ h: "Costs go up", p: "Wages, rent, shipping" }, { h: "Demand beats supply", p: "Everyone wants it" }, { h: "More money, same stuff", p: "Each dollar buys less" }] },
+    { type: "stat", tone: "dark", kicker: "$100 at 3% inflation, 20 years on", n: 55, pre: "≈ $", caption: "of today's buying power is what that $100 would still buy." },
+    { type: "compare", kicker: "Real return", big: "Does your money actually grow?", left: { h: "Earn 4%, inflation 3%", items: ["Real return about +1%", "Buying power grows a little"] }, right: { h: "Earn 2%, inflation 4%", items: ["Real return about -2%", "Account grows, power shrinks"] } },
+    { type: "quiz", q: "Your savings earn 2% and inflation is 4%. Your real return is…", opts: ["+2%", "-2%", "6%"], a: 1, why: "Subtract inflation from what you earn." },
+    { type: "outro", tone: "acc", big: "Beat the creep.", sub: "Next: side hustles." }
+  ] },
+
+  "lesson-12": { title: "Side hustles", art: "store", scenes: [
+    { type: "title", tone: "dark", kicker: "Lesson 12", big: "Five lawns at $20. Did you make $100?", sub: "Not quite." },
+    { type: "calc", kicker: "Revenue vs. profit", big: "What you actually keep.", tokens: [{ t: "$100", c: "Revenue" }, { t: "−" }, { t: "$35", c: "Gas and supplies" }, { t: "=" }, { t: "$65", c: "Profit", hl: true }] },
+    { type: "compare", kicker: "Two kinds of cost", big: "Fixed and variable.", left: { h: "Variable", items: ["Supplies for each order", "Gas for each trip"] }, right: { h: "Fixed", items: ["App or website fee", "Equipment you bought once"] } },
+    { type: "calc", tone: "acc", kicker: "Break-even", big: "When do you start making money?", tokens: [{ t: "$25", c: "Fixed costs" }, { t: "÷" }, { t: "$16", c: "Profit per sale" }, { t: "=" }, { t: "2 sales", c: "To break even", hl: true }] },
+    { type: "steps", kicker: "Set a price", big: "Three questions.", items: [{ h: "Costs", p: "What does one job cost?" }, { h: "Time", p: "What's an hour worth?" }, { h: "Market", p: "What do others charge?" }] },
+    { type: "quiz", q: "You earn $120 and spend $45 on supplies. Profit?", opts: ["$165", "$75", "$45"], a: 1, why: "Profit is revenue minus costs." },
+    { type: "outro", tone: "dark", big: "Keep records.", sub: "Next: insurance." }
+  ] },
+
+  "lesson-13": { title: "Insurance", art: "umbrella", scenes: [
+    { type: "title", tone: "dark", kicker: "Lesson 13", big: "Pay a little. Dodge a big loss.", sub: "That's the whole idea of insurance." },
+    { type: "points", kicker: "The words", big: "Four to know.", items: [{ h: "Premium", p: "What you pay for coverage" }, { h: "Deductible", p: "What you pay first" }, { h: "Claim", p: "Asking the insurer to pay" }, { h: "Coverage", p: "What's actually included" }] },
+    { type: "compare", kicker: "When it's worth it", big: "Big, unlikely, unaffordable.", left: { h: "Worth considering", items: ["A hospital stay", "A car accident", "A house fire"] }, right: { h: "Usually not", items: ["Earbuds", "A $30 case", "Small, affordable losses"] } },
+    { type: "calc", kicker: "The math", big: "Phone plan: worth it?", tokens: [{ t: "$800", c: "Phone" }, { t: "×" }, { t: "15%", c: "Chance of loss" }, { t: "=" }, { t: "$120", c: "Expected loss a year", hl: true }], note: "The plan costs $108 plus a $50 deductible when you claim. Close call, so read the exclusions." },
+    { type: "flags", tone: "dark", kicker: "Check before you buy", big: "Read the fine print.", items: ["What's excluded?", "What's the deductible?", "Who pays if it's stolen?", "What does it cost over a year?"] },
+    { type: "quiz", q: "What does a higher deductible usually do?", opts: ["Raises your premium", "Lowers your premium", "Cancels coverage"], a: 1, why: "You take on more of the first loss, so the insurer charges less." },
+    { type: "outro", tone: "acc", big: "Insure the disasters.", sub: "Save for the small stuff." }
+  ] },
+
+  "lesson-14": { title: "Fact or hype", art: "megaphone", scenes: [
+    { type: "title", tone: "dark", kicker: "Lesson 14", big: "“Turned $500 into $50,000 in a week.”", sub: "What do you check first?" },
+    { type: "flags", kicker: "How hype works", big: "Spot the tricks.", items: ["Fear of missing out", "Fake deadlines", "Screenshots as proof", "Confident voices, no evidence", "Only the winners show up"] },
+    { type: "steps", tone: "dark", kicker: "The incentive check", big: "Follow the money.", items: [{ h: "Who's talking?" }, { h: "How do they get paid?" }, { h: "What if they're wrong?" }] },
+    { type: "points", kicker: "Your filter", big: "Five questions.", items: ["Who says it, and what do they gain?", "Where's the real evidence?", "What's the risk?", "What's the time frame?", "What would a skeptic say?"] },
+    { type: "compare", kicker: "Spot the difference", big: "Hype vs. honest.", left: { h: "Honest", items: ["Names the risk", "Cites a source", "No guarantees"] }, right: { h: "Hype", items: ["'Guaranteed', 'no risk'", "Screenshots only", "Act now"] } },
+    { type: "quiz", q: "Which claim should worry you most?", opts: ["Diversifying can reduce risk", "Guaranteed 10x in a week", "Interest compounds over time"], a: 1, why: "Nobody can guarantee fast returns." },
+    { type: "outro", tone: "acc", big: "Slow down. Check.", sub: "Next: paying for college." }
+  ] },
+
+  "lesson-15": { title: "Paying for college", art: "cap", scenes: [
+    { type: "title", tone: "dark", kicker: "Lesson 15", big: "Almost nobody pays sticker price.", sub: "What matters is the net price." },
+    { type: "calc", kicker: "Net price", big: "What you really pay.", tokens: [{ t: "$30k", c: "Sticker price" }, { t: "−" }, { t: "$12k", c: "Grants and savings" }, { t: "=" }, { t: "$18k", c: "Net, per year", hl: true }] },
+    { type: "steps", kicker: "Ways to pay", big: "Best to worst.", items: [{ h: "Grants", p: "Free" }, { h: "Savings and work", p: "Yours" }, { h: "Federal loans", p: "Protections" }, { h: "Private loans", p: "Last resort" }] },
+    { type: "chart", tone: "dark", kicker: "A $20,000 loan at 6.5%", big: "Interest adds up.", sub: "Illustrative.", x0: "Borrowed", x1: "Repaid over 10 years", series: [{ name: "What you borrowed", v: [20000, 20000, 20000, 20000, 20000], end: "$20,000" }, { name: "What you repay", v: [20000, 21600, 23200, 24800, 27200], end: "≈ $27,200" }] },
+    { type: "points", kicker: "Smart moves", big: "Cut the bill.", items: ["Compare net prices", "Start at community college", "Look at trade programs", "Know your monthly payment"] },
+    { type: "quiz", q: "Which is usually the best way to pay?", opts: ["Private loans", "Grants and scholarships", "Credit cards"], a: 1, why: "Free money beats borrowed money." },
+    { type: "outro", tone: "acc", big: "Borrow on purpose.", sub: "Now go play the Arcade." }
+  ] },
+
+  /* ---------- Quick takes: 30-second explainers ---------- */
+  "quick-debit-credit": { title: "Debit vs. credit", art: "card", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "Same size. Very different cards.", sub: "30 seconds." },
+    { type: "compare", kicker: "The difference", big: "Whose money is it?", left: { h: "Debit", items: ["Your own money", "No interest", "Can't spend what you don't have"] }, right: { h: "Credit", items: ["The bank's money", "Interest if unpaid", "Builds a credit history"] } },
+    { type: "flags", tone: "dark", kicker: "The catch", big: "Credit costs if you carry a balance.", items: ["Pay the full balance monthly", "Never just the minimum", "Don't buy wants you can't afford"] },
+    { type: "quiz", q: "Whose money do you spend with a debit card?", opts: ["Yours", "The bank's", "The store's"], a: 0, why: "Debit pulls straight from your account." },
+    { type: "outro", tone: "acc", big: "Know whose money it is.", sub: "" }
+  ] },
+  "quick-emergency": { title: "The emergency fund", art: "piggy", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "The money you hope you never use.", sub: "30 seconds." },
+    { type: "steps", kicker: "How to build one", big: "Start small.", items: [{ h: "Start with $100" }, { h: "Aim for $500" }, { h: "Then 3 months of costs" }] },
+    { type: "compare", kicker: "What counts", big: "Emergency or not?", left: { h: "Emergency", items: ["Broken phone you need", "Surprise medical bill"] }, right: { h: "Not an emergency", items: ["A sale on sneakers", "Concert tickets"] } },
+    { type: "quiz", q: "Where should it live?", opts: ["A savings account you can reach", "Crypto", "Under your mattress"], a: 0, why: "Safe, separate and accessible." },
+    { type: "outro", tone: "acc", big: "Build your cushion.", sub: "" }
+  ] },
+  "quick-etf": { title: "What's an ETF?", art: "chart", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "One purchase. Hundreds of companies.", sub: "30 seconds." },
+    { type: "split", kicker: "A basket", big: "Own a little of everything.", parts: [["Company A", 34, "Tech"], ["Company B", 33, "Food"], ["Company C", 33, "Energy"]] },
+    { type: "compare", kicker: "Why it helps", big: "Spreads the risk.", left: { h: "One company", items: ["Big win or big loss"] }, right: { h: "An ETF", items: ["One falls, others cushion it"] } },
+    { type: "quiz", q: "Does an ETF remove all risk?", opts: ["Yes", "No, the whole market can fall"], a: 1, why: "It reduces single-company risk, not market risk." },
+    { type: "outro", tone: "acc", big: "Diversify.", sub: "" }
+  ] },
+  "quick-opportunity": { title: "Opportunity cost", art: "scale", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "Every yes is a no to something else.", sub: "30 seconds." },
+    { type: "calc", kicker: "$40 to spend", big: "Pick one.", tokens: [{ t: "$40", c: "Your money" }, { t: "=" }, { t: "A hoodie", c: "Option A" }, { t: "or" }, { t: "2 months of savings", c: "Option B", hl: true }] },
+    { type: "points", kicker: "Ask yourself", big: "Before you buy.", items: ["What else could this money do?", "Will I still care next week?", "What am I giving up?"] },
+    { type: "quiz", q: "Opportunity cost is…", opts: ["The price tag", "What you give up by choosing", "A fee"], a: 1, why: "The next-best thing you didn't do." },
+    { type: "outro", tone: "acc", big: "Choose on purpose.", sub: "" }
+  ] },
+  "quick-apr-apy": { title: "APR vs. APY", art: "percent", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "Two three-letter words. Opposite sides.", sub: "30 seconds." },
+    { type: "compare", kicker: "Which is which", big: "Pay vs. earn.", left: { h: "APR", items: ["The cost of borrowing", "You want it low"] }, right: { h: "APY", items: ["What savings earn, with compounding", "You want it high"] } },
+    { type: "calc", kicker: "Example", big: "$1,000 at 4% APY.", tokens: [{ t: "$1,000" }, { t: "×" }, { t: "1.04", c: "One year" }, { t: "=" }, { t: "$1,040", c: "After a year", hl: true }] },
+    { type: "quiz", q: "You'd rather see a high…", opts: ["APR on a loan", "APY on savings"], a: 1, why: "High APY pays you more. High APR costs you more." },
+    { type: "outro", tone: "acc", big: "Low APR. High APY.", sub: "" }
+  ] },
+  "quick-fact-hype": { title: "Spot the hype", art: "megaphone", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "If it sounds amazing, slow down.", sub: "30 seconds." },
+    { type: "flags", kicker: "Red flags", big: "Hype tells.", items: ["'Guaranteed' or 'no risk'", "Fast, huge returns", "Deadline pressure", "Screenshots, not sources"] },
+    { type: "steps", tone: "dark", kicker: "Do this", big: "Stop, check, ask.", items: [{ h: "Stop" }, { h: "Check the source" }, { h: "Ask an adult" }] },
+    { type: "quiz", q: "A real investment will…", opts: ["Guarantee profits", "Mention the risk"], a: 1, why: "All investing has risk." },
+    { type: "outro", tone: "acc", big: "Hype hides the risk.", sub: "" }
+  ] },
+  "quick-subscriptions": { title: "The subscription trap", art: "tag", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "$12 a month feels like nothing.", sub: "30 seconds." },
+    { type: "calc", kicker: "The real number", big: "Do the multiplication.", tokens: [{ t: "$12", c: "Per month" }, { t: "×" }, { t: "12", c: "Months" }, { t: "=" }, { t: "$144", c: "Per year", hl: true }] },
+    { type: "steps", kicker: "Fix it", big: "A 5-minute audit.", items: [{ h: "List every one" }, { h: "Total the year" }, { h: "Cancel what you forgot" }] },
+    { type: "quiz", q: "A $9 monthly plan costs about…", opts: ["$9 a year", "$108 a year", "$900 a year"], a: 1, why: "9 × 12 = 108." },
+    { type: "outro", tone: "acc", big: "Small leaks sink budgets.", sub: "" }
+  ] },
+  "quick-503020": { title: "The 50/30/20 rule", art: "plan", quick: true, scenes: [
+    { type: "title", tone: "dark", kicker: "Quick take", big: "A budget in one line.", sub: "30 seconds." },
+    { type: "split", kicker: "Split your money", big: "50 / 30 / 20.", parts: [["Needs", 50, "Bills, food, transport"], ["Wants", 30, "Fun, on purpose"], ["Savings", 20, "Goals and cushion"]] },
+    { type: "calc", kicker: "Example", big: "On $200 a month.", tokens: [{ t: "$100", c: "Needs" }, { t: "+" }, { t: "$60", c: "Wants" }, { t: "+" }, { t: "$40", c: "Savings", hl: true }] },
+    { type: "quiz", q: "What's 20% of $150?", opts: ["$20", "$30", "$50"], a: 1, why: "150 × 0.20 = 30." },
+    { type: "outro", tone: "acc", big: "Adjust it to your life.", sub: "" }
   ] }
+
 };

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Side hustles: revenue, costs and profit · Mintly</title>
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<script src="../theme.js"></script>
+</head>
+<body>
+
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <article class="lesson-body">
+    <div class="eyebrow">Financial Literacy · Lesson 12</div>
+    <h1>Side hustles: revenue, costs and profit</h1>
+    <p class="lesson-meta">About 14 minutes · a profit lab · Your answers are saved in this browser</p>
+
+    <div class="hook"><span>Quick story</span><p>You mow five lawns at $20 each and tell your friends you made $100. Then you remember the gas, the new trimmer line, and the app fee. How much did you actually keep? That gap between what comes in and what you keep is the most important number in any business.</p></div>
+
+    <p>A <strong>side hustle</strong> is any way of earning that's not a regular job: mowing lawns, tutoring, reselling, making things to sell, editing videos, walking dogs. It's one of the best ways to learn about money, because everything is real and the stakes are small.</p>
+
+    <h2>Revenue is not profit</h2>
+    <ul>
+      <li><strong>Revenue</strong> is all the money that comes in.</li>
+      <li><strong>Costs</strong> are everything you spend to earn it. <strong>Variable costs</strong> change with each sale (supplies, gas). <strong>Fixed costs</strong> stay the same (an app subscription, equipment you bought once).</li>
+      <li><strong>Profit</strong> is revenue minus costs. It's what you actually keep.</li>
+    </ul>
+
+    <h2>How to set a price</h2>
+    <p>Start with what it costs you to do the job, add a fair amount for your time, and then check what others charge. Too low and you're working for free. Too high and nobody buys. Ask: <em>what is an hour of my time worth, and what would the customer pay for this result?</em></p>
+
+    <h2>Try it: the profit lab</h2>
+    <div class="activity">
+      <div class="activity-label">Calculator</div>
+      <h3>Does your hustle actually make money?</h3>
+      <p>Change the numbers to see profit, what you earn per hour, and how many sales you need just to break even.</p>
+      <div class="calc-grid" style="grid-template-columns:repeat(2,1fr)">
+        <label class="split-field">Price per sale<span class="money-input">$<input id="sh-price" type="number" min="1" max="10000" step="1" inputmode="numeric" value="20"></span></label>
+        <label class="split-field">Sales per month<span class="money-input"><input id="sh-units" type="number" min="1" max="1000" step="1" inputmode="numeric" value="12"></span></label>
+        <label class="split-field">Supplies per sale<span class="money-input">$<input id="sh-var" type="number" min="0" max="1000" step="0.5" inputmode="decimal" value="4"></span></label>
+        <label class="split-field">Fixed costs per month<span class="money-input">$<input id="sh-fix" type="number" min="0" max="1000" step="1" inputmode="numeric" value="25"></span></label>
+        <label class="split-field">Hours per sale<span class="money-input"><input id="sh-hrs" type="number" min="0.25" max="40" step="0.25" inputmode="decimal" value="1.5"></span></label>
+      </div>
+      <div class="calc-results">
+        <div><span>Profit per month</span><b id="sh-profit">$0</b></div>
+        <div class="grow"><span>You earn per hour</span><b id="sh-hour">$0</b></div>
+        <div><span>Break-even sales</span><b id="sh-be">0</b></div>
+        <div><span>Revenue</span><b id="sh-rev">$0</b></div>
+      </div>
+      <p class="calc-note" id="sh-note"></p>
+    </div>
+
+    <div class="callout">
+      <strong>Leaf asks</strong>
+      If you raised your price by $3 and lost two customers, would you be better or worse off? Test it in the lab before you decide.
+    </div>
+
+    <h2>The grown-up stuff</h2>
+    <ul>
+      <li><strong>Keep records.</strong> Write down what you earn and spend. It makes profit obvious and makes taxes easy.</li>
+      <li><strong>Taxes.</strong> In the US, if you earn $400 or more in a year from self-employment you generally need to file a return and may owe self-employment tax. Rules change, so check current guidance or ask a parent.</li>
+      <li><strong>Stay safe.</strong> Work with a parent or guardian involved, don't share your home address with strangers online, and check a platform's age rules before you sign up.</li>
+      <li><strong>Reinvest a little.</strong> Putting some profit back into better supplies or marketing is how a hustle grows.</li>
+    </ul>
+
+
+    <div class="challenge"><div><b>Challenge</b><p>Running a hustle means telling needs from wants fast. Score 80+ in Budget Blitz.</p></div><a class="btn" href="../games.html?game=blitz">Play now</a></div>
+
+    <h2>Key words from this lesson</h2>
+    <dl class="vocab-list">
+      <div><dt>Revenue</dt><dd>All the money coming in.</dd></div>
+      <div><dt>Variable cost</dt><dd>A cost that changes with each sale.</dd></div>
+      <div><dt>Fixed cost</dt><dd>A cost that stays the same every month.</dd></div>
+      <div><dt>Profit</dt><dd>Revenue minus costs. What you keep.</dd></div>
+      <div><dt>Break-even</dt><dd>The point where revenue equals costs.</dd></div>
+      <div><dt>Margin</dt><dd>Profit as a share of the price.</dd></div>
+    </dl>
+
+    <h2>What's next</h2>
+    <p>You can now tell whether a hustle makes money. Next, protect what you've built from the unexpected. <a href="lesson-13.html"><strong>Go to Lesson 13 →</strong></a></p>
+  </article>
+
+  <section class="quiz">
+    <div class="quiz-box">
+      <h2>Quick check</h2>
+      <div class="quiz-question">1. You earn $120 and spend $45 on supplies. What's your profit?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">$165</button>
+        <button class="quiz-option" data-correct="true">$75</button>
+        <button class="quiz-option" data-correct="false">$45</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">2. Which is a fixed cost?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">Supplies for each order</button>
+        <button class="quiz-option" data-correct="true">A monthly app subscription</button>
+        <button class="quiz-option" data-correct="false">Gas for one trip</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">3. What does 'break-even' mean?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">Revenue equals costs</button>
+        <button class="quiz-option" data-correct="false">You made double your costs</button>
+        <button class="quiz-option" data-correct="false">You owe taxes</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">4. Why track what you earn and spend?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="true">It makes profit and taxes clear</button>
+        <button class="quiz-option" data-correct="false">It's required to have customers</button>
+        <button class="quiz-option" data-correct="false">It lowers prices</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+      <div class="quiz-question">5. A $10 item costs you $4 in supplies and 1 hour. What's your pay per hour before other costs?</div>
+      <div class="quiz-options" data-quiz>
+        <button class="quiz-option" data-correct="false">$4</button>
+        <button class="quiz-option" data-correct="true">$6</button>
+        <button class="quiz-option" data-correct="false">$10</button>
+      </div>
+      <div class="quiz-feedback"></div>
+
+    </div>
+  </section>
+
+  <div class="lesson-nav">
+    <a class="btn btn-secondary" href="financial-literacy.html">← All lessons</a>
+    <button class="btn" id="complete-btn">Mark lesson complete ✓</button>
+  </div>
+  <nav class="lesson-pager" aria-label="Lesson navigation">
+    <a class="prev" href="lesson-11.html">← Lesson 11: Inflation: why the same money buys less</a>
+    <a class="next" href="lesson-13.html">Lesson 13: Insurance: paying a little to dodge a big loss →</a>
+  </nav>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="../script.js"></script>
+<script src="../art.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => (n < 0 ? "-$" : "$") + Math.abs(Math.round(n * 100) / 100).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  function lab() {
+    const p = +$("sh-price").value || 0, u = +$("sh-units").value || 0, v = +$("sh-var").value || 0, f = +$("sh-fix").value || 0, h = +$("sh-hrs").value || 0.25;
+    const rev = p * u, profit = rev - v * u - f, perHour = u ? profit / (u * h) : 0, margin = p - v, be = margin > 0 ? Math.ceil(f / margin) : Infinity;
+    $("sh-profit").textContent = money(profit); $("sh-hour").textContent = money(perHour); $("sh-rev").textContent = money(rev);
+    $("sh-be").textContent = be === Infinity ? "never" : be;
+    $("sh-note").textContent = margin <= 0 ? "Each sale loses money before fixed costs. Raise the price or cut supplies." : profit < 0 ? "You're below break-even. You need " + be + " sales a month to cover costs." : "You clear " + money(profit) + " a month. " + (perHour < 8 ? "That's under a typical minimum wage per hour, so check your price." : "That's a decent hourly rate.");
+  }
+  ["sh-price", "sh-units", "sh-var", "sh-fix", "sh-hrs"].forEach((id) => $(id).addEventListener("input", lab));
+  lab();
+  Mintly.initLessonQuiz('lesson-12');
+</script>
+</body>
+</html>

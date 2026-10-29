@@ -4,10 +4,10 @@
 // Privacy by design: events are topics and activity only. Nothing a learner types is ever sent or stored,
 // and learners are pseudonymous (a random id kept in their own browser), not names or emails.
 
-export const TYPES = new Set(["page_view", "lesson_view", "lesson_complete", "quiz", "film_play", "leaf_topic", "explore_interest"]);
+export const TYPES = new Set(["page_view", "lesson_view", "lesson_complete", "quiz", "film_play", "leaf_topic", "explore_interest", "game"]);
 export const ROLES = new Set(["guest", "student", "parent", "teacher", "admin"]);
 export const CATS = ["basics", "budgeting", "saving", "banking", "borrowing", "investing", "crypto", "collectibles", "earning", "scams", "planning"];
-export const LESSON_CAT = { "lesson-1": "basics", "lesson-2": "budgeting", "lesson-3": "saving", "lesson-4": "banking", "lesson-5": "investing", "lesson-6": "borrowing", "lesson-7": "investing", "lesson-8": "earning", "lesson-9": "scams", "lesson-10": "planning" };
+export const LESSON_CAT = { "lesson-1": "basics", "lesson-2": "budgeting", "lesson-3": "saving", "lesson-4": "banking", "lesson-5": "investing", "lesson-6": "borrowing", "lesson-7": "investing", "lesson-8": "earning", "lesson-9": "scams", "lesson-10": "planning", "lesson-11": "basics", "lesson-12": "earning", "lesson-13": "planning", "lesson-14": "investing", "lesson-15": "borrowing" };
 export const LESSONS = Object.keys(LESSON_CAT);
 // how much each kind of activity says about what someone is interested in
 const WEIGHT = { lesson_view: 1, film_play: 1, lesson_complete: 3, leaf_topic: 3, explore_interest: 5 };

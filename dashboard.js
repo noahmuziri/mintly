@@ -50,42 +50,91 @@
   const SKILLS = [["Research", 82], ["Evidence", 76], ["Risk awareness", 68], ["Reasoning", 88]];
   const TREND = [58, 64, 61, 70, 74, 72, 79, 82];
   const TREND_L = ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"];
-  const ROSTER = [["Ava Thompson", 10, 91, "Evidence"], ["Noah Okafor", 8, 84, "Risk"], ["Mia Chen", 9, 88, "Risk"], ["Liam Patel", 6, 72, "Evidence"], ["Zoe Martin", 4, 61, "Risk"], ["Ethan Brooks", 8, 79, "Reasoning"], ["Isla Rivera", 2, 48, "Research"], ["Lucas Kim", 6, 70, "Risk"], ["Sofia Nguyen", 10, 93, "Reasoning"], ["Owen Hall", 4, 55, "Evidence"], ["Chloe Adams", 8, 82, "Risk"], ["Jack Diaz", 0, 39, "Research"]].map((r) => ({ name: r[0], done: r[1], score: r[2], weak: r[3] }));
+  const ROSTER = [["Ava Thompson", 15, 91, "Evidence"], ["Noah Okafor", 12, 84, "Risk"], ["Mia Chen", 14, 88, "Risk"], ["Liam Patel", 9, 72, "Evidence"], ["Zoe Martin", 6, 61, "Risk"], ["Ethan Brooks", 12, 79, "Reasoning"], ["Isla Rivera", 3, 48, "Research"], ["Lucas Kim", 9, 70, "Risk"], ["Sofia Nguyen", 15, 93, "Reasoning"], ["Owen Hall", 6, 55, "Evidence"], ["Chloe Adams", 12, 82, "Risk"], ["Jack Diaz", 0, 39, "Research"]].map((r) => ({ name: r[0], done: r[1], score: r[2], weak: r[3] }));
   const HEAT = [["Research", [88, 82, 79, 91, 74, 86]], ["Evidence", [72, 68, 74, 80, 61, 70]], ["Risk", [54, 49, 60, 58, 46, 52]], ["Reasoning", [80, 77, 84, 86, 70, 78]]];
-  const BADGES = [["First Look", "Open a lesson", () => st.done >= 0 && (st.quizTotal > 0 || st.done > 0), "1"], ["Quick Learner", "Finish a lesson", () => st.done >= 1, "Q"], ["On a Roll", "3 day streak", () => st.streak >= 3, "3"], ["Sharp Mind", "80%+ quiz accuracy", () => (st.accuracy || 0) >= 80, "S"], ["Halfway", "Finish 5 lessons", () => st.done >= 5, "H"], ["Graduate", "Finish the course", () => st.done >= st.total, "G"], ["Risk Spotter", "Name a risk in a decision", () => false, "R"], ["Devil's Advocate", "Ask Leaf for the case against", () => false, "D"]];
+  const BADGES = [["First Look", "Open a lesson", () => st.done >= 0 && (st.quizTotal > 0 || st.done > 0), "1"], ["Quick Learner", "Finish a lesson", () => st.done >= 1, "Q"], ["On a Roll", "3 day streak", () => st.streak >= 3, "3"], ["Sharp Mind", "80%+ quiz accuracy", () => (st.accuracy || 0) >= 80, "S"], ["Halfway", "Finish 5 lessons", () => st.done >= 5, "H"], ["Graduate", "Finish the course", () => st.done >= st.total, "G"], ["Arcade Rookie", "Play any game", () => Object.keys(Mintly.gameData().plays).length > 0, "A"], ["High Scorer", "Score 80+ in a game", () => Object.values(Mintly.gameData().best).some((v) => v >= 80), "H"], ["Daily Streaker", "Finish a daily challenge", () => Mintly.dailyChallenge().done, "T"], ["Risk Spotter", "Name a risk in a decision", () => false, "R"], ["Devil's Advocate", "Ask Leaf for the case against", () => false, "D"]];
   const STARTERS = ["What would make you wait instead of buy?", "Which article disagreed with you, and what did it say?", "If this dropped 20% tomorrow, what would you do?", "How did you decide what was a need and what was a want this week?"];
+
+
+  // ---------- Student overview, one layout per age style ----------
+  const dayISO = (n) => { const x = new Date(); x.setDate(x.getDate() - n); return x.toISOString().slice(0, 10); };
+  const flame = (n) => `<span class="flame">${ICON.flame}<b>${n}</b></span>`;
+
+  function questMap() {
+    const L = Mintly.LESSONS, cols = 5, next = Mintly.nextLesson().id;
+    const pos = L.map((l, i) => { const row = Math.floor(i / cols), c = i % cols, col = row % 2 ? cols - 1 - c : c; return { l, i, row, col }; });
+    const pts = pos.map((p) => `${((p.col + .5) / cols * 100).toFixed(1)},${((p.row + .5) / 3 * 60).toFixed(1)}`).join(" ");
+    return `<div class="quest"><svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="var(--border)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 3"/></svg>${pos.map((p) => {
+      const done = Mintly.isLessonComplete(p.l.id), cur = p.l.id === next, ok = Mintly.canAccess(p.l.id), cls = done ? "done" : cur ? "cur" : !ok ? "lock" : "open";
+      return `<a class="qn ${cls}" href="lessons/${p.l.id}.html" style="grid-column:${p.col + 1};grid-row:${p.row + 1}" title="${esc(p.l.title)}"><i>${done ? "✓" : !ok ? "🔒" : p.i + 1}</i><span>${cur ? "You are here" : esc(p.l.title.split(":")[0].split(" ").slice(0, 3).join(" "))}</span></a>`;
+    }).join("")}</div>`;
+  }
+
+  function ovExplorer() {
+    const dc = Mintly.dailyChallenge(), g = Mintly.gameData(), pct = Math.round(st.intoLevel / 150 * 100);
+    const shelf = BADGES.slice(0, 6).map((b) => `<div class="badge ${b[2]() ? "" : "locked"}" title="${esc(b[1])}"><i>${b[3]}</i>${esc(b[0])}</div>`).join("");
+    return `<div class="grid">
+      <section class="card hero-x c12"><div class="hx-av"><span>${esc((firstName || "M")[0])}</span><em>Lv ${st.level}</em></div><div class="hx-main"><div class="hx-row"><b>Level ${st.level}</b>${flame(st.streak)}<span class="pill">${st.xp} XP</span></div><div class="hx-bar"><i style="width:${pct}%"></i></div><p>${150 - st.intoLevel} XP to level ${st.level + 1}. Finish a lesson (+100) or play a game to get there.</p></div></section>
+      <section class="card c7 daily-x"><span class="dx-k">Today's challenge</span><h2>${esc(dc.text)}</h2><p>${dc.done ? "You did it! New challenge tomorrow." : "Worth +" + dc.xp + " bonus XP. Go on, you've got this."}</p><a class="btn" href="games.html?game=${dc.game}">${dc.done ? "Play again" : "Let's go"}</a></section>
+      <section class="card c5"><div class="card-h"><h3>Next up</h3></div><h3 style="font:700 24px var(--fh);margin:0 0 6px">${esc(Mintly.nextLesson().title)}</h3><p class="muted" style="margin:0 0 14px">${Mintly.nextLesson().mins} minutes. Starts with a short film.</p><a class="btn" href="lessons/${Mintly.nextLesson().id}.html">${st.done ? "Keep going" : "Start quest"}</a></section>
+      <section class="card c12"><div class="card-h"><h3>Your quest map</h3><span class="pill">${st.done} of ${st.total} done</span></div>${questMap()}</section>
+      <section class="card c7"><div class="card-h"><h3>Badges</h3><button class="link" data-gopage="badges">See all</button></div><div class="badges">${shelf}</div></section>
+      <section class="card c5"><div class="card-h"><h3>Arcade</h3><button class="link" data-gopage="arcade">Open</button></div><ul class="list">${[["hype", "Fact or Hype"], ["blitz", "Budget Blitz"], ["scam", "Scam Spotter"], ["month", "Money Month"]].map((x) => `<li><div class="tx"><b>${x[1]}</b><span>Best ${g.best[x[0]] || "–"}</span></div><a class="btn btn-secondary btn-small" href="games.html?game=${x[0]}">Play</a></li>`).join("")}</ul></section>
+    </div>`;
+  }
+
+  function ovBuilder() {
+    const next = Mintly.nextLesson(), pct = Math.round((st.done / st.total) * 100), dc = Mintly.dailyChallenge(), g = Mintly.gameData();
+    const goals = read("goals", [false, false, false]), days = new Set(Mintly.activeDays());
+    const G = ["Do a lesson today", "Play the daily challenge", "Ask Leaf one hard question"];
+    const auto = [days.has(dayISO(0)), dc.done, !!goals[2]];
+    const cal = Array.from({ length: 14 }, (_, i) => dayISO(13 - i)).map((x, i) => `<i class="${days.has(x) ? "on" : ""}${i === 13 ? " today" : ""}" title="${x}"></i>`).join("");
+    return `<div class="grid">
+      <section class="card hl c8"><div class="card-h"><h3 style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.8">${st.done ? "Continue learning" : "Start here"}</h3></div><h2 style="font-size:34px;font-weight:500;margin:0 0 6px;letter-spacing:-.02em">${esc(next.title)}</h2><p class="muted" style="margin:0 0 20px">Lesson ${Mintly.LESSON_IDS.indexOf(next.id) + 1} of ${st.total} &middot; ${next.mins} minutes</p><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="lessons/${next.id}.html">${st.done ? "Resume" : "Start lesson"} →</a><a class="btn btn-ghost" href="games.html">Open the Arcade</a></div></section>
+      <section class="card c4"><div class="card-h"><h3>Level ${st.level}</h3><span class="pill">${st.xp} XP</span></div><div class="row">${ring(Math.round((st.intoLevel / 150) * 100), st.level, "level")}<div><div class="stat-big">${150 - st.intoLevel}</div><div class="stat-sub">XP to level ${st.level + 1}</div></div></div></section>
+      <section class="card c4"><div class="card-h"><h3>Today's missions</h3><span class="pill">${auto.filter(Boolean).length}/3</span></div><ul class="list">${G.map((t, i) => `<li><label class="toggle"><input type="checkbox" data-goal="${i}" ${auto[i] ? "checked" : ""} ${i < 2 ? "disabled" : ""} aria-label="${t}"><i></i></label><div class="tx"><b>${t}</b></div></li>`).join("")}</ul></section>
+      <section class="card c4"><div class="card-h"><h3>Streak</h3>${flame(st.streak)}</div><div class="cal">${cal}</div><p class="stat-sub" style="margin:10px 0 0">Last 14 days. ${st.streak ? "Keep it going tomorrow." : "Do anything today to start one."}</p></section>
+      <section class="card c4"><div class="kpi"><span class="lbl">Course progress</span><div class="stat-big">${pct}%</div>${bar(pct)}<span class="stat-sub">${st.done} of ${st.total} lessons${st.accuracy === null ? "" : " · quiz accuracy " + st.accuracy + "%"}</span></div></section>
+      <section class="card c8"><div class="card-h"><h3>Decision Score over time</h3><span class="pill mute">Sample data</span></div>${line(TREND, 640, 200, TREND_L)}</section>
+      <section class="card c4"><div class="card-h"><h3>Your skills</h3><span class="pill mute">Sample data</span></div>${SKILLS.map((s) => skillRow(s[0], s[1])).join("")}</section>
+      <section class="card c12"><div class="card-h"><h3>Arcade bests</h3><button class="link" data-gopage="arcade">Open the Arcade</button></div><div class="row" style="gap:28px">${[["hype", "Fact or Hype"], ["blitz", "Budget Blitz"], ["scam", "Scam Spotter"], ["month", "Money Month"]].map((x) => `<div><div class="stat-big" style="font-size:34px">${g.best[x[0]] || "–"}</div><div class="stat-sub">${x[1]}</div></div>`).join("")}<div style="margin-left:auto"><a class="btn btn-secondary btn-small" href="games.html?game=${dc.game}">${dc.done ? "Daily done" : "Today: " + dc.text.replace("Score ", "").replace(" or more", "+")}</a></div></div></section>
+    </div>`;
+  }
+
+  function ovPro() {
+    const next = Mintly.nextLesson(), pct = Math.round((st.done / st.total) * 100), g = Mintly.gameData(), days = new Set(Mintly.activeDays()), dc = Mintly.dailyChallenge();
+    const weak = SKILLS.slice().sort((a, b) => a[1] - b[1])[0];
+    const cells = Array.from({ length: 16 * 7 }, (_, i) => { const x = dayISO(16 * 7 - 1 - i); return `<i class="${days.has(x) ? "on" : ""}" title="${x}"></i>`; }).join("");
+    const delta = [4, 2, 6, 1];
+    return `<div class="grid">
+      <section class="card c12 metric-strip"><div><span>XP</span><b>${st.xp}</b></div><div><span>Level</span><b>${st.level}</b></div><div><span>Streak</span><b>${st.streak}d</b></div><div><span>Lessons</span><b>${st.done}/${st.total}</b></div><div><span>Quiz accuracy</span><b>${st.accuracy === null ? "–" : st.accuracy + "%"}</b></div><div><span>Decision Score</span><b>82</b></div></section>
+      <section class="card c8"><div class="card-h"><h3>Decision Score</h3><span class="pill mute">Sample data</span></div>${line(TREND, 760, 240, TREND_L)}<table class="tbl" style="margin-top:8px"><thead><tr><th>Skill</th><th>Score</th><th>Change</th><th style="width:34%"></th></tr></thead><tbody>${SKILLS.map((s, i) => `<tr><td>${s[0]}</td><td><b>${s[1]}</b></td><td class="delta up">+${delta[i]}</td><td><div class="bar thin"><i data-w="${s[1]}"></i></div></td></tr>`).join("")}</tbody></table></section>
+      <section class="card c4"><div class="card-h"><h3>Recommended next</h3></div><ul class="list"><li><div class="tx"><b>${esc(next.title)}</b><span>Next lesson · ${next.mins} min</span></div><a class="btn btn-small" href="lessons/${next.id}.html">Open</a></li><li><div class="tx"><b>Strengthen ${weak[0].toLowerCase()}</b><span>Lowest skill at ${weak[1]}. Ask Leaf to challenge you on it.</span></div><button class="btn btn-secondary btn-small" data-gopage="leaf">Ask Leaf</button></li><li><div class="tx"><b>${esc(dc.text)}</b><span>${dc.done ? "Completed today" : "Daily challenge · +" + dc.xp + " XP"}</span></div><a class="btn btn-secondary btn-small" href="games.html?game=${dc.game}">Play</a></li></ul></section>
+      <section class="card c12"><div class="card-h"><h3>Activity, last 16 weeks</h3><span class="muted" style="font-size:13px">${days.size} active days</span></div><div class="heatmap">${cells}</div></section>
+      <section class="card c7"><div class="card-h"><h3>Lessons</h3><span class="pill">${pct}% complete</span></div><div class="table-wrap"><table class="tbl"><thead><tr><th>#</th><th>Lesson</th><th>Status</th><th>Quiz</th></tr></thead><tbody>${Mintly.LESSONS.map((l, i) => { const dn = Mintly.isLessonComplete(l.id), q = Mintly.quizResult(l.id), ok = Mintly.canAccess(l.id); return `<tr><td>${i + 1}</td><td><a href="lessons/${l.id}.html" style="font-weight:600">${esc(l.title)}</a></td><td><span class="pill ${dn ? "good" : ok ? "mute" : ""}">${dn ? "Done" : ok ? "Open" : "Locked"}</span></td><td>${q ? Math.round(q.c / q.t * 100) + "%" : "–"}</td></tr>`; }).join("")}</tbody></table></div></section>
+      <section class="card c5"><div class="card-h"><h3>Arcade</h3><button class="link" data-gopage="arcade">Open</button></div><table class="tbl"><thead><tr><th>Game</th><th>Best</th><th>Plays</th></tr></thead><tbody>${[["hype", "Fact or Hype"], ["blitz", "Budget Blitz"], ["scam", "Scam Spotter"], ["month", "Money Month"]].map((x) => `<tr><td>${x[1]}</td><td><b>${g.best[x[0]] || "–"}</b></td><td>${g.plays[x[0]] || 0}</td></tr>`).join("")}</tbody></table></section>
+    </div>`;
+  }
 
   // ---------- views ----------
   const VIEWS = {
     student: {
-      title: () => (firstName ? `Good to see you, ${esc(firstName)}.` : "Your learning dashboard"),
-      sub: () => (signedIn ? "Here is where you stand today." : "You're browsing as a guest. Your progress here is saved on this device. Sign in to keep it."),
-      nav: [["overview", "Overview", "home"], ["lessons", "Lessons", "book"], ["badges", "Badges", "award"], ["leaf", "Ask Leaf", "chat"]],
+      title: () => { const a = MintlyTheme.getAge(); return a === "explorer" ? (firstName ? `Hey ${esc(firstName)}! Ready to level up?` : "Ready to level up?") : a === "pro" ? "Overview" : (firstName ? `Good to see you, ${esc(firstName)}.` : "Your learning dashboard"); },
+      sub: () => { const a = MintlyTheme.getAge(); return a === "pro" ? `${signedIn ? esc(user.name) : "Guest"} · Level ${st.level} · ${st.xp} XP` : signedIn ? (a === "explorer" ? "Finish quests, play games, earn XP." : "Here is where you stand today.") : "You're browsing as a guest. Your progress here is saved on this device. Sign in to keep it."; },
+      nav: [["overview", "Overview", "home"], ["lessons", "Lessons", "book"], ["arcade", "Arcade", "grid"], ["badges", "Badges", "award"], ["leaf", "Ask Leaf", "chat"]],
       pages: {
-        overview() {
-          const next = Mintly.nextLesson(), pct = Math.round((st.done / st.total) * 100);
-          const goals = read("goals", [false, false, false]);
-          const G = ["Finish one lesson today", "Answer every quiz question", "Ask Leaf one hard question"];
-          return `<div class="grid">
-            <section class="card hl c8"><div class="card-h"><h3 style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.8">${st.done ? "Continue learning" : "Start here"}</h3></div>
-              <h2 style="font-size:34px;font-weight:500;margin:0 0 6px;letter-spacing:-.02em">${esc(next.title)}</h2><p class="muted" style="margin:0 0 20px">Lesson ${Mintly.LESSON_IDS.indexOf(next.id) + 1} of ${st.total} &middot; ${next.mins} minutes</p>
-              <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="lessons/${next.id}.html">${st.done ? "Resume" : "Start lesson"} →</a><a class="btn btn-ghost" href="simulation.html">Try a simulation</a></div></section>
-            <section class="card c4"><div class="card-h"><h3>Level ${st.level}</h3><span class="pill">${st.xp} XP</span></div><div class="row">${ring(Math.round((st.intoLevel / 150) * 100), st.level, "level")}<div><div class="stat-big">${150 - st.intoLevel}</div><div class="stat-sub">XP to level ${st.level + 1}</div></div></div></section>
-            <section class="card c3"><div class="kpi"><span class="lbl">Day streak</span><div class="stat-big">${st.streak}</div><span class="stat-sub">${st.streak ? "Keep it going tomorrow" : "Finish a quiz question to start one"}</span></div></section>
-            <section class="card c3"><div class="kpi"><span class="lbl">Course progress</span><div class="stat-big">${pct}%</div>${bar(pct)}<span class="stat-sub">${st.done} of ${st.total} lessons</span></div></section>
-            <section class="card c3"><div class="kpi"><span class="lbl">Quiz accuracy</span><div class="stat-big">${st.accuracy === null ? "&ndash;" : st.accuracy + "%"}</div><span class="stat-sub">${st.quizTotal ? st.quizCorrect + " of " + st.quizTotal + " correct" : "Take a quiz to see this"}</span></div></section>
-            <section class="card c3"><div class="kpi"><span class="lbl">Decision Score</span><div class="stat-big">82</div><span class="delta up">▲ 3 since last round</span><span class="stat-sub">Sample round</span></div></section>
-            <section class="card c8"><div class="card-h"><h3>Decision Score over time</h3><span class="pill mute">Sample data</span></div>${line(TREND, 640, 220, TREND_L)}</section>
-            <section class="card c4"><div class="card-h"><h3>Today's goals</h3></div><ul class="list">${G.map((g, i) => `<li><label class="toggle"><input type="checkbox" data-goal="${i}" ${goals[i] ? "checked" : ""} aria-label="${g}"><i></i></label><div class="tx"><b>${g}</b></div></li>`).join("")}</ul></section>
-            <section class="card c6"><div class="card-h"><h3>Your skills</h3><span class="pill mute">Sample data</span></div>${SKILLS.map((s) => skillRow(s[0], s[1])).join("")}</section>
-            <section class="card c6"><div class="card-h"><h3>Leaf suggests</h3></div><div style="display:flex;gap:14px;align-items:flex-start"><div class="art" style="width:56px;flex:none" data-art="leaf"></div><div><p class="quote">&ldquo;Your risk score is your lowest. Try naming the biggest downside before you decide.&rdquo;</p><a class="btn btn-secondary btn-small" href="leaf.html">Ask Leaf about it</a></div></div></section>
-          </div>`;
-        },
+        overview() { const a = MintlyTheme.getAge(); return a === "explorer" ? ovExplorer() : a === "pro" ? ovPro() : ovBuilder(); },
         lessons() {
-          return `<div class="card"><div class="card-h"><h3>Financial Literacy</h3><span class="pill">${st.done}/${st.total} complete</span></div><ul class="list">${Mintly.LESSONS.map((l, i) => {
-            const d = Mintly.isLessonComplete(l.id), q = Mintly.quizResult(l.id);
-            return `<li><div class="ic">${d ? ICON.check : i + 1}</div><div class="tx"><b>${esc(l.title)}</b><span>${l.mins} min${q ? ` &middot; quiz ${q.c}/${q.t}` : ""}</span></div><a class="btn ${d || !Mintly.canAccess(l.id) ? "btn-secondary" : ""} btn-small" href="lessons/${l.id}.html">${d ? "Review" : Mintly.canAccess(l.id) ? "Start" : "🔒 Unlock"}</a></li>`;
-          }).join("")}</ul></div>`;
+          const unitName = { 1: "Unit 1 · Foundations", 2: "Unit 2 · Real-world money", 3: "Unit 3 · Going further" };
+          return `<div class="card"><div class="card-h"><h3>Financial Literacy</h3><span class="pill">${st.done}/${st.total} complete</span></div>${[1, 2, 3].map((u) => `<div class="unit-h">${unitName[u]}</div><ul class="list">${Mintly.LESSONS.map((l, i) => ({ l, i })).filter(({ l }) => (l.unit || 1) === u).map(({ l, i }) => {
+            const dn = Mintly.isLessonComplete(l.id), q = Mintly.quizResult(l.id), ok = Mintly.canAccess(l.id);
+            return `<li><div class="ic">${dn ? ICON.check : i + 1}</div><div class="tx"><b>${esc(l.title)}</b><span>${l.mins} min${q ? ` &middot; quiz ${q.c}/${q.t}` : ""}</span></div><a class="btn ${dn || !ok ? "btn-secondary" : ""} btn-small" href="lessons/${l.id}.html">${dn ? "Review" : ok ? "Start" : "🔒 Unlock"}</a></li>`;
+          }).join("")}</ul>`).join("")}</div>`;
+        },
+        arcade() {
+          const g = Mintly.gameData(), dc = Mintly.dailyChallenge();
+          const G = [["hype", "Fact or Hype", "megaphone"], ["blitz", "Budget Blitz", "wallet"], ["scam", "Scam Spotter", "alert"], ["month", "Money Month", "calendar"]];
+          return `<div class="grid"><section class="card hl c12"><div class="row" style="justify-content:space-between;width:100%"><div><div class="stat-sub" style="text-transform:uppercase;letter-spacing:.1em;font-weight:700">Daily challenge</div><h2 style="font:500 30px var(--fh);margin:4px 0">${esc(dc.text)}</h2><p class="muted" style="margin:0">${dc.done ? "Done today. Back tomorrow for a new one." : "Worth +" + dc.xp + " bonus XP."}</p></div><a class="btn" href="games.html?game=${dc.game}">${dc.done ? "Play anyway" : "Play it"}</a></div></section>${G.map((x) => `<section class="card c3"><div class="art" data-art="${x[2]}" style="width:48px;margin-bottom:10px"></div><h3 style="font:600 20px var(--fh);margin:0 0 4px">${x[1]}</h3><p class="muted" style="margin:0 0 12px;font-size:13.5px">Best ${g.best[x[0]] || "–"} · played ${g.plays[x[0]] || 0}×</p><a class="btn btn-secondary btn-small" href="games.html?game=${x[0]}">Play</a></section>`).join("")}</div>`;
         },
         badges() {
           return `<div class="card"><div class="card-h"><h3>Badges</h3><span class="pill">${BADGES.filter((b) => b[2]()).length} of ${BADGES.length} earned</span></div><div class="badges">${BADGES.map((b) => `<div class="badge ${b[2]() ? "" : "locked"}" title="${esc(b[1])}"><i>${b[3]}</i>${esc(b[0])}<div class="muted" style="font-weight:400;font-size:11.5px;margin-top:2px">${esc(b[1])}</div></div>`).join("")}</div></div>`;
@@ -104,7 +153,7 @@
           return `<div class="grid">
             <section class="card c12" style="padding:14px 18px"><div class="row" style="justify-content:space-between"><div class="seg" role="group" aria-label="Choose a learner">${["Maya", "Eli"].map((n, i) => `<button type="button" data-kid="${i}" aria-pressed="${i === kid}">${n}</button>`).join("")}</div><span class="pill mute">Sample data</span></div></section>
             <section class="card c4"><div class="kpi"><span class="lbl">Reasoning score</span><div class="stat-big">${K[1]}</div><span class="delta up">▲ 4 this week</span></div></section>
-            <section class="card c4"><div class="kpi"><span class="lbl">Lessons this week</span><div class="stat-big">${K[3]}</div><span class="stat-sub">of 10 in the course</span></div></section>
+            <section class="card c4"><div class="kpi"><span class="lbl">Lessons this week</span><div class="stat-big">${K[3]}</div><span class="stat-sub">of 15 in the course</span></div></section>
             <section class="card c4"><div class="kpi"><span class="lbl">Time practising</span><div class="stat-big">${kid ? "52" : "74"} min</div><span class="stat-sub">Under the 90 minute limit you set</span></div></section>
             <section class="card c7"><div class="card-h"><h3>Activity this week</h3></div><div class="week-bars" style="height:150px">${K[2].map((x) => `<i style="height:${x}%"></i>`).join("")}</div><div class="week-labels">${"MTWTFSS".split("").map((d) => `<span>${d}</span>`).join("")}</div></section>
             <section class="card c5"><div class="card-h"><h3>What they did</h3></div><ol class="timeline"><li><b>Finished: needs vs. wants</b><span>Tuesday</span></li><li><b>Read both sides on AI chips</b><span>Wednesday</span></li><li><b>Named the downside before deciding</b><span>Friday</span></li></ol></section>
@@ -167,10 +216,10 @@
           const avg = Math.round(ROSTER.reduce((a, r) => a + r.score, 0) / ROSTER.length), behind = ROSTER.filter((r) => r.score < 60);
           return `<div class="grid">
             <section class="card c3"><div class="kpi"><span class="lbl">Class average</span><div class="stat-big">${avg}</div><span class="delta up">▲ 5 this month</span></div></section>
-            <section class="card c3"><div class="kpi"><span class="lbl">Unit complete</span><div class="stat-big">${Math.round(ROSTER.reduce((a, r) => a + r.done, 0) / (ROSTER.length * 10) * 100)}%</div>${bar(64)}</div></section>
+            <section class="card c3"><div class="kpi"><span class="lbl">Unit complete</span><div class="stat-big">${Math.round(ROSTER.reduce((a, r) => a + r.done, 0) / (ROSTER.length * 15) * 100)}%</div>${bar(64)}</div></section>
             <section class="card c3"><div class="kpi"><span class="lbl">Need support</span><div class="stat-big">${behind.length}</div><span class="stat-sub">scoring under 60</span></div></section>
             <section class="card c3"><div class="kpi"><span class="lbl">Due Friday</span><div class="stat-big">Quiz 3</div><span class="stat-sub">9 of 12 submitted</span></div></section>
-            <section class="card c7"><div class="card-h"><h3>Needs a conversation</h3><button class="link" data-goto="roster">Open roster</button></div><ul class="list">${behind.map((r) => `<li><div class="ic">${esc(r.name[0])}</div><div class="tx"><b>${esc(r.name)}</b><span>${r.done} of 10 lessons &middot; weakest in ${r.weak.toLowerCase()}</span></div><span class="pill warn">${r.score}</span></li>`).join("")}</ul></section>
+            <section class="card c7"><div class="card-h"><h3>Needs a conversation</h3><button class="link" data-goto="roster">Open roster</button></div><ul class="list">${behind.map((r) => `<li><div class="ic">${esc(r.name[0])}</div><div class="tx"><b>${esc(r.name)}</b><span>${r.done} of 15 lessons &middot; weakest in ${r.weak.toLowerCase()}</span></div><span class="pill warn">${r.score}</span></li>`).join("")}</ul></section>
             <section class="card c5"><div class="card-h"><h3>Class insight</h3></div><div class="art" data-art="target" style="width:64px;margin-bottom:10px"></div><p class="quote">&ldquo;Risk awareness is the weakest skill across the class. Try a risk-first warm-up on Monday.&rdquo;</p><button class="btn btn-secondary btn-small" data-goto="assign">Assign a risk lesson</button></section>
           </div>`;
         },
@@ -299,7 +348,7 @@
     function showPaywall() {
       if ($(".lc-paywall", path)) return scroll();
       const p = document.createElement("div"); p.className = "lc-paywall";
-      p.innerHTML = '<h3>That was your three free questions.</h3><p>Members get unlimited chats with Leaf, plus all ten lessons, their films and the dashboards.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn" href="pricing.html?from=leaf">See plans</a><a class="btn btn-secondary" href="signin.html">I have an account</a></div>';
+      p.innerHTML = '<h3>That was your three free questions.</h3><p>Members get unlimited chats with Leaf, plus all fifteen lessons, their films and the dashboards.</p><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn" href="pricing.html?from=leaf">See plans</a><a class="btn btn-secondary" href="signin.html">I have an account</a></div>';
       path.appendChild(p); scroll();
     }
     function send(text, intent) {
@@ -379,7 +428,7 @@
       const l = data.learners.find((x) => x.uid === sel.u); if (!l) return;
       const ent = Object.entries(l.interests).sort((a, b) => b[1] - a[1]), mx = ent.length ? ent[0][1] : 1;
       sideH.textContent = "Learner " + l.uid.slice(-6);
-      side.innerHTML = `<p class="muted" style="margin:0 0 12px;font-size:13.5px">${esc(l.role)}${l.plan ? " · " + esc(l.plan) + " plan" : " · free"} · ${l.events} events · last seen ${ago(l.lastSeen)}</p>` + ent.map(([c, v]) => `<div class="skill" style="grid-template-columns:86px 1fr 28px"><span>${catName(c)}</span><div class="bar thin"><i style="width:${Math.round(v / mx * 100)}%;background:${CAT_COLORS[c]}"></i></div><span>${v}</span></div>`).join("") + `<p class="muted" style="margin:12px 0 4px;font-size:13px">Lessons finished: <b style="color:var(--ink)">${l.completed}</b> of 10</p>`;
+      side.innerHTML = `<p class="muted" style="margin:0 0 12px;font-size:13.5px">${esc(l.role)}${l.plan ? " · " + esc(l.plan) + " plan" : " · free"} · ${l.events} events · last seen ${ago(l.lastSeen)}</p>` + ent.map(([c, v]) => `<div class="skill" style="grid-template-columns:86px 1fr 28px"><span>${catName(c)}</span><div class="bar thin"><i style="width:${Math.round(v / mx * 100)}%;background:${CAT_COLORS[c]}"></i></div><span>${v}</span></div>`).join("") + `<p class="muted" style="margin:12px 0 4px;font-size:13px">Lessons finished: <b style="color:var(--ink)">${l.completed}</b> of 15</p>`;
     });
     overall();
     $("#ins-connect", root).addEventListener("click", () => { sessionStorage.setItem("mintly:adminkey", $("#ins-key", root).value.trim()); loadInsights(root.parentNode.parentNode || root); });
@@ -423,7 +472,7 @@
     if (!page || !v.pages[page]) page = v.nav[0][0];
     renderSide();
     const main = $("#dash-main");
-    main.innerHTML = `<div class="dash-top"><div><h1>${v.title()}</h1><p>${v.sub()}</p></div><div class="dash-actions"><div class="seg" role="group" aria-label="View as">${(isAdmin ? ["admin", "student", "parent", "teacher"] : ["student", "parent", "teacher"]).map((r) => `<button type="button" data-role="${r}" aria-pressed="${r === role}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</div></div></div><div id="view" class="tabs-p on">${v.pages[page]()}</div>`;
+    main.innerHTML = `<div class="dash-top"><div><h1>${v.title()}</h1><p>${v.sub()}</p></div><div class="dash-actions">${role === "student" ? `<div class="seg" role="group" aria-label="Age style">${[["explorer", "13–14"], ["builder", "15–16"], ["pro", "17–18"]].map((x) => `<button type="button" data-agebtn="${x[0]}" aria-pressed="${MintlyTheme.getAge() === x[0]}">${x[1]}</button>`).join("")}</div>` : ""}<div class="seg" role="group" aria-label="View as">${(isAdmin ? ["admin", "student", "parent", "teacher"] : ["student", "parent", "teacher"]).map((r) => `<button type="button" data-role="${r}" aria-pressed="${r === role}">${r[0].toUpperCase() + r.slice(1)}</button>`).join("")}</div></div></div><div id="view" class="tabs-p on">${v.pages[page]()}</div>`;
     document.title = (v.nav.find((n) => n[0] === page) || [0, "Dashboard"])[1] + " · Mintly";
     MintlyArt.mount(); animate(main); wire(main);
     if (!first) main.focus({ preventScroll: true });
@@ -431,6 +480,8 @@
 
   function wire(main) {
     $$("[data-goal]", main).forEach((c) => c.addEventListener("change", () => { const g = read("goals", [false, false, false]); g[c.dataset.goal] = c.checked; write("goals", g); if (g.every(Boolean)) { Mintly.confetti(60); Mintly.toast("All goals done. Nice."); } }));
+    $$("[data-gopage]", main).forEach((b) => b.addEventListener("click", () => { page = b.dataset.gopage; render(); }));
+    $$("[data-agebtn]", main).forEach((b) => b.addEventListener("click", () => MintlyTheme.setAge(b.dataset.agebtn)));
     $$("[data-kid]", main).forEach((b) => b.addEventListener("click", () => { write("kid", +b.dataset.kid); render(); }));
     $$("[data-copy]", main).forEach((b) => b.addEventListener("click", () => { (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.copy) : Promise.reject()).catch(() => {}); Mintly.toast("Copied. Try it at dinner."); }));
     $$("[data-goto]", main).forEach((b) => b.addEventListener("click", () => { page = b.dataset.goto; render(); }));
@@ -458,7 +509,7 @@
       let key = "score", dir = -1, filter = "all", q = "";
       const paint = () => {
         const rows = ROSTER.filter((r) => (filter === "all" || r.score < 60) && r.name.toLowerCase().includes(q)).sort((a, b) => (typeof a[key] === "string" ? a[key].localeCompare(b[key]) : a[key] - b[key]) * dir);
-        $("tbody", table).innerHTML = rows.map((r) => `<tr><td><div class="nm"><span class="avatar">${esc(r.name[0])}</span>${esc(r.name)}</div></td><td>${r.done}/10</td><td><div style="display:flex;gap:10px;align-items:center"><div class="bar"><i style="width:${r.score}%"></i></div><b>${r.score}</b></div></td><td><span class="pill ${r.score < 60 ? "warn" : ""}">${r.weak}</span></td></tr>`).join("") || `<tr><td colspan="4" class="muted">No students match.</td></tr>`;
+        $("tbody", table).innerHTML = rows.map((r) => `<tr><td><div class="nm"><span class="avatar">${esc(r.name[0])}</span>${esc(r.name)}</div></td><td>${r.done}/15</td><td><div style="display:flex;gap:10px;align-items:center"><div class="bar"><i style="width:${r.score}%"></i></div><b>${r.score}</b></div></td><td><span class="pill ${r.score < 60 ? "warn" : ""}">${r.weak}</span></td></tr>`).join("") || `<tr><td colspan="4" class="muted">No students match.</td></tr>`;
         $$("th", table).forEach((th) => { if (th.dataset.c === key) th.setAttribute("aria-sort", dir > 0 ? "ascending" : "descending"); else th.removeAttribute("aria-sort"); });
       };
       $$("th", table).forEach((th) => th.addEventListener("click", () => { dir = key === th.dataset.c ? -dir : 1; key = th.dataset.c; paint(); }));
@@ -474,5 +525,6 @@
     else if (p) { page = p.dataset.page; render(); }
   });
 
+  document.addEventListener("mintly:age", () => { if (role === "student") render(); });
   render(true);
 })();
