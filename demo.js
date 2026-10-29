@@ -241,7 +241,7 @@
     requestAnimationFrame(loop);
   }
 
-  function setState(s) { state = s; film.dataset.state = s; film.classList.toggle("paused", s === "paused"); document.getElementById("b-play").setAttribute("aria-label", s === "paused" ? "Play" : "Pause"); }
+  function setState(s) { state = s; film.dataset.state = s; if (window.MintlyMusic) MintlyMusic.sync(film, s, { lively: true }); film.classList.toggle("paused", s === "paused"); document.getElementById("b-play").setAttribute("aria-label", s === "paused" ? "Play" : "Pause"); }
   function goTo(i, ms) { if (state === "idle" || state === "done") setState("playing"); enter(i, ms); }
   function start() { setState("playing"); enter(0); }
   function toggle() { if (state === "playing") setState("paused"); else if (state === "paused") setState("playing"); }
