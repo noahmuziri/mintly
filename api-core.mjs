@@ -196,6 +196,93 @@ async function accountRoutes(request, p, { store, now, selfPlan }) {
   return null;
 }
 
+
+// ---------------------------------------------------------------- classes and family links
+// Students choose who sees their progress: they join a class with a teacher's code, or hand a parent a code.
+// Teachers and parents get a summary of numbers only. Chats and typed work are never part of it.
+const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const newCode = (n = 6) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (b) => CODE_CHARS[b % CODE_CHARS.length]).join("");
+const opaque = async (email) => (await sha256("mintly-link:" + email)).slice(0, 10);
+const isoDay = (d) => d.toISOString().slice(0, 10);
+
+export function summarizeUser(email, data, now = Date.now()) {
+  const kv = (data && data.kv) || {};
+  let done = 0, qc = 0, qt = 0;
+  for (const id of LESSONS) {
+    if (kv[`mintly:completed:${email}:${id}`] === "true") done++;
+    try { const q = JSON.parse(kv[`mintly:quiz:${email}:${id}`] || "null"); if (q && q.t) { qc += +q.c || 0; qt += +q.t || 0; } } catch (e) {}
+  }
+  let days = []; try { days = JSON.parse(kv[`mintly:days:${email}`] || "[]"); } catch (e) {}
+  days = (Array.isArray(days) ? days : []).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort();
+  const set = new Set(days), d = new Date(now); let streak = 0;
+  if (!set.has(isoDay(d))) d.setUTCDate(d.getUTCDate() - 1);
+  while (set.has(isoDay(d))) { streak++; d.setUTCDate(d.getUTCDate() - 1); }
+  const xp = done * 100 + qc * 10 + (+kv[`mintly:bonusxp:${email}`] || 0);
+  return { lessonsDone: done, lessonsTotal: LESSONS.length, quizAccuracy: qt ? Math.round((qc / qt) * 100) : null, xp, level: Math.floor(xp / 150) + 1, streak, lastActive: days.length ? days[days.length - 1] : null, days: days.slice(-30) };
+}
+
+async function sharedRoutes(request, p, { store, now }) {
+  const isGet = request.method === "GET";
+  const body = isGet ? {} : await request.json().catch(() => ({}));
+  const a = await authed(request, store, now, body.token); if (!a) return json({ error: "unauthorized" }, 401);
+  const me = a.user, role = me.role;
+  const summaryOf = async (u) => ({ name: u.name, ...summarizeUser(u.email, await store.getData(u.email), now) });
+
+  if (p === "/api/classes" && isGet) {
+    if (role !== "teacher") return json({ error: "Only teachers have classes." }, 403);
+    const out = [];
+    for (const c of await store.classesByTeacher(me.email)) {
+      const students = [];
+      for (const em of await store.classMembers(c.code)) { const u = await store.getUser(em); if (u) students.push(await summaryOf(u)); }
+      out.push({ code: c.code, name: c.name, created: c.created, students });
+    }
+    return json({ classes: out });
+  }
+  if (p === "/api/classes" && request.method === "POST") {
+    if (role !== "teacher") return json({ error: "Only teachers can create classes." }, 403);
+    const name = String(body.name || "").trim().slice(0, 60); if (!name) return json({ error: "Give the class a name." }, 400);
+    if ((await store.classesByTeacher(me.email)).length >= 12) return json({ error: "That's the limit of 12 classes." }, 400);
+    for (let i = 0; i < 6; i++) { const code = newCode(6); if (!(await store.getClass(code))) { await store.createClass({ code, name, teacher: me.email, created: now }); return json({ code, name }); } }
+    return json({ error: "Couldn't make a code. Try again." }, 500);
+  }
+  if (p === "/api/classes/join" && request.method === "POST") {
+    if (role !== "student") return json({ error: "Only students join classes." }, 403);
+    const code = String(body.code || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, ""), c = code && (await store.getClass(code));
+    if (!c) return json({ error: "That code doesn't match a class. Check it with your teacher." }, 404);
+    await store.joinClass(code, me.email, now); const t = await store.getUser(c.teacher);
+    return json({ ok: true, name: c.name, teacher: t ? t.name : "your teacher" });
+  }
+  if (p === "/api/classes/leave" && request.method === "POST") { await store.leaveClass(String(body.code || "").toUpperCase(), me.email); return json({ ok: true }); }
+  if (p === "/api/my/classes" && isGet) {
+    const out = []; for (const c of await store.classesOfStudent(me.email)) { const t = await store.getUser(c.teacher); out.push({ code: c.code, name: c.name, teacher: t ? t.name : "" }); }
+    return json({ classes: out });
+  }
+  if (p === "/api/links/code" && request.method === "POST") {
+    if (role !== "student") return json({ error: "Only students can make a parent code." }, 403);
+    let code = await store.getParentCode(me.email);
+    if (!code || body.fresh) { for (let i = 0; i < 6; i++) { const c = newCode(8); if (!(await store.studentByParentCode(c))) { code = c; await store.putParentCode(me.email, c); break; } } }
+    return json({ code });
+  }
+  if (p === "/api/links/join" && request.method === "POST") {
+    if (role !== "parent") return json({ error: "Only parent accounts link to a teen." }, 403);
+    const code = String(body.code || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, ""), st = code && (await store.studentByParentCode(code));
+    const u = st && (await store.getUser(st));
+    if (!u) return json({ error: "That code doesn't match anyone. Ask your teen for a fresh one." }, 404);
+    await store.linkParent(me.email, u.email, now); return json({ ok: true, name: u.name });
+  }
+  if (p === "/api/links" && isGet) {
+    if (role === "parent") { const kids = []; for (const em of await store.childrenOfParent(me.email)) { const u = await store.getUser(em); if (u) kids.push({ id: await opaque(u.email), ...(await summaryOf(u)) }); } return json({ children: kids }); }
+    const ps = []; for (const em of await store.parentsOfStudent(me.email)) { const u = await store.getUser(em); if (u) ps.push({ id: await opaque(u.email), name: u.name }); } return json({ parents: ps });
+  }
+  if (p === "/api/links/unlink" && request.method === "POST") {
+    const id = String(body.id || "");
+    if (role === "parent") { for (const em of await store.childrenOfParent(me.email)) if ((await opaque(em)) === id) await store.unlinkParent(me.email, em); }
+    else for (const em of await store.parentsOfStudent(me.email)) if ((await opaque(em)) === id) await store.unlinkParent(em, me.email);
+    return json({ ok: true });
+  }
+  return null;
+}
+
 // ---------------------------------------------------------------- HTTP handler
 function safeEqual(a, b) {
   a = String(a); b = String(b);
@@ -210,6 +297,7 @@ export async function handle(request, { store, adminKey, now = Date.now(), selfP
   const url = new URL(request.url), p = url.pathname;
   if (!p.startsWith("/api/")) return null;
   if (p === "/api/health") return json({ backend: true, accounts: true });
+  if (p.startsWith("/api/classes") || p.startsWith("/api/my/") || p.startsWith("/api/links")) { const r = await sharedRoutes(request, p, { store, now }); if (r) return r; }
   if (p.startsWith("/api/auth/") || p === "/api/me" || p === "/api/data") { const r = await accountRoutes(request, p, { store, now, selfPlan }); if (r) return r; }
   if (p === "/api/events" && request.method === "POST") {
     let body; try { body = JSON.parse(await request.text()); } catch (e) { return json({ error: "bad json" }, 400); }

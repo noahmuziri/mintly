@@ -41,6 +41,9 @@ const TYPES = {
   ".js": "text/javascript",
   ".json": "application/json",
   ".mjs": "text/javascript",
+  ".webmanifest": "application/manifest+json",
+  ".txt": "text/plain",
+  ".md": "text/plain",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -198,14 +201,30 @@ const jsonFile = (name) => ({
   read() { try { return JSON.parse(fs.readFileSync(path.join(DATA_DIR, name), "utf8")); } catch (e) { return {}; } },
   write(o) { fs.mkdirSync(DATA_DIR, { recursive: true }); fs.writeFileSync(path.join(DATA_DIR, name), JSON.stringify(o)); },
 });
-const F = { users: jsonFile("users.json"), sessions: jsonFile("sessions.json"), data: jsonFile("userdata.json") };
+const F = { users: jsonFile("users.json"), sessions: jsonFile("sessions.json"), data: jsonFile("userdata.json"), classes: jsonFile("classes.json"), links: jsonFile("links.json") };
 Object.assign(fileStore, {
   async getUser(email) { return F.users.read()[email] || null; },
   async putUser(u) { const o = F.users.read(); o[u.email] = u; F.users.write(o); },
   async deleteUser(email) {
     for (const [f, filter] of [[F.users, (k) => k === email], [F.data, (k) => k === email]]) { const o = f.read(); for (const k of Object.keys(o)) if (filter(k)) delete o[k]; f.write(o); }
     const s = F.sessions.read(); for (const k of Object.keys(s)) if (s[k].email === email) delete s[k]; F.sessions.write(s);
+    const cl = F.classes.read(); for (const k of Object.keys(cl)) { if (cl[k].teacher === email) delete cl[k]; else cl[k].members = cl[k].members.filter((x) => x !== email); } F.classes.write(cl);
+    const lk = F.links.read(); if (lk.codes) delete lk.codes[email]; lk.pairs = (lk.pairs || []).filter((x) => x[0] !== email && x[1] !== email); F.links.write(lk);
   },
+  async createClass(c) { const o = F.classes.read(); o[c.code] = { ...c, members: [] }; F.classes.write(o); },
+  async getClass(code) { const c = F.classes.read()[code]; return c ? { code, name: c.name, teacher: c.teacher, created: c.created } : null; },
+  async classesByTeacher(t) { return Object.entries(F.classes.read()).filter(([, c]) => c.teacher === t).map(([code, c]) => ({ code, name: c.name, teacher: c.teacher, created: c.created })); },
+  async classMembers(code) { const c = F.classes.read()[code]; return c ? c.members : []; },
+  async joinClass(code, s) { const o = F.classes.read(); if (o[code] && !o[code].members.includes(s)) o[code].members.push(s); F.classes.write(o); },
+  async leaveClass(code, s) { const o = F.classes.read(); if (o[code]) o[code].members = o[code].members.filter((x) => x !== s); F.classes.write(o); },
+  async classesOfStudent(s) { return Object.entries(F.classes.read()).filter(([, c]) => c.members.includes(s)).map(([code, c]) => ({ code, name: c.name, teacher: c.teacher })); },
+  async getParentCode(s) { return (F.links.read().codes || {})[s] || null; },
+  async putParentCode(s, code) { const o = F.links.read(); o.codes = o.codes || {}; o.codes[s] = code; F.links.write(o); },
+  async studentByParentCode(code) { const c = F.links.read().codes || {}; return Object.keys(c).find((k) => c[k] === code) || null; },
+  async linkParent(p, s) { const o = F.links.read(); o.pairs = o.pairs || []; if (!o.pairs.some((x) => x[0] === p && x[1] === s)) o.pairs.push([p, s]); F.links.write(o); },
+  async childrenOfParent(p) { return ((F.links.read().pairs) || []).filter((x) => x[0] === p).map((x) => x[1]); },
+  async parentsOfStudent(s) { return ((F.links.read().pairs) || []).filter((x) => x[1] === s).map((x) => x[0]); },
+  async unlinkParent(p, s) { const o = F.links.read(); o.pairs = (o.pairs || []).filter((x) => !(x[0] === p && x[1] === s)); F.links.write(o); },
   async putSession(h, email, exp) { const o = F.sessions.read(); o[h] = { email, exp }; F.sessions.write(o); },
   async getSession(h) { return F.sessions.read()[h] || null; },
   async delSession(h) { const o = F.sessions.read(); delete o[h]; F.sessions.write(o); },

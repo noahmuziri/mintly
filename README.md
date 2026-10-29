@@ -84,3 +84,8 @@ Password for all: `mintly-demo`
 | Admin | `admin@mintly.demo` |
 
 These live in `script.js` and are front-end only, so they are not secure. Replace them with real authentication before launch.
+
+## Before you go live
+
+- Replace the relative `og:image` / `twitter:image` paths with absolute URLs on your domain (social sites need absolute URLs), and add a `sitemap.xml` and the `Sitemap:` line in `robots.txt`.
+- The app is installable on phones (`manifest.webmanifest`, icons in `assets/`).

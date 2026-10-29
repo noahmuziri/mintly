@@ -30,6 +30,14 @@ Signed-in learners now have real server accounts, and everything they do is save
 
 The admin **Accounts** tab also lists real server accounts once you've entered your admin key on the Insights tab.
 
+## Classes and family links (real teacher and parent dashboards)
+
+- A **teacher** account creates a class and gets a 6-character code. A **student** enters it under *Sharing* on their dashboard to join. The teacher's dashboard then shows the real roster.
+- A student can make a **parent code**. A **parent** account enters it to link, and sees that teen's progress.
+- Students are always the ones who opt in, and can leave or stop sharing at any time. What teachers and parents see is a numbers-only summary computed on the server (lessons finished, quiz accuracy, XP, streak, last active day). Chats and typed work are never included.
+- Guests and the demo accounts still see clearly-labelled sample data in the teacher and parent views.
+- For schools: using this with students under 13, or inside a district, usually needs school or parental consent and a data-processing agreement (COPPA, FERPA). Get that reviewed before a classroom rollout.
+
 ## How it fits together
 
 - `api-core.mjs`: the logic (validation, interest scoring, graph data). Runs in the Worker, the dev server and the browser (for sample data).

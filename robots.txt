@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard.html
+Disallow: /signin.html
+
+# Add your sitemap once you have a domain:
+# Sitemap: https://YOUR-DOMAIN/sitemap.xml
