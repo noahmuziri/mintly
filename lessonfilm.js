@@ -3,6 +3,8 @@
    fullscreen. Scenes run on a pausable clock and animate with transforms only, so they stay smooth.
    Scene types: title, points, compare, steps, calc, chart, split, stat, flags, quiz, outro. */
 (function () {
+  const SRC = document.currentScript && document.currentScript.src;
+  if (!window.MintlyMusic && SRC) { const m = document.createElement("script"); m.src = SRC.replace(/lessonfilm\.js.*$/, "music.js"); document.head.appendChild(m); }
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const ease = (p) => 1 - Math.pow(1 - p, 3);
   const SPEED = 1.1;
@@ -59,7 +61,7 @@
     const total = rendered.reduce((a, r) => a + r.dur, 0) / SPEED;
     host.innerHTML = `<div class="lf-stage"></div><div class="lf-wipe"></div>
       <button class="lf-poster" type="button" aria-label="Play video: ${esc(spec.title)}"><div class="lf-art">${art(spec.art || "book")}</div><span class="lf-ptag">Video · ${fmt(total)}</span><strong>${esc(spec.title)}</strong><span class="lf-playbtn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 4.5v15l12-7.5Z"/></svg></span></button>
-      <div class="lf-ctl"><button type="button" class="lf-b" data-a="play" aria-label="Pause"><svg class="ip" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4.5v15l12-7.500Z"/></svg><svg class="iz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M8 5v14M16 5v14"/></svg></button><div class="lf-segs"></div><span class="lf-time">0:00</span><button type="button" class="lf-b" data-a="replay" aria-label="Replay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg></button><button type="button" class="lf-b" data-a="full" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>`;
+      <div class="lf-ctl"><button type="button" class="lf-b" data-a="play" aria-label="Pause"><svg class="ip" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4.5v15l12-7.500Z"/></svg><svg class="iz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M8 5v14M16 5v14"/></svg></button><div class="lf-segs"></div><span class="lf-time">0:00</span><button type="button" class="lf-b" data-music-toggle aria-label="Turn music off" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/><path class="slash" d="M3 3l18 18"/></svg></button><button type="button" class="lf-b" data-a="replay" aria-label="Replay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg></button><button type="button" class="lf-b" data-a="full" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>`;
     host.dataset.state = "idle";
     const stage = host.querySelector(".lf-stage"), wipe = host.querySelector(".lf-wipe"), segsEl = host.querySelector(".lf-segs"), timeEl = host.querySelector(".lf-time"), playB = host.querySelector('[data-a="play"]');
     let idx = -1, st = 0, state = "idle", last = 0, cur = null, ctx = null, elapsedBefore = 0, visible = true;
@@ -79,7 +81,7 @@
       elapsedBefore = rendered.slice(0, i).reduce((a, x) => a + x.dur, 0);
       segsEl.querySelectorAll("button").forEach((b, k) => b.style.setProperty("--p", k < i ? "100%" : "0%"));
     }
-    function setState(s) { state = s; host.dataset.state = s; playB.setAttribute("aria-label", s === "playing" ? "Pause" : "Play"); }
+    function setState(s) { state = s; host.dataset.state = s; if (window.MintlyMusic) MintlyMusic.sync(host, s, { key: spec.title });  playB.setAttribute("aria-label", s === "playing" ? "Pause" : "Play"); }
     function goTo(i) { if (state === "idle" || state === "done") { setState("playing"); } enter(i); if (state === "paused") setState("playing"); }
     function toggle() { if (state === "playing") setState("paused"); else if (state === "paused") setState("playing"); else if (state === "idle" || state === "done") { setState("playing"); enter(0); } }
     function tick(ts) {
