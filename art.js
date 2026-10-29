@@ -11,7 +11,7 @@
     <pattern id="m-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(38)"><line x1="0" y1="0" x2="0" y2="7" stroke="${INK}" stroke-width="1.1" opacity=".28"/></pattern>
   </defs></svg>`;
 
-  const wrap = (vb, body, label) => `<svg viewBox="${vb}" role="img" aria-label="${label}" xmlns="http://www.w3.org/2000/svg"><g filter="url(#m-rough)">${body}</g></svg>`;
+  const wrap = (vb, body, label) => `<svg viewBox="${vb}" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true" focusable="false"'} xmlns="http://www.w3.org/2000/svg"><g filter="url(#m-rough)">${body}</g></svg>`;
 
   // shared pieces ----------------------------------------------------------------------------------
   const hill = `<path d="M26 306C64 266 150 258 240 282C330 304 408 266 458 280C482 288 474 334 440 340L58 340C24 338 8 322 26 306Z" fill="${SOFT}" ${S(2.6)}/>

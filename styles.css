@@ -1820,3 +1820,40 @@ html { scrollbar-color: color-mix(in srgb, var(--ink) 28%, transparent) transpar
 body { overflow-x: clip; }
 
 .page-header::before { right: 0; max-width: 100%; }
+
+/* quiz scenes in films: leave room for the controls bar */
+.lf .lf-big.lf-q { font-size: calc(var(--u) * 4); line-height: 1.12; }
+.lf .lf-opts { margin-top: calc(var(--u) * 2); gap: calc(var(--u) * .9); }
+.lf .lf-opt { padding: calc(var(--u) * 1.1) calc(var(--u) * 1.8); font-size: calc(var(--u) * 2); }
+.lf .lf-note { margin-top: calc(var(--u) * 1.4); font-size: calc(var(--u) * 1.8); }
+
+/* films on phones: a taller box and relatively larger text so every scene fits */
+@media (max-width: 640px) {
+  .lf { aspect-ratio: 4 / 5; --u: min(1.55cqw, 1.7778cqh); }
+  .lf-scene { padding: calc(var(--u) * 4) calc(var(--u) * 4.5) calc(var(--u) * 12); }
+  .lf .lf-big { font-size: calc(var(--u) * 6); } .lf .lf-big.lf-q { font-size: calc(var(--u) * 4.4); }
+  .lf .lf-sub { font-size: calc(var(--u) * 2.5); } .lf .lf-k { font-size: calc(var(--u) * 1.7); }
+  .lf .lf-list .lf-it, .lf .lf-flags .lf-it { padding: calc(var(--u) * .9) calc(var(--u) * 1.6); }
+  .lf-calc { gap: calc(var(--u) * 1.2); } .lf-tok b { font-size: calc(var(--u) * 5.4); } .lf-tok.op b { font-size: calc(var(--u) * 4.4); }
+  .lf-two { grid-template-columns: 1fr; gap: calc(var(--u) * 1.4); } .lf-col { padding: calc(var(--u) * 1.6); }
+  .lf-steps { grid-template-columns: 1fr; margin-top: calc(var(--u) * 2.4); } .lf-line { display: none; } .lf-step { grid-template-columns: calc(var(--u) * 5) 1fr; justify-items: start; text-align: left; column-gap: calc(var(--u) * 1.6); } .lf-step b { grid-row: span 2; }
+  .lf-bar2 { height: calc(var(--u) * 8); } .lf-keys { grid-auto-flow: row; gap: calc(var(--u) * 1); }
+  .lf-stat .n { font-size: calc(var(--u) * 14); }
+}
+
+/* home: beyond the lessons */
+.more-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 900px) { .more-grid { grid-template-columns: 1fr; } }
+.more-card { display: flex; flex-direction: column; padding: 28px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--panel); transition: transform .3s var(--ease), border-color .2s, box-shadow .3s; }
+a.more-card:hover { transform: translateY(-4px); border-color: var(--acc); box-shadow: 0 24px 40px -28px var(--shadow); }
+.more-card .art { width: 60px; margin-bottom: 18px; } .more-card h3 { font-size: 26px; margin: 0 0 8px; } .more-card p { margin: 0 0 18px; color: var(--muted); }
+.more-go { margin-top: auto; color: var(--acc); font-weight: 600; }
+.age-try { display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap; }
+.age-try button { flex: 1; min-width: 70px; padding: 12px 10px; border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 15px var(--fb); cursor: pointer; transition: all .15s; }
+.age-try button:hover { border-color: var(--acc); } .age-try button.on { background: var(--acc); border-color: var(--acc); color: var(--onacc); }
+
+@media (max-width: 640px) {
+  .consent { padding: 12px 14px; border-radius: 14px; bottom: 70px; }
+  .consent p { font-size: 12.5px; line-height: 1.4; margin-bottom: 8px; }
+  .consent div { gap: 6px; } .consent .btn-small { padding: 7px 12px; font-size: 12.5px; }
+}

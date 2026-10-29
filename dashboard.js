@@ -464,7 +464,7 @@
     const nm = signedIn ? user.name : { student: "Maya Lopez", parent: "The Lopez family", teacher: "Ms. Alvarez", admin: "Admin" }[role];
     $("#dash-side").innerHTML = `<div class="dash-who"><div class="avatar">${esc(nm[0])}</div><div><b>${esc(nm)}</b><span>${role[0].toUpperCase() + role.slice(1)}${signedIn ? "" : " · guest"}</span></div></div>
       <div class="side-sec">Menu</div>${v.nav.map((n) => `<button class="side-link" data-page="${n[0]}" aria-current="${n[0] === page}">${ICON[n[2]]}${n[1]}</button>`).join("")}
-      <div class="side-foot">${Mintly.isCloudAccount() ? '<button class="link-btn" id="del-acct" type="button">Delete my account and data</button>' : ""}${member ? `<b>${Mintly.planName() || "Member"} plan</b>Everything is unlocked.` : signedIn ? `<b>Free preview</b><a href='pricing.html' style='color:var(--acc);font-weight:600'>Unlock all ten lessons →</a>` : `<b>Save your progress</b><a href='signin.html' style='color:var(--acc);font-weight:600'>Create an account →</a>`}</div>`;
+      <div class="side-foot">${Mintly.isCloudAccount() ? '<button class="link-btn" id="del-acct" type="button">Delete my account and data</button>' : ""}${member ? `<b>${Mintly.planName() || "Member"} plan</b>Everything is unlocked.` : signedIn ? `<b>Free preview</b><a href='pricing.html' style='color:var(--acc);font-weight:600'>Unlock all fifteen lessons →</a>` : `<b>Save your progress</b><a href='signin.html' style='color:var(--acc);font-weight:600'>Create an account →</a>`}</div>`;
   }
 
   function render(first) {
